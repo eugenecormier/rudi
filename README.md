@@ -31,18 +31,18 @@ modules:
   * detect errors
 
 We then call the program with parameters like:
-  ranthetest --scales-majmin
+ ranthetest --scales-majmin
 or:
-  ranthetest --scales-majmin 20
+ ranthetest --scales-majmin 20
 or:
-  ranthetest --draw-clefs 15 --scales-majmin
+ ranthetest --draw-clefs 15 --scales-majmin
 or:
-  ranthetest --all
+ ranthetest --all
 
 To Do:
-  compound intervals
-  double check TranspositionInstrumentsDict
-  after complete, remove tmp lilypond files
+ * compound intervals
+ * double check TranspositionInstrumentsDict
+ * after complete, remove tmp lilypond files
 
 Dependancies:
  * Python 3
