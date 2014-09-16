@@ -231,7 +231,7 @@ footer = [
 auralIntervals = [ 'PP' , 'm2' , 'M2' , 'm3' , 'M3' , 'P4' , 'TT' , 'P5' , 'm6' , 'M6' , 'm7' , 'M7' , 'P8' ]
 
 # clefs
-clefs = [ 'treble' , 'treble' , 'treble' , 'treble' , 'treble' , 'bass' , 'bass' , 'bass' , 'bass' , 'alto' , 'tenor' ]
+clefs = [ 'treble' , 'treble' , 'treble' , 'treble' , 'treble' , 'treble' , 'treble' , 'treble' , 'bass' , 'bass' , 'bass' , 'bass' , 'bass' , 'bass' , 'alto' , 'tenor' ]
 
 # Note Names
 WrittenNoteNames = [ 'L-A' , 'L-B' , 'L-C' , 'L-D' , 'L-E' , 'L-F' , 'L-G' , 'S-A' , 'S-B' , 'S-C' , 'S-D' , 'S-E' , 'S-F' , 'S-G' ]
