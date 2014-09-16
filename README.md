@@ -31,13 +31,13 @@ modules:
   * detect errors
 
 We then call the program with parameters like:
- ranthetest --scales-majmin
+rudi --scales-majmin
 or:
- ranthetest --scales-majmin 20
+rudi --scales-majmin 20
 or:
- ranthetest --draw-clefs 15 --scales-majmin
+rudi --draw-clefs 15 --scales-majmin
 or:
- ranthetest --all
+rudi --all
 
 To Do:
  * compound intervals
