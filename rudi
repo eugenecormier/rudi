@@ -941,6 +941,7 @@ def WriteKeySigs(f,g):
   f.write('{ \clef treble \\notimesig \\nobarline \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
   g.write('{ \clef treble \\notimesig \\nobarline \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 \override TextScript #\'padding = #3 \\nokeycancel s1 ')
   temp = list(range(len(MajKeySigList)))
+  temp.remove(7)
   randomlist = [ ]
   for i in range(6):
     x = random.choice(temp)
