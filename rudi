@@ -91,6 +91,10 @@ cliargs = argparse.ArgumentParser(description='Random Music Theory Test Generato
 # cli arguments
 ##########################
 
+cliargs.add_argument( '--title' , nargs='?' , default='Preliminary Rudiments Worksheet' , help='Change the default page title' )
+
+cliargs.add_argument( '--copyright' , nargs='?' , default='' , help='Change the copyright line' )
+
 cliargs.add_argument( '--all' , help='Add All Subjects' , action='store_true' )
 
 cliargs.add_argument( '--aural-intervals' , type=int , nargs='?' , const=10 , metavar='#' , help='Add boxes for aural interval testing (default 10)' )
@@ -168,7 +172,6 @@ cliargs.add_argument( '--detect-errors' , type=int , nargs='?' , const=1 , metav
 # Lilypond file
 fillInSheet = 'theory-sheet-' + time.strftime("%Y-%m-%d")  + '.ly'
 keySheet = 'theory-sheet-key-' + time.strftime("%Y-%m-%d")  + '.ly'
-creator = 'Eugene D Cormier'
 
 # Fonts
 # 'Linux Libertine Capitals' , 'Sans'
@@ -182,11 +185,17 @@ headera = [
     '\ttitle = \markup { \override #\'(font-name . "' ,
     headerfont
   ]
-headersheet = [
-    '") \\fontsize #+3 "Preliminary Theory Worksheet" }\n'
+headersheeta = [
+    '") \\fontsize #+3 "'
   ]
-headerkey = [
-    '") \\fontsize #+3 "Preliminary Theory Worksheet  " \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { Key }} }\n'
+headerkeya = [
+    '") \\fontsize #+3 "'
+  ]
+headersheetb = [
+    '" }\n'
+  ]
+headerkeyb = [
+    '  " \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { Key }} }\n'
   ]
 headerb = [
     '\tsubtitle = \markup { \override #\'(font-name . "' ,
@@ -194,9 +203,10 @@ headerb = [
     '") \\fontsize #+2 "Name:_______________________" }\n' ,
     '\ttagline = \markup { \override #\'(font-name . "' ,
     headerfont ,
-    '") \\fontsize #+1 "' ,
-    creator ,
-    ' - MUSI 1063 - Acadia University - ' ,
+    '") \\fontsize #+1 "'
+    ]
+headerc = [
+    ' ',
     time.strftime("%A, %B %d, %Y") ,
     '" }\n' ,
     '\t}\n' ,
@@ -485,9 +495,9 @@ DetectErrorsKeyList = [
 
 ### HEADERS
 ##################################################
-def lilypondHeaders(f,g):
-  f.writelines(headera+headersheet+headerb)
-  g.writelines(headera+headerkey+headerb)
+def lilypondHeaders(f,g,title,copyright):
+  f.writelines(headera + headersheeta + [title] + headersheetb + headerb + [copyright] + headerc)
+  g.writelines(headera + headerkeya + [title] + headerkeyb + headerb + [copyright] + headerc)
 
 ### Aural Intervals
 ##################################################
@@ -2447,11 +2457,11 @@ def main():
   f = open(fillInSheet, 'w')
   g = open(keySheet, 'w')
 
-  # write header
-  lilypondHeaders(f,g)
-
   # start looking at command line arguments
   args = cliargs.parse_args()
+
+  # write header
+  lilypondHeaders(f,g,args.title,args.copyright)
 
   # All
   if args.all:
