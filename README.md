@@ -45,11 +45,11 @@ To Do:
   after complete, remove tmp lilypond files
 
 Dependancies:
-  ~ Python 3
-  ~ Lilypond 2.16.2 (it may run on newer versions
+ * Python 3
+ * Lilypond 2.16.2 (it may run on newer versions
     but this has not been tested. I'll update it
     for future versions as they become stable in
     Gentoo.
-  ~ Copy the cof.eps into the folder .rudi/
+ * Copy the cof.eps into the folder .rudi/
 
 Eugene Cormier March 11, 2014
