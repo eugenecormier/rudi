@@ -1,67 +1,6 @@
 #!/usr/bin/env python3
 
 ##################################################
-# README
-##################################################
-'''
-
-The purpose of this program's existance is so that
-Eugene can run a command and have a random theory
-test/worksheet created using lilypond as a backend.
-
-Proposed modules (* done, ~ in progress, s only
-fill in sheet):
-  * aural intervals (just fill in boxes)
-  * clefs
-  * note names
-  * durations
-  * dst, cst, wt
-  * circle of fifths
-  * key signatures
-  * scale degrees
-  * relative major/minor
-  * scales
-    * major
-    * minor
-    * chromatic/octatonic/wholetone
-    * pentatonic/blues
-    * modes
-  * intervals
-  * chords
-  * cadences
-  * transposing
-  * time signatures
-  * detect errors
-
-We then call the program with parameters like:
-  ranthetest --scales-majmin
-or:
-  ranthetest --scales-majmin 20
-or:
-  ranthetest --draw-clefs 15 --scales-majmin
-or:
-  ranthetest --all
-
-To Do:
-  compound intervals
-  double check TranspositionInstrumentsDict
-  after complete, remove tmp lilypond files
-
-Dependancies:
-  ~ Python 3
-  ~ Lilypond 2.16.2 (it may run on newer versions
-    but this has not been tested. I'll update it
-    for future versions as they become stable in
-    Gentoo.
-  ~ Copy the cof.eps into the folder .rudi/
-
-Eugene Cormier March 11, 2014
-GPL V2
-'''
-
-
-
-##################################################
 # IMPORTS
 ##################################################
 
@@ -298,7 +237,7 @@ CircleOfFifths = [
   '\markup { \\vspace #15 }\n\n' ]
 CircleOfFifthsKey = [
   '\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { \large \\bold "Draw a circle of fifths in the space provided." }} \\noPageBreak \n',
-  '\markup { \general-align #Y #DOWN { \epsfile #Y #50 #".rudi/cof.eps" }}\n\n' ]
+  '\markup { \general-align #Y #DOWN { \epsfile #Y #50 #"/usr/share/rudi/cof.eps" }}\n\n' ]
 # Key Signatures
 MajKeySigList = [ 'C \\flat Maj.' , 'G \\flat Maj.' , 'D \\flat Maj.' , 'A \\flat Maj.' , 'E \\flat Maj.' , 'B \\flat Maj.' , 'F Maj.' , 'C Maj.' , 'G Maj.' , 'D Maj.' , 'A Maj.' , 'E Maj.' , 'B Maj.' , 'F \sharp Maj.' , 'C \sharp Maj.' ]
 MajKeySigListKey = [ 'ces' , 'ges' , 'des' , 'aes' , 'es' , 'bes' , 'f' , 'c' , 'g' , 'd' , 'a' , 'e' , 'b' , 'fis' , 'cis' ]

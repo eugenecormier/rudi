@@ -50,6 +50,6 @@ Dependancies:
     but this has not been tested. I'll update it
     for future versions as they become stable in
     Gentoo.
- * Copy the cof.eps into the folder .rudi/
+ * Copy the cof.eps into the folder /usr/share/rudi/
 
 Eugene Cormier March 11, 2014
