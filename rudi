@@ -34,6 +34,8 @@ cliargs.add_argument( '--title' , nargs='?' , default='Preliminary Rudiments Wor
 
 cliargs.add_argument( '--copyright' , nargs='?' , default='' , help='Change the copyright line' )
 
+cliargs.add_argument( '-o', '--output' , nargs='?' , help='Change the output file name' )
+
 cliargs.add_argument( '--all' , help='Add All Subjects' , action='store_true' )
 
 cliargs.add_argument( '--aural-intervals' , type=int , nargs='?' , const=10 , metavar='#' , help='Add boxes for aural interval testing (default 10)' )
@@ -107,10 +109,6 @@ cliargs.add_argument( '--detect-errors' , type=int , nargs='?' , const=1 , metav
 ##################################################
 # VARIABLES & LISTS
 ##################################################
-
-# Lilypond file
-fillInSheet = 'theory-sheet-' + time.strftime("%Y-%m-%d")  + '.ly'
-keySheet = 'theory-sheet-key-' + time.strftime("%Y-%m-%d")  + '.ly'
 
 # Fonts
 # 'Linux Libertine Capitals' , 'Sans'
@@ -2393,11 +2391,19 @@ def lilypondFooters(f,g):
 ##################################################
 
 def main():
-  f = open(fillInSheet, 'w')
-  g = open(keySheet, 'w')
-
   # start looking at command line arguments
   args = cliargs.parse_args()
+
+  # Lilypond file
+  fillInSheet = 'theory-sheet-' + time.strftime("%Y-%m-%d")  + '.ly'
+  keySheet = 'theory-sheet-key-' + time.strftime("%Y-%m-%d")  + '.ly'
+
+  if args.output:
+    fillInSheet = args.output + '.ly'
+    keySheet = args.output + '-key.ly'
+
+  f = open(fillInSheet, 'w')
+  g = open(keySheet, 'w')
 
   # write header
   lilypondHeaders(f,g,args.title,args.copyright)
