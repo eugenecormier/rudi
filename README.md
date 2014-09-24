@@ -39,11 +39,6 @@ rudi --draw-clefs 15 --scales-majmin
 or:
 rudi --all
 
-To Do:
- * compound intervals
- * double check TranspositionInstrumentsDict
- * after complete, remove tmp lilypond files
-
 Dependancies:
  * Python 3
  * Lilypond 2.16.2 (it may run on newer versions
@@ -52,4 +47,4 @@ Dependancies:
     Gentoo.
  * Copy the cof.eps into the folder /usr/share/rudi/
 
-Eugene Cormier March 11, 2014
+The License is GPL V2
