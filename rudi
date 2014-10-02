@@ -34,6 +34,8 @@ cliargs.add_argument( '--title' , nargs='?' , default='Preliminary Rudiments Wor
 
 cliargs.add_argument( '--copyright' , nargs='?' , default='' , help='Change the copyright line' )
 
+cliargs.add_argument( '--font' , nargs='?' , default='' , help='Change the default font' )
+
 cliargs.add_argument( '-o', '--output' , nargs='?' , help='Change the output file name' )
 
 cliargs.add_argument( '--all' , help='Add All Subjects' , action='store_true' )
@@ -104,6 +106,9 @@ cliargs.add_argument( '--time-sigs' , type=int , nargs='?' , const=1 , metavar='
 
 cliargs.add_argument( '--detect-errors' , type=int , nargs='?' , const=1 , metavar='#' , help='Detect Notation Errors, # is the example (default 1 = random)' )
 
+# start looking at command line arguments
+args = cliargs.parse_args()
+
 
 
 ##################################################
@@ -111,36 +116,41 @@ cliargs.add_argument( '--detect-errors' , type=int , nargs='?' , const=1 , metav
 ##################################################
 
 # Fonts
-# 'Linux Libertine Capitals' , 'Sans'
-headerfont = 'Linux Libertine Capitals'
+font = ''
+boldfont = '\\bold'
+if args.font:
+  font = '\override #\'(font-name . "' + args.font + '") '
+  boldfont = '\override #\'(font-name . "' + args.font + ' Bold") '
 
 # Headers
 headera = [
   '\\version "2.16.2"\n' ,
   # Titles
   '\header {\n' ,
-    '\ttitle = \markup { \override #\'(font-name . "' ,
-    headerfont
+    '\ttitle = \markup { ' ,
+    font
   ]
 headersheeta = [
-    '") \\fontsize #+3 "'
+    '\\fontsize #+3 "'
   ]
 headerkeya = [
-    '") \\fontsize #+3 "'
+    '\\fontsize #+3 "'
   ]
 headersheetb = [
     '" }\n'
   ]
 headerkeyb = [
-    '  " \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { Key }} }\n'
+    '" ',
+    font,
+    ' \with-color #red { Key }}\n'
   ]
 headerb = [
-    '\tsubtitle = \markup { \override #\'(font-name . "' ,
-    headerfont ,
-    '") \\fontsize #+2 "Name:_______________________" }\n' ,
-    '\ttagline = \markup { \override #\'(font-name . "' ,
-    headerfont ,
-    '") \\fontsize #+1 "'
+    '\tsubtitle = \markup { ' ,
+    font ,
+    '\\fontsize #+2 "Name:_______________________" }\n' ,
+    '\ttagline = \markup { ' ,
+    font ,
+    '\\fontsize #+1 "'
     ]
 headerc = [
     ' ',
@@ -231,10 +241,10 @@ EnharmonicNotesKey = [ 'B' , 'B \sharp' , 'D \\flat' , 'C \sharp' , 'E \\flat' ,
 
 # Circle of fifths
 CircleOfFifths = [
-  '\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { \large \\bold "Draw a circle of fifths in the space provided." }} \\noPageBreak \n',
+  '\markup { ' + boldfont + ' "Draw a circle of fifths in the space provided." } \\noPageBreak \n',
   '\markup { \\vspace #15 }\n\n' ]
 CircleOfFifthsKey = [
-  '\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { \large \\bold "Draw a circle of fifths in the space provided." }} \\noPageBreak \n',
+  '\markup { ' + boldfont + ' "Draw a circle of fifths in the space provided." } \\noPageBreak \n',
   '\markup { \general-align #Y #DOWN { \epsfile #Y #50 #"/usr/share/rudi/cof.eps" }}\n\n' ]
 # Key Signatures
 MajKeySigList = [ 'C \\flat Maj.' , 'G \\flat Maj.' , 'D \\flat Maj.' , 'A \\flat Maj.' , 'E \\flat Maj.' , 'B \\flat Maj.' , 'F Maj.' , 'C Maj.' , 'G Maj.' , 'D Maj.' , 'A Maj.' , 'E Maj.' , 'B Maj.' , 'F \sharp Maj.' , 'C \sharp Maj.' ]
@@ -340,7 +350,7 @@ IdentifyCadencesTrebleFirst = [ "\key c \major <e' g' c''>2" , "\key c \major <g
 IdentifyCadencesTrebleRest = [ "<d' g' b'> <e' g' c''>1" , "<g' b' d''> <g' c'' e''>1" , "<f' a' c''> <e' g' c''>1" , "<f' a' c''> <d' g' b'>1" , "<d' g' b'> <c' e' a'>1" , "<d' g' b'> <es' g' c''>1" , "<g' b' d''> <g' c'' es''>1" , "<f' aes' c''> <es' g' c''>1" , "<f' aes' c''> <d' g' b'>1" ]
 IdentifyCadencesTrebleKey = [ "Perfect Authentic" , "Imperfect Authentic" , "Plagal" , "Half" , "Deceptive" , "Perfect Authentic" , "Imperfect Authentic" , "Plagal" , "Half" ]
 IdentifyCadencesBass = [ "\key c \major c2 g \\noBreak c1" , "\key c \major c2 g \\noBreak c1" , "\key c \major c2 f \\noBreak c1" , "\key c \major c2 f \\noBreak g1" , "\key c \major c2 g \\noBreak a1" , "\key c \minor c2 g \\noBreak c1" , "\key c \minor c2 g \\noBreak c1" , "\key c \minor c2 f \\noBreak c1" , "\key c \minor c2 f \\noBreak g1" ]
-IdentifyCadencesBassKey = [ '\key c \major c2_\markup { \with-color #red { I }} g_\markup { \with-color #red { V }} \\noBreak c1_\markup { \with-color #red { I }}' , '\key c \major c2_\markup { \with-color #red { I }} g_\markup { \with-color #red { V }} \\noBreak c1_\markup { \with-color #red { I }}' , '\key c \major c2_\markup { \with-color #red { I }} f_\markup { \with-color #red { IV }} \\noBreak c1_\markup { \with-color #red { I }}' , '\key c \major c2_\markup { \with-color #red { I }} f_\markup { \with-color #red { IV }} \\noBreak g1_\markup { \with-color #red { V }}' , '\key c \major c2_\markup { \with-color #red { I }} g_\markup { \with-color #red { V }} \\noBreak a1_\markup { \with-color #red { vi }}' , '\key c \minor c2_\markup { \with-color #red { i }} g_\markup { \with-color #red { V }} \\noBreak c1_\markup { \with-color #red { i }}' , '\key c \minor c2_\markup { \with-color #red { i }} g_\markup { \with-color #red { V }} \\noBreak c1_\markup { \with-color #red { i }}' , '\key c \minor c2_\markup { \with-color #red { i }} f_\markup { \with-color #red { iv }} \\noBreak c1_\markup { \with-color #red { i }}' , '\key c \minor c2_\markup { \with-color #red { i }} f_\markup { \with-color #red { iv }} \\noBreak g1_\markup { \with-color #red { V }}' ]
+IdentifyCadencesBassKey = [ '\key c \major c2_\markup { \with-color #red ' + font + ' { I }} g_\markup { \with-color #red ' + font + ' { V }} \\noBreak c1_\markup { \with-color #red ' + font + ' { I }}' , '\key c \major c2_\markup { \with-color #red ' + font + ' { I }} g_\markup { \with-color #red ' + font + ' { V }} \\noBreak c1_\markup { \with-color #red ' + font + ' { I }}' , '\key c \major c2_\markup { \with-color #red ' + font + ' { I }} f_\markup { \with-color #red ' + font + ' { IV }} \\noBreak c1_\markup { \with-color #red ' + font + ' { I }}' , '\key c \major c2_\markup { \with-color #red ' + font + ' { I }} f_\markup { \with-color #red ' + font + ' { IV }} \\noBreak g1_\markup { \with-color #red ' + font + ' { V }}' , '\key c \major c2_\markup { \with-color #red ' + font + ' { I }} g_\markup { \with-color #red ' + font + ' { V }} \\noBreak a1_\markup { \with-color #red ' + font + ' { vi }}' , '\key c \minor c2_\markup { \with-color #red ' + font + ' { i }} g_\markup { \with-color #red ' + font + ' { V }} \\noBreak c1_\markup { \with-color #red ' + font + ' { i }}' , '\key c \minor c2_\markup { \with-color #red ' + font + ' { i }} g_\markup { \with-color #red ' + font + ' { V }} \\noBreak c1_\markup { \with-color #red ' + font + ' { i }}' , '\key c \minor c2_\markup { \with-color #red ' + font + ' { i }} f_\markup { \with-color #red ' + font + ' { iv }} \\noBreak c1_\markup { \with-color #red ' + font + ' { i }}' , '\key c \minor c2_\markup { \with-color #red ' + font + ' { i }} f_\markup { \with-color #red ' + font + ' { iv }} \\noBreak g1_\markup { \with-color #red ' + font + ' { V }}' ]
 IdentifyCadencesTranspositions = [ "c aes," , "c es" , "c bes," , "c f" , "c g," , "c d" , "c e" , "c b," , "c fis" , "c cis" ]
 IdentifyCadencesTranspositionsKey = [ "A \\flat" , "E \\flat" , "B \\flat" , "F" , "G" , "D" , "E" , "B" , "F \sharp" , "C \sharp" ]
 WriteCadencesList = [ 'Perf. Auth.' , 'Imp. Auth.' , 'Half' , 'Plagal' , 'Dec.' ]
@@ -368,33 +378,33 @@ TranspositionExamplesNewKeysDict = { 0: [ ] , 1: [ 'E \\flat Major' , 'E Major' 
 # time signatures
 TimeSigList = [
   " " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Add the missing barlines: }} { \override Clef  #'transparent = ##t \\time 4/4  \cadenzaOn a'8 a'16 a' a'8 a' a'4 a'8 a'~ a'2 a'4 a'16 a' a'8 a'4 a'16 a' a'8 a'4. a'8 a'1 \cadenzaOff \\bar \"||\" } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Add the missing barlines: }} { \override Clef  #'transparent = ##t \\time 6/4  \cadenzaOn a'2 a'4 a' a' a' a'8 a' a'4 a' a'2. a'4 a'2 a'4 a'2 a'4 a'8 a' a' a' a'4 a'2 \cadenzaOff \\bar \"||\" } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Add the missing barlines: }} \\relative c''{ \override Clef  #'transparent = ##t \\time 7/8  \cadenzaOn a4. a8[ a] a4 a8[ a] a4. a8[ a] a8[ a a a] a4 a8 a4 a8[ a] a4. \cadenzaOff \\bar \"||\" } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Add the missing barlines: }} \\relative c''{ \override Clef  #'transparent = ##t \\time 5/8  \cadenzaOn a4 a8 a4 a8[ a16 a a a] a[ a a a] a[ a a a a a] a4 a8[ a16 a16 a8] a8.[ a16] \cadenzaOff \\bar \"||\" } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Add the correct time signature: }} { \\notimesig \\time 9/8 \partial 8 a'8 a' a' a' a'16 a' a' a' a'8 a' a' a'16 a' a'8 a'4 a'4. a'8 a' a' a' a' a'~ a' a'4 a'8 a' a' a'4. a'4. a'8 a' a'16 a' \\bar \"||\" } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Add the correct time signature: }} { \\notimesig \\time 3/4 a'4 a'8 a' a'4 a'2. a'2 a'4~ a'2. a'4. a'8 a'4 a'2. \\bar \"||\" } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Add the correct time signature: }} \\relative c''{ \\notimesig \\time 5/16 s8 s s16 \\bar \"\" a16[ a8] a8 a16[ a32 a a a] a16.[ a32] a16[ a] a8 a16 a8 a16[ a a] \\bar \"||\" } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Add the correct time signature: }} \\relative c''{ \\notimesig \\time 7/8 s4 s s s8 \\bar \"\" a8[ a] a4 a4. a8[ a16 a a a] a8[ a16 a] a4 a a a4. a4 a8 a8[ a16 a] a8[ a] \\bar \"||\" } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Complete the following measures with rests: }} { a'8 a'4 s8 a'2 a'4 s4 s a'4  a'2 s2  s4 a'2.  } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Complete the following measures with rests: }} { \\time 6/8 a'8 s8 s a'4 s8 s4. s4. a'4 s8 s s s16 a'16 a'16 a' s8 s s a'8 a' } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Complete the following measures with rests: }} \\relative c''{ \\time 7/4 \hideNotes \override TextScript #'padding = #4.0 \[ a2^\"2+2+3\" a4 \] \\unHideNotes a8[ a] a2. a8[ a a] \hideNotes \[ a a4 a8 a8 \] \\unHideNotes a4 a8[ a a a] a4 a a \hideNotes \[ a2 a \] \\bar \"||\" } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Complete the following measures with rests: }} \\relative c''{ \\time 10/8 \override TextScript #'padding = #4.0 a8.[^\"3+2+2+3\" a16 a8] a4 \hideNotes \[ a8 a a \] \\unHideNotes a4 a4 a8 \hideNotes \[ a8 a a \] \\unHideNotes a8 a a4 a8[ a a] a \hideNotes \[ a8 a \] \\unHideNotes a8 a a4 \\bar \"||\" } " ,
+  "\markup { " + font + " { Add the missing barlines: }} { \override Clef  #'transparent = ##t \\time 4/4  \cadenzaOn a'8 a'16 a' a'8 a' a'4 a'8 a'~ a'2 a'4 a'16 a' a'8 a'4 a'16 a' a'8 a'4. a'8 a'1 \cadenzaOff \\bar \"||\" } " ,
+  "\markup { " + font + " { Add the missing barlines: }} { \override Clef  #'transparent = ##t \\time 6/4  \cadenzaOn a'2 a'4 a' a' a' a'8 a' a'4 a' a'2. a'4 a'2 a'4 a'2 a'4 a'8 a' a' a' a'4 a'2 \cadenzaOff \\bar \"||\" } " ,
+  "\markup { " + font + " { Add the missing barlines: }} \\relative c''{ \override Clef  #'transparent = ##t \\time 7/8  \cadenzaOn a4. a8[ a] a4 a8[ a] a4. a8[ a] a8[ a a a] a4 a8 a4 a8[ a] a4. \cadenzaOff \\bar \"||\" } " ,
+  "\markup { " + font + " { Add the missing barlines: }} \\relative c''{ \override Clef  #'transparent = ##t \\time 5/8  \cadenzaOn a4 a8 a4 a8[ a16 a a a] a[ a a a] a[ a a a a a] a4 a8[ a16 a16 a8] a8.[ a16] \cadenzaOff \\bar \"||\" } " ,
+  "\markup { " + font + " { Add the correct time signature: }} { \\notimesig \\time 9/8 \partial 8 a'8 a' a' a' a'16 a' a' a' a'8 a' a' a'16 a' a'8 a'4 a'4. a'8 a' a' a' a' a'~ a' a'4 a'8 a' a' a'4. a'4. a'8 a' a'16 a' \\bar \"||\" } " ,
+  "\markup { " + font + " { Add the correct time signature: }} { \\notimesig \\time 3/4 a'4 a'8 a' a'4 a'2. a'2 a'4~ a'2. a'4. a'8 a'4 a'2. \\bar \"||\" } " ,
+  "\markup { " + font + " { Add the correct time signature: }} \\relative c''{ \\notimesig \\time 5/16 s8 s s16 \\bar \"\" a16[ a8] a8 a16[ a32 a a a] a16.[ a32] a16[ a] a8 a16 a8 a16[ a a] \\bar \"||\" } " ,
+  "\markup { " + font + " { Add the correct time signature: }} \\relative c''{ \\notimesig \\time 7/8 s4 s s s8 \\bar \"\" a8[ a] a4 a4. a8[ a16 a a a] a8[ a16 a] a4 a a a4. a4 a8 a8[ a16 a] a8[ a] \\bar \"||\" } " ,
+  "\markup { " + font + " { Complete the following measures with rests: }} { a'8 a'4 s8 a'2 a'4 s4 s a'4  a'2 s2  s4 a'2.  } " ,
+  "\markup { " + font + " { Complete the following measures with rests: }} { \\time 6/8 a'8 s8 s a'4 s8 s4. s4. a'4 s8 s s s16 a'16 a'16 a' s8 s s a'8 a' } " ,
+  "\markup { " + font + " { Complete the following measures with rests: }} \\relative c''{ \\time 7/4 \hideNotes \override TextScript #'padding = #4.0 \[ a2^\"2+2+3\" a4 \] \\unHideNotes a8[ a] a2. a8[ a a] \hideNotes \[ a a4 a8 a8 \] \\unHideNotes a4 a8[ a a a] a4 a a \hideNotes \[ a2 a \] \\bar \"||\" } " ,
+  "\markup { " + font + " { Complete the following measures with rests: }} \\relative c''{ \\time 10/8 \override TextScript #'padding = #4.0 a8.[^\"3+2+2+3\" a16 a8] a4 \hideNotes \[ a8 a a \] \\unHideNotes a4 a4 a8 \hideNotes \[ a8 a a \] \\unHideNotes a8 a a4 a8[ a a] a \hideNotes \[ a8 a \] \\unHideNotes a8 a a4 \\bar \"||\" } " ,
   ]
 TimeSigKeyList = [
   " " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Add the missing barlines: }} { \override Staff.BarLine #\'color = #red \override Clef  #'transparent = ##t \\time 4/4  \\autoBeamOff a'8 a'16 a' a'8 a' a'4 a'8 a'~ a'2 a'4 a'16 a' a'8 a'4 a'16 a' a'8 a'4. a'8 a'1 \\bar \"||\" } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Add the missing barlines: }} { \override Staff.BarLine #\'color = #red \override Clef  #'transparent = ##t \\time 6/4  \\autoBeamOff a'2 a'4 a' a' a' a'8 a' a'4 a' a'2. a'4 a'2 a'4 a'2 a'4 a'8 a' a' a' a'4 a'2 \\bar \"||\" } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Add the missing barlines: }} \\relative c''{ \override Staff.BarLine #\'color = #red \override Clef  #'transparent = ##t \\time 7/8  \\autoBeamOff a4. a8[ a] a4 a8[ a] a4. a8[ a] a8[ a a a] a4 a8 a4 a8[ a] a4. \\bar \"||\" } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Add the missing barlines: }} \\relative c''{ \override Staff.BarLine #\'color = #red \override Clef  #'transparent = ##t \\time 5/8  \\autoBeamOff a4 a8 a4 a8[ a16 a a a] a[ a a a] a[ a a a a a] a4 a8[ a16 a16 a8] a8.[ a16] \\bar \"||\" } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Add the correct time signature: }} { \override Staff.TimeSignature #\'color = #red \\time 9/8 \partial 8 a'8 a' a' a' a'16 a' a' a' a'8 a' a' a'16 a' a'8 a'4 a'4. a'8 a' a' a' a' a'~ a' a'4 a'8 a' a' a'4. a'4. a'8 a' a'16 a' \\bar \"||\" } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Add the correct time signature: }} { \override Staff.TimeSignature #\'color = #red \\time 3/4 a'4 a'8 a' a'4 a'2. a'2 a'4~ a'2. a'4. a'8 a'4 a'2. \\bar \"||\" } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Add the correct time signature: }} \\relative c''{ \override Staff.TimeSignature #\'color = #red \\time 5/16 s8 s s16 \\bar \"\" a16[ a8] a8 a16[ a32 a a a] a16.[ a32] a16[ a] a8 a16 a8 a16[ a a] \\bar \"||\" } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Add the correct time signature: }} \\relative c''{ \override Staff.TimeSignature #\'color = #red \\time 7/8 s4 s s s8 \\bar \"\" a8[ a] a4 a4. a8[ a16 a a a] a8[ a16 a] a4 a a a4. a4 a8 a8[ a16 a] a8[ a] \\bar \"||\" } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Complete the following measures with rests: }} { \override Rest #\'color = #red a'8 a'4 r8 a'2 a'4 r4 r a'4  a'2 r2  r4 a'2.  } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Complete the following measures with rests: }} { \override Rest #\'color = #red \\time 6/8 a'8 r8 r a'4 r8 r2. a'4 r8 r r8. a'16 a'16 a' r8 r r a'8 a' } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Complete the following measures with rests: }} \\relative c''{ \override Rest #\'color = #red \\time 7/4 \override TextScript #'padding = #4.0 \[ r2^\"2+2+3\" r4 \] a8[ a] a2. a8[ a a] \[ r r2 \] a4 a8[ a a a] a4 a a \[ r4 r2. \] \\bar \"||\" } " ,
-  "\markup { \override #\'(font-name . \"Linux Libertine Capitals\") { Complete the following measures with rests: }} \\relative c''{ \override Rest #\'color = #red \\time 10/8 \override TextScript #'padding = #4.0 a8.[^\"3+2+2+3\" a16 a8] a4 \[ r4 r8 \] a4 a4 a8 \[ r4 r8 \] a8 a a4 a8[ a a] a \[ r8 r \] a8 a a4 \\bar \"||\" } " ,
+  "\markup { " + font + " { Add the missing barlines: }} { \override Staff.BarLine #\'color = #red \override Clef  #'transparent = ##t \\time 4/4  \\autoBeamOff a'8 a'16 a' a'8 a' a'4 a'8 a'~ a'2 a'4 a'16 a' a'8 a'4 a'16 a' a'8 a'4. a'8 a'1 \\bar \"||\" } " ,
+  "\markup { " + font + " { Add the missing barlines: }} { \override Staff.BarLine #\'color = #red \override Clef  #'transparent = ##t \\time 6/4  \\autoBeamOff a'2 a'4 a' a' a' a'8 a' a'4 a' a'2. a'4 a'2 a'4 a'2 a'4 a'8 a' a' a' a'4 a'2 \\bar \"||\" } " ,
+  "\markup { " + font + " { Add the missing barlines: }} \\relative c''{ \override Staff.BarLine #\'color = #red \override Clef  #'transparent = ##t \\time 7/8  \\autoBeamOff a4. a8[ a] a4 a8[ a] a4. a8[ a] a8[ a a a] a4 a8 a4 a8[ a] a4. \\bar \"||\" } " ,
+  "\markup { " + font + " { Add the missing barlines: }} \\relative c''{ \override Staff.BarLine #\'color = #red \override Clef  #'transparent = ##t \\time 5/8  \\autoBeamOff a4 a8 a4 a8[ a16 a a a] a[ a a a] a[ a a a a a] a4 a8[ a16 a16 a8] a8.[ a16] \\bar \"||\" } " ,
+  "\markup { " + font + " { Add the correct time signature: }} { \override Staff.TimeSignature #\'color = #red \\time 9/8 \partial 8 a'8 a' a' a' a'16 a' a' a' a'8 a' a' a'16 a' a'8 a'4 a'4. a'8 a' a' a' a' a'~ a' a'4 a'8 a' a' a'4. a'4. a'8 a' a'16 a' \\bar \"||\" } " ,
+  "\markup { " + font + " { Add the correct time signature: }} { \override Staff.TimeSignature #\'color = #red \\time 3/4 a'4 a'8 a' a'4 a'2. a'2 a'4~ a'2. a'4. a'8 a'4 a'2. \\bar \"||\" } " ,
+  "\markup { " + font + " { Add the correct time signature: }} \\relative c''{ \override Staff.TimeSignature #\'color = #red \\time 5/16 s8 s s16 \\bar \"\" a16[ a8] a8 a16[ a32 a a a] a16.[ a32] a16[ a] a8 a16 a8 a16[ a a] \\bar \"||\" } " ,
+  "\markup { " + font + " { Add the correct time signature: }} \\relative c''{ \override Staff.TimeSignature #\'color = #red \\time 7/8 s4 s s s8 \\bar \"\" a8[ a] a4 a4. a8[ a16 a a a] a8[ a16 a] a4 a a a4. a4 a8 a8[ a16 a] a8[ a] \\bar \"||\" } " ,
+  "\markup { " + font + " { Complete the following measures with rests: }} { \override Rest #\'color = #red a'8 a'4 r8 a'2 a'4 r4 r a'4  a'2 r2  r4 a'2.  } " ,
+  "\markup { " + font + " { Complete the following measures with rests: }} { \override Rest #\'color = #red \\time 6/8 a'8 r8 r a'4 r8 r2. a'4 r8 r r8. a'16 a'16 a' r8 r r a'8 a' } " ,
+  "\markup { " + font + " { Complete the following measures with rests: }} \\relative c''{ \override Rest #\'color = #red \\time 7/4 \override TextScript #'padding = #4.0 \[ r2^\"2+2+3\" r4 \] a8[ a] a2. a8[ a a] \[ r r2 \] a4 a8[ a a a] a4 a a \[ r4 r2. \] \\bar \"||\" } " ,
+  "\markup { " + font + " { Complete the following measures with rests: }} \\relative c''{ \override Rest #\'color = #red \\time 10/8 \override TextScript #'padding = #4.0 a8.[^\"3+2+2+3\" a16 a8] a4 \[ r4 r8 \] a4 a4 a8 \[ r4 r8 \] a8 a a4 a8[ a a] a \[ r8 r \] a8 a a4 \\bar \"||\" } " ,
   ]
 
 # detect errors
@@ -440,8 +450,8 @@ def lilypondHeaders(f,g,title,copyright):
 ##################################################
 def AuralIntervals(f,g,howmanytimes):
   # sheet
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { \large \\bold "1. Name the following intervals:" } } \\noPageBreak\n')
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { ')
+  f.write('\markup { ' + font + ' { "1. Name the following intervals:" } } \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { ')
   if howmanytimes < 11:
     for i in range(howmanytimes):
       x = i + 1
@@ -452,14 +462,14 @@ def AuralIntervals(f,g,howmanytimes):
       x = i + 1
       f.write( str(x) +  '. ___ ')
     f.write(' }}\n')
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { ')
+    f.write('\markup { ' + font + ' { ')
     for i in range(10,howmanytimes):
       x = i + 1
       f.write( str(x) +  '. ___ ')
     f.write(' }}\n')
   # key
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { \large \\bold "1. Name the following intervals:" }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { ')
+  g.write('\markup { ' + font + ' { "1. Name the following intervals:" }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { ')
   if howmanytimes < 11:
     for i in range(howmanytimes):
       x = i + 1
@@ -470,7 +480,7 @@ def AuralIntervals(f,g,howmanytimes):
       x = i + 1
       g.write( str(x) +  '. ___ ')
     g.write(' }\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { ')
+    g.write('\markup { ' + font + ' { ')
     for i in range(10,howmanytimes):
       x = i + 1
       g.write( str(x) +  '. ___ ')
@@ -480,13 +490,13 @@ def AuralIntervals(f,g,howmanytimes):
 ##################################################
 def DrawClefs(f,g,howmanytimes):
   # sheet
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { \large \\bold { Write out the following clefs ' + str(howmanytimes) + ' times.}}} \\noPageBreak \n')
+  f.write('\markup { ' + font + ' { Write out the following clefs ' + str(howmanytimes) + ' times.}} \\noPageBreak \n')
   f.write('{ \\nobarline \clef treble \\notimesig s1 }\n')
   f.write('{ \\nobarline \clef bass \\notimesig s1 }\n')
   f.write('{ \\nobarline \clef alto \\notimesig s1 }\n')
   f.write('{ \\nobarline \clef tenor \\notimesig s1 }\n')
   # key
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { \large \\bold { Write out the following clefs ' + str(howmanytimes) + ' times.}}} \\noPageBreak \n')
+  g.write('\markup { ' + font + ' { Write out the following clefs ' + str(howmanytimes) + ' times.}} \\noPageBreak \n')
   g.write('{ \\nobarline \\notimesig \\noclefresize \clef treble ')
   for i in range(howmanytimes):
     g.write(' s8 \set Staff.forceClef = ##t \override Staff.Clef #\'color = #(rgb-color 1.0 0.0 0.0) \clef treble ')
@@ -507,8 +517,8 @@ def DrawClefs(f,g,howmanytimes):
 ### Writing Notes
 ##################################################
 def WriteNotes(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { \large \\bold "Write out the following notes." (L = on a line, S = on a space) }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { \large \\bold "Write out the following notes." (L = on a line, S = on a space) }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { "Write out the following notes." (L = on a line, S = on a space) }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { "Write out the following notes." (L = on a line, S = on a space) }} \\noPageBreak\n')
   f.write('{ \clef treble \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #3 ')
   g.write('{ \clef treble \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #3 ')
   temp = list(range(len(WrittenNoteNames)))
@@ -517,8 +527,8 @@ def WriteNotes(f,g,howmanytimes):
       temp = list(range(len(WrittenNoteNames)))
     x = random.choice(temp)
     temp.remove(x)
-    f.write('s1_\markup { \override #\'(font-name . "Linux Libertine Capitals") { ' + WrittenNoteNames[x] + ' }}')
-    g.write('\override NoteHead #\'color = #red ' + WrittenNoteNamesKeyTreble[x] + '1_\markup { \override #\'(font-name . "Linux Libertine Capitals") { ' + WrittenNoteNames[x] + ' }}')
+    f.write('s1_\markup { ' + font + ' { ' + WrittenNoteNames[x] + ' }}')
+    g.write('\override NoteHead #\'color = #red ' + WrittenNoteNamesKeyTreble[x] + '1_\markup { ' + font + ' { ' + WrittenNoteNames[x] + ' }}')
   f.write(' }')
   g.write(' }')
   f.write('{ \clef bass \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #3 ')
@@ -529,8 +539,8 @@ def WriteNotes(f,g,howmanytimes):
       temp = list(range(len(WrittenNoteNames)))
     x = random.choice(temp)
     temp.remove(x)
-    f.write('s1_\markup { \override #\'(font-name . "Linux Libertine Capitals") { ' + WrittenNoteNames[x] + ' }}')
-    g.write('\override NoteHead #\'color = #red ' + WrittenNoteNamesKeyBass[x] + '1_\markup { \override #\'(font-name . "Linux Libertine Capitals") { ' + WrittenNoteNames[x] + ' }}')
+    f.write('s1_\markup { ' + font + ' { ' + WrittenNoteNames[x] + ' }}')
+    g.write('\override NoteHead #\'color = #red ' + WrittenNoteNamesKeyBass[x] + '1_\markup { ' + font + ' { ' + WrittenNoteNames[x] + ' }}')
   f.write(' }')
   g.write(' }')
   f.write('{ \clef alto \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #3 ')
@@ -541,8 +551,8 @@ def WriteNotes(f,g,howmanytimes):
       temp = list(range(len(WrittenNoteNames)))
     x = random.choice(temp)
     temp.remove(x)
-    f.write('s1_\markup { \override #\'(font-name . "Linux Libertine Capitals") { ' + WrittenNoteNames[x] + ' }}')
-    g.write('\override NoteHead #\'color = #red ' + WrittenNoteNamesKeyAlto[x] + '1_\markup { \override #\'(font-name . "Linux Libertine Capitals") { ' + WrittenNoteNames[x] + ' }}')
+    f.write('s1_\markup { ' + font + ' { ' + WrittenNoteNames[x] + ' }}')
+    g.write('\override NoteHead #\'color = #red ' + WrittenNoteNamesKeyAlto[x] + '1_\markup { ' + font + ' { ' + WrittenNoteNames[x] + ' }}')
   f.write(' }')
   g.write(' }')
   f.write('{ \clef tenor \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #3 ')
@@ -553,14 +563,14 @@ def WriteNotes(f,g,howmanytimes):
       temp = list(range(len(WrittenNoteNames)))
     x = random.choice(temp)
     temp.remove(x)
-    f.write('s1_\markup { \override #\'(font-name . "Linux Libertine Capitals") { ' + WrittenNoteNames[x] + ' }}')
-    g.write('\override NoteHead #\'color = #red ' + WrittenNoteNamesKeyTenor[x] + '1_\markup { \override #\'(font-name . "Linux Libertine Capitals") { ' + WrittenNoteNames[x] + ' }}')
+    f.write('s1_\markup { ' + font + ' { ' + WrittenNoteNames[x] + ' }}')
+    g.write('\override NoteHead #\'color = #red ' + WrittenNoteNamesKeyTenor[x] + '1_\markup { ' + font + ' { ' + WrittenNoteNames[x] + ' }}')
   f.write(' }\n')
   g.write(' }\n')
 
 def IdentifyNotes(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { \large \\bold "Name the following notes." }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { \large \\bold "Name the following notes." }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { "Name the following notes." }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { "Name the following notes." }} \\noPageBreak\n')
   f.write('{ \clef treble \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
   g.write('{ \clef treble \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
   temp = list(range(len(IdentifyNoteNamesTreble)))
@@ -569,8 +579,8 @@ def IdentifyNotes(f,g,howmanytimes):
       temp = list(range(len(IdentifyNoteNamesTreble)))
     x = random.choice(temp)
     temp.remove(x)
-    f.write( IdentifyNoteNamesTreble[x] + '_\markup { \override #\'(font-name . "Linux Libertine Capitals") { ___ }} ')
-    g.write( IdentifyNoteNamesTreble[x] + '_\markup { \with-color #red \override #\'(font-name . "Linux Libertine Capitals") { ' + IdentifyNoteNamesTrebleKey[x] + ' }} ')
+    f.write( IdentifyNoteNamesTreble[x] + '_\markup { ' + font + ' { ___ }} ')
+    g.write( IdentifyNoteNamesTreble[x] + '_\markup { \with-color #red ' + font + ' { ' + IdentifyNoteNamesTrebleKey[x] + ' }} ')
   f.write(' }\n')
   g.write(' }\n')
   f.write('{ \clef bass \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
@@ -581,8 +591,8 @@ def IdentifyNotes(f,g,howmanytimes):
       temp = list(range(len(IdentifyNoteNamesBass)))
     x = random.choice(temp)
     temp.remove(x)
-    f.write( IdentifyNoteNamesBass[x] + '_\markup { \override #\'(font-name . "Linux Libertine Capitals") { ___ }} ')
-    g.write( IdentifyNoteNamesBass[x] + '_\markup { \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red ' + IdentifyNoteNamesBassKey[x] + ' }} ')
+    f.write( IdentifyNoteNamesBass[x] + '_\markup { ' + font + ' { ___ }} ')
+    g.write( IdentifyNoteNamesBass[x] + '_\markup { ' + font + ' { \with-color #red ' + IdentifyNoteNamesBassKey[x] + ' }} ')
   f.write(' }\n')
   g.write(' }\n')
   f.write('{ \clef alto \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
@@ -593,8 +603,8 @@ def IdentifyNotes(f,g,howmanytimes):
       temp = list(range(len(IdentifyNoteNamesAlto)))
     x = random.choice(temp)
     temp.remove(x)
-    f.write( IdentifyNoteNamesAlto[x] + '_\markup { \override #\'(font-name . "Linux Libertine Capitals") { ___ }} ')
-    g.write( IdentifyNoteNamesAlto[x] + '_\markup { \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red ' + IdentifyNoteNamesAltoKey[x] + ' }} ')
+    f.write( IdentifyNoteNamesAlto[x] + '_\markup { ' + font + ' { ___ }} ')
+    g.write( IdentifyNoteNamesAlto[x] + '_\markup { ' + font + ' { \with-color #red ' + IdentifyNoteNamesAltoKey[x] + ' }} ')
   f.write(' }\n')
   g.write(' }\n')
   f.write('{ \clef tenor \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
@@ -605,16 +615,16 @@ def IdentifyNotes(f,g,howmanytimes):
       temp = list(range(len(IdentifyNoteNamesTenor)))
     x = random.choice(temp)
     temp.remove(x)
-    f.write( IdentifyNoteNamesTenor[x] + '_\markup { \override #\'(font-name . "Linux Libertine Capitals") { ___ }} ')
-    g.write( IdentifyNoteNamesTenor[x] + '_\markup { \override #\'(font-name . "Lin     ux Libertine Capitals") { \with-color #red ' + IdentifyNoteNamesTenorKey[x] + ' }} ')
+    f.write( IdentifyNoteNamesTenor[x] + '_\markup { ' + font + ' { ___ }} ')
+    g.write( IdentifyNoteNamesTenor[x] + '_\markup { ' + font + ' { \with-color #red ' + IdentifyNoteNamesTenorKey[x] + ' }} ')
   f.write(' }\n')
   g.write(' }\n')
 
 ### Durations
 ##################################################
 def WriteASingleNoteEqualTo(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write a single note equal to: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write a single note equal to: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write a single note equal to: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write a single note equal to: }} \\noPageBreak\n')
   f.write('{ \stopStaff \\noclef \\notimesig \\nobarlinenumbers \cadenzaOn \\autoBeamOff \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 3 \n')
   g.write('{ \stopStaff \\noclef \\notimesig \\nobarlinenumbers \cadenzaOn \\autoBeamOff \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 3 \n')
   temp = list(range(len(DurationSingleNoteEqualTo)))
@@ -626,14 +636,14 @@ def WriteASingleNoteEqualTo(f,g,howmanytimes):
       temp = list(range(len(DurationSingleNoteEqualTo)))
     x = random.choice(temp)
     temp.remove(x)
-    f.write(DurationSingleNoteEqualTo[x] + ' \hideNotes a\'_\markup { \override #\'(font-name . "Linux Libertine Capitals") { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 1.5) \\box \hspace #1  } \\unHideNotes s1 \\bar ""\n')
-    g.write(DurationSingleNoteEqualTo[x] + ' \hideNotes a\'_\markup { \override #\'(font-name . "Linux Libertine Capitals") { = }}  \\unHideNotes \once \override NoteHead #\'color = #red \once \override Stem #\'color = #red \once \override Dots #\'color = #red \once \override Flag #\'color = #red ' + DurationSingleNoteEqualToKey[x] + ' s1 \\bar ""\n')
+    f.write(DurationSingleNoteEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 1.5) \\box \hspace #1  } \\unHideNotes s1 \\bar ""\n')
+    g.write(DurationSingleNoteEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  \\unHideNotes \once \override NoteHead #\'color = #red \once \override Stem #\'color = #red \once \override Dots #\'color = #red \once \override Flag #\'color = #red ' + DurationSingleNoteEqualToKey[x] + ' s1 \\bar ""\n')
   f.write('}\n')
   g.write('}\n')
 
 def WriteASingleRestEqualTo(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write a single rest equal to: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write a single rest equal to: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write a single rest equal to: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write a single rest equal to: }} \\noPageBreak\n')
   f.write('{ \stopStaff \\noclef \\notimesig \\nobarlinenumbers \cadenzaOn \\autoBeamOff \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 3 \n')
   g.write('{ \stopStaff \\noclef \\notimesig \\nobarlinenumbers \cadenzaOn \\autoBeamOff \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 3 \n')
   temp = list(range(len(DurationSingleRestEqualTo)))
@@ -645,14 +655,14 @@ def WriteASingleRestEqualTo(f,g,howmanytimes):
       temp = list(range(len(DurationSingleRestEqualTo)))
     x = random.choice(temp)
     temp.remove(x)
-    f.write(DurationSingleRestEqualTo[x] + ' \hideNotes a\'_\markup { \override #\'(font-name . "Linux Libertine Capitals") { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 1.5) \\box \hspace #1  } \\unHideNotes s1 \\bar ""\n')
-    g.write(DurationSingleRestEqualTo[x] + ' \hideNotes a\'_\markup { \override #\'(font-name . "Linux Libertine Capitals") { = }}  \\unHideNotes \once \override Rest #\'color = #red \once \override Dots #\'color = #red ' + DurationSingleRestEqualToKey[x] + ' s1 \\bar ""\n')
+    f.write(DurationSingleRestEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 1.5) \\box \hspace #1  } \\unHideNotes s1 \\bar ""\n')
+    g.write(DurationSingleRestEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  \\unHideNotes \once \override Rest #\'color = #red \once \override Dots #\'color = #red ' + DurationSingleRestEqualToKey[x] + ' s1 \\bar ""\n')
   f.write('}\n')
   g.write('}\n')
 
 def WriteTwoNotesEqualTo(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write two of the same notes equal to: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write two of the same notes equal to: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write two of the same notes equal to: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write two of the same notes equal to: }} \\noPageBreak\n')
   f.write('{ \stopStaff \\noclef \\notimesig \\nobarlinenumbers \cadenzaOn \\autoBeamOff \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 2 \n')
   g.write('{ \stopStaff \\noclef \\notimesig \\nobarlinenumbers \cadenzaOn \\autoBeamOff \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 2 \n')
   temp = list(range(len(DurationTwoNotesEqualTo)))
@@ -664,14 +674,14 @@ def WriteTwoNotesEqualTo(f,g,howmanytimes):
       break
     x = random.choice(temp)
     temp.remove(x)
-    f.write(DurationTwoNotesEqualTo[x] + ' \hideNotes a\'_\markup { \override #\'(font-name . "Linux Libertine Capitals") { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 1.5) \\box \hspace #1  } \\unHideNotes s1 \\bar ""\n')
-    g.write(DurationTwoNotesEqualTo[x] + ' \hideNotes a\'_\markup { \override #\'(font-name . "Linux Libertine Capitals") { = }}  \\unHideNotes \once \override NoteHead #\'color = #red \once \override Stem #\'color = #red \once \override Dots #\'color = #red \once \override Flag #\'color = #red ' + DurationTwoNotesEqualToKey[x] + ' \once \override NoteHead #\'color = #red \once \override Stem #\'color = #red \once \override Dots #\'color = #red \once \override Flag #\'color = #red ' + DurationTwoNotesEqualToKey[x] + ' s1 \\bar ""\n')
+    f.write(DurationTwoNotesEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 1.5) \\box \hspace #1  } \\unHideNotes s1 \\bar ""\n')
+    g.write(DurationTwoNotesEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  \\unHideNotes \once \override NoteHead #\'color = #red \once \override Stem #\'color = #red \once \override Dots #\'color = #red \once \override Flag #\'color = #red ' + DurationTwoNotesEqualToKey[x] + ' \once \override NoteHead #\'color = #red \once \override Stem #\'color = #red \once \override Dots #\'color = #red \once \override Flag #\'color = #red ' + DurationTwoNotesEqualToKey[x] + ' s1 \\bar ""\n')
   f.write('}\n')
   g.write('}\n')
 
 def WriteTwoRestsEqualTo(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write two of the same rests equal to: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write two of the same rests equal to: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write two of the same rests equal to: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write two of the same rests equal to: }} \\noPageBreak\n')
   f.write('{ \stopStaff \\noclef \\notimesig \\nobarlinenumbers \cadenzaOn \\autoBeamOff \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 2 \n')
   g.write('{ \stopStaff \\noclef \\notimesig \\nobarlinenumbers \cadenzaOn \\autoBeamOff \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 2 \n')
   temp = list(range(len(DurationTwoRestsEqualTo)))
@@ -683,14 +693,14 @@ def WriteTwoRestsEqualTo(f,g,howmanytimes):
       break
     x = random.choice(temp)
     temp.remove(x)
-    f.write(DurationTwoRestsEqualTo[x] + ' \hideNotes a\'_\markup { \override #\'(font-name . "Linux Libertine Capitals") { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 1.5) \\box \hspace #1  } \\unHideNotes s1 \\bar ""\n')
-    g.write(DurationTwoRestsEqualTo[x] + ' \hideNotes a\'_\markup { \override #\'(font-name . "Linux Libertine Capitals") { = }}  \\unHideNotes \once \override Rest #\'color = #red \once \override Dots #\'color = #red ' + DurationTwoRestsEqualToKey[x] + ' \once \override Rest #\'color = #red \once \override Dots #\'color = #red ' + DurationTwoRestsEqualToKey[x] + ' s1 \\bar ""\n')
+    f.write(DurationTwoRestsEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 1.5) \\box \hspace #1  } \\unHideNotes s1 \\bar ""\n')
+    g.write(DurationTwoRestsEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  \\unHideNotes \once \override Rest #\'color = #red \once \override Dots #\'color = #red ' + DurationTwoRestsEqualToKey[x] + ' \once \override Rest #\'color = #red \once \override Dots #\'color = #red ' + DurationTwoRestsEqualToKey[x] + ' s1 \\bar ""\n')
   f.write('}\n')
   g.write('}\n')
 
 def WriteThreeNotesEqualTo(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write three of the same notes equal to: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write three of the same notes equal to: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write three of the same notes equal to: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write three of the same notes equal to: }} \\noPageBreak\n')
   f.write('{ \stopStaff \\noclef \\notimesig \\nobarlinenumbers \cadenzaOn \\autoBeamOff \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 2 \n')
   g.write('{ \stopStaff \\noclef \\notimesig \\nobarlinenumbers \cadenzaOn \\autoBeamOff \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 2 \n')
   temp = list(range(len(DurationThreeNotesEqualTo)))
@@ -702,14 +712,14 @@ def WriteThreeNotesEqualTo(f,g,howmanytimes):
       break
     x = random.choice(temp)
     temp.remove(x)
-    f.write(DurationThreeNotesEqualTo[x] + ' \hideNotes a\'_\markup { \override #\'(font-name . "Linux Libertine Capitals") { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 1.5) \\box \hspace #1  } \\unHideNotes s1 \\bar ""\n')
-    g.write(DurationThreeNotesEqualTo[x] + ' \hideNotes a\'_\markup { \override #\'(font-name . "Linux Libertine Capitals") { = }}  \\unHideNotes \once \override NoteHead #\'color = #red \once \override Stem #\'color = #red \once \override Dots #\'color = #red \once \override Flag #\'color = #red ' + DurationThreeNotesEqualToKey[x] + ' \once \override NoteHead #\'color = #red \once \override Stem #\'color = #red \once \override Dots #\'color = #red \once \override Flag #\'color = #red ' + DurationThreeNotesEqualToKey[x] + ' \once \override NoteHead #\'color = #red \once \override Stem #\'color = #red \once \override Dots #\'color = #red \once \override Flag #\'color = #red ' + DurationThreeNotesEqualToKey[x] + ' s1 \\bar ""\n')
+    f.write(DurationThreeNotesEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 1.5) \\box \hspace #1  } \\unHideNotes s1 \\bar ""\n')
+    g.write(DurationThreeNotesEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  \\unHideNotes \once \override NoteHead #\'color = #red \once \override Stem #\'color = #red \once \override Dots #\'color = #red \once \override Flag #\'color = #red ' + DurationThreeNotesEqualToKey[x] + ' \once \override NoteHead #\'color = #red \once \override Stem #\'color = #red \once \override Dots #\'color = #red \once \override Flag #\'color = #red ' + DurationThreeNotesEqualToKey[x] + ' \once \override NoteHead #\'color = #red \once \override Stem #\'color = #red \once \override Dots #\'color = #red \once \override Flag #\'color = #red ' + DurationThreeNotesEqualToKey[x] + ' s1 \\bar ""\n')
   f.write('}\n')
   g.write('}\n')
 
 def WriteThreeRestsEqualTo(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write three of the same rests equal to: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write three of the same rests equal to: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write three of the same rests equal to: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write three of the same rests equal to: }} \\noPageBreak\n')
   f.write('{ \stopStaff \\noclef \\notimesig \\nobarlinenumbers \cadenzaOn \\autoBeamOff \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 2 \n')
   g.write('{ \stopStaff \\noclef \\notimesig \\nobarlinenumbers \cadenzaOn \\autoBeamOff \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 2 \n')
   temp = list(range(len(DurationThreeRestsEqualTo)))
@@ -721,28 +731,28 @@ def WriteThreeRestsEqualTo(f,g,howmanytimes):
       break
     x = random.choice(temp)
     temp.remove(x)
-    f.write(DurationThreeRestsEqualTo[x] + ' \hideNotes a\'_\markup { \override #\'(font-name . "Linux Libertine Capitals") { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 1.5) \\box \hspace #1  } \\unHideNotes s1 \\bar ""\n')
-    g.write(DurationThreeRestsEqualTo[x] + ' \hideNotes a\'_\markup { \override #\'(font-name . "Linux Libertine Capitals") { = }}  \\unHideNotes \once \override Rest #\'color = #red \once \override Dots #\'color = #red ' + DurationThreeRestsEqualToKey[x] + ' \once \override Rest #\'color = #red \once \override Dots #\'color = #red ' + DurationThreeRestsEqualToKey[x] + ' \once \override Rest #\'color = #red \once \override Dots #\'color = #red ' + DurationThreeRestsEqualToKey[x] + ' s1 \\bar ""\n')
+    f.write(DurationThreeRestsEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 1.5) \\box \hspace #1  } \\unHideNotes s1 \\bar ""\n')
+    g.write(DurationThreeRestsEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  \\unHideNotes \once \override Rest #\'color = #red \once \override Dots #\'color = #red ' + DurationThreeRestsEqualToKey[x] + ' \once \override Rest #\'color = #red \once \override Dots #\'color = #red ' + DurationThreeRestsEqualToKey[x] + ' \once \override Rest #\'color = #red \once \override Dots #\'color = #red ' + DurationThreeRestsEqualToKey[x] + ' s1 \\bar ""\n')
   f.write('}\n')
   g.write('}\n')
 
 def CompareDurations(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Fill in the blanks: }} \\noPageBreak\n\markup{ }\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Fill in the blanks: }} \\noPageBreak\n\markup{ }\n')
+  f.write('\markup { ' + font + ' { Fill in the blanks: }} \\noPageBreak\n\markup{ }\n')
+  g.write('\markup { ' + font + ' { Fill in the blanks: }} \\noPageBreak\n\markup{ }\n')
   temp = list(range(len(DurationComparisons)))
   for i in range(howmanytimes):
     if not temp:
       break
     x = random.choice(temp)
     temp.remove(x)
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { ' + DurationComparisons[x] + ' }}\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { ' + DurationComparisonsKey[x] + ' }}\n')
+    f.write('\markup { ' + font + ' { ' + DurationComparisons[x] + ' }}\n')
+    g.write('\markup { ' + font + ' { ' + DurationComparisonsKey[x] + ' }}\n')
 
 ### CST DST WT
 ##################################################
 def IdentifyCstDstWt(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Label the following as CST (chromatic semitone), DST (diatonic semitone) or WT (wholetone): }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Label the following as CST (chromatic semitone), DST (diatonic semitone) or WT (wholetone): }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Label the following as CST (chromatic semitone), DST (diatonic semitone) or WT (wholetone): }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Label the following as CST (chromatic semitone), DST (diatonic semitone) or WT (wholetone): }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = ' ' if identclef == 'treble' else ',' if identclef == 'alto' else ',' if identclef == 'tenor' else ',,'
   f.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 ')
@@ -754,13 +764,13 @@ def IdentifyCstDstWt(f,g,howmanytimes):
     x = random.choice(temp)
     temp.remove(x)
     f.write( IdentifyCstDstWtNotes[x] + ' \\bar "|" ')
-    g.write( IdentifyCstDstWtNotes[x] + '^\markup { \\right-align \with-color #red \override #\'(font-name . "Linux Libertine Capitals") { ' + IdentifyCstDstWtNotesKey[x] + ' }} \\bar "|" ')
+    g.write( IdentifyCstDstWtNotes[x] + '^\markup { \\right-align \with-color #red ' + font + ' { ' + IdentifyCstDstWtNotesKey[x] + ' }} \\bar "|" ')
   f.write(' }\n')
   g.write(' }\n')
 
 def WriteCstAbove(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write a chromatic semitone above the following notes: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write a chromatic semitone above the following notes: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write a chromatic semitone above the following notes: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write a chromatic semitone above the following notes: }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = ' ' if identclef == 'treble' else ',' if identclef == 'alto' else ',' if identclef == 'tenor' else ',,'
   f.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 ')
@@ -777,8 +787,8 @@ def WriteCstAbove(f,g,howmanytimes):
   g.write(' }\n')
 
 def WriteDstAbove(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write a diatonic semitone above the following notes: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write a diatonic semitone above the following notes: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write a diatonic semitone above the following notes: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write a diatonic semitone above the following notes: }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = ' ' if identclef == 'treble' else ',' if identclef == 'alto' else ',' if identclef == 'tenor' else ',,'
   f.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 ')
@@ -795,8 +805,8 @@ def WriteDstAbove(f,g,howmanytimes):
   g.write(' }\n')
 
 def WriteWtAbove(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write a wholetone above the following notes: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write a wholetone above the following notes: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write a wholetone above the following notes: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write a wholetone above the following notes: }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = ' ' if identclef == 'treble' else ',' if identclef == 'alto' else ',' if identclef == 'tenor' else ',,'
   f.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 ')
@@ -813,8 +823,8 @@ def WriteWtAbove(f,g,howmanytimes):
   g.write(' }\n')
 
 def WriteCstBelow(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write a chromatic semitone below the following notes: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write a chromatic semitone below the following notes: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write a chromatic semitone below the following notes: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write a chromatic semitone below the following notes: }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = ' ' if identclef == 'treble' else ',' if identclef == 'alto' else ',' if identclef == 'tenor' else ',,'
   f.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 ')
@@ -831,8 +841,8 @@ def WriteCstBelow(f,g,howmanytimes):
   g.write(' }\n')
 
 def WriteDstBelow(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write a diatonic semitone below the following notes: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write a diatonic semitone below the following notes: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write a diatonic semitone below the following notes: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write a diatonic semitone below the following notes: }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = ' ' if identclef == 'treble' else ',' if identclef == 'alto' else ',' if identclef == 'tenor' else ',,'
   f.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 ')
@@ -849,8 +859,8 @@ def WriteDstBelow(f,g,howmanytimes):
   g.write(' }\n')
 
 def WriteWtBelow(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write a wholetone below the following notes: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write a wholetone below the following notes: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write a wholetone below the following notes: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write a wholetone below the following notes: }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = ' ' if identclef == 'treble' else ',' if identclef == 'alto' else ',' if identclef == 'tenor' else ',,'
   f.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 ')
@@ -867,24 +877,24 @@ def WriteWtBelow(f,g,howmanytimes):
   g.write(' }\n')
 
 def WriteEnharmonic(f,g):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write an enharmonic spelling for the following notes: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write an enharmonic spelling for the following notes: }} \\noPageBreak\n')
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { ')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { ')
+  f.write('\markup { ' + font + ' { Write an enharmonic spelling for the following notes: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write an enharmonic spelling for the following notes: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { ')
+  g.write('\markup { ' + font + ' { ')
   temp = list(range(len(EnharmonicNotes)))
   for i in range(8):
      x = random.choice(temp)
      temp.remove(x)
      f.write( EnharmonicNotes[x] + ' : ___ \hspace #3 ')
-     g.write( EnharmonicNotes[x] + ' : \with-color #red \override #\'(font-name . "Linux Libertine Capitals") { { ' + EnharmonicNotesKey[x] + ' }} \hspace #3 ')
+     g.write( EnharmonicNotes[x] + ' : \with-color #red ' + font + ' { { ' + EnharmonicNotesKey[x] + ' }} \hspace #3 ')
   f.write(' }}\n')
   g.write(' }}\n')
 
 ### Writing key signatures
 ##################################################
 def WriteKeySigs(f,g):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Draw the following key signatures: }}\\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Draw the following key signatures: }}\\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Draw the following key signatures: }}\\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Draw the following key signatures: }}\\noPageBreak\n')
   f.write('{ \clef treble \\notimesig \\nobarline \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
   g.write('{ \clef treble \\notimesig \\nobarline \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 \override TextScript #\'padding = #3 \\nokeycancel s1 ')
   temp = list(range(len(MajKeySigList)))
@@ -895,8 +905,8 @@ def WriteKeySigs(f,g):
     temp.remove(x)
     randomlist.append(x)
   for i in randomlist:
-    f.write(' s1^\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + MajKeySigList[i] + ' }} ')
-    g.write(' s1 \\noBreak \override Score.RehearsalMark #\'break-align-symbols = #\'(key-signature) \override Staff.KeySignature #\'color = #red \override Staff.KeyCancellation #\'break-visibility = #\'#(#f #f #f) \key ' + MajKeySigListKey[i] + ' \major \mark \markup { \override #\'(font-name . "Linux Libertine Capitals") { ' + MajKeySigList[i] + ' }} ')
+    f.write(' s1^\markup{ ' + font + ' { ' + MajKeySigList[i] + ' }} ')
+    g.write(' s1 \\noBreak \override Score.RehearsalMark #\'break-align-symbols = #\'(key-signature) \override Staff.KeySignature #\'color = #red \override Staff.KeyCancellation #\'break-visibility = #\'#(#f #f #f) \key ' + MajKeySigListKey[i] + ' \major \mark \markup { ' + font + ' { ' + MajKeySigList[i] + ' }} ')
   f.write(' }\\noPageBreak\n')
   g.write(' }\\noPageBreak\n')
   f.write('{ \clef alto \\notimesig \\nobarline s1 }\\noPageBreak\n')
@@ -918,8 +928,8 @@ def WriteKeySigs(f,g):
 ### Identify scale degrees
 ##################################################
 def IdentifyScaleDegrees(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") {Fill in the blanks: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") {Fill in the blanks: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' {Fill in the blanks: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' {Fill in the blanks: }} \\noPageBreak\n')
   f.write('\markup { }\n')
   g.write('\markup { }\n')
   degreelist = list(range(len(ScaleDegreeList)))
@@ -933,14 +943,14 @@ def IdentifyScaleDegrees(f,g,howmanytimes):
     key = random.choice(keylist)
     degreelist.remove(degree)
     keylist.remove(key)
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { The ' + ScaleDegreeList[degree] + ' of ' + key + ' Major is: ___ }}\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { The ' + ScaleDegreeList[degree] + ' of ' + key + ' Major is: \with-color #red { ' + ScaleDegreeDictKey[key][degree]  + ' } }} ')
+    f.write('\markup { ' + font + ' { The ' + ScaleDegreeList[degree] + ' of ' + key + ' Major is: ___ }}\n')
+    g.write('\markup { ' + font + ' { The ' + ScaleDegreeList[degree] + ' of ' + key + ' Major is: \with-color #red { ' + ScaleDegreeDictKey[key][degree]  + ' } }} ')
 
 ### Relative keys
 ##################################################
 def WriteRelativeMinorKeys(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the relative minor keys of the following major keys: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the relative minor keys of the following major keys: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Name the relative minor keys of the following major keys: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Name the relative minor keys of the following major keys: }} \\noPageBreak\n')
   f.write('\markup { }\n')
   g.write('\markup { }\n')
   temp = list(range(len(MajKeySigList)))
@@ -949,12 +959,12 @@ def WriteRelativeMinorKeys(f,g,howmanytimes):
       break
     x = random.choice(temp)
     temp.remove(x)
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { ' + MajKeySigList[x] + ' = ___ }}\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { ' + MajKeySigList[x] + ' = \with-color #red { ' + MinKeySigList[x] + ' } }}\n')
+    f.write('\markup { ' + font + ' { ' + MajKeySigList[x] + ' = ___ }}\n')
+    g.write('\markup { ' + font + ' { ' + MajKeySigList[x] + ' = \with-color #red { ' + MinKeySigList[x] + ' } }}\n')
 
 def WriteRelativeMajorKeys(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the relative major keys of the following minor keys: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the relative major keys of the following minor keys: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Name the relative major keys of the following minor keys: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Name the relative major keys of the following minor keys: }} \\noPageBreak\n')
   f.write('\markup { }\n')
   g.write('\markup { }\n')
   temp = list(range(len(MinKeySigList)))
@@ -963,8 +973,8 @@ def WriteRelativeMajorKeys(f,g,howmanytimes):
       break
     x = random.choice(temp)
     temp.remove(x)
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { ' + MinKeySigList[x] + ' = ___ }}\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { ' + MinKeySigList[x] + ' = \with-color #red { ' + MajKeySigList[x] + ' } }}\n')
+    f.write('\markup { ' + font + ' { ' + MinKeySigList[x] + ' = ___ }}\n')
+    g.write('\markup { ' + font + ' { ' + MinKeySigList[x] + ' = \with-color #red { ' + MajKeySigList[x] + ' } }}\n')
 
 ### Writing scales
 ##################################################
@@ -973,8 +983,8 @@ def WriteAMajorScale(f,g):
   x = random.choice(temp)
   identclef = random.choice(clefs)
   octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write ' + WrittenMajorStartingNotes[x] + ' Major Scale ')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write ' + WrittenMajorStartingNotes[x] + ' Major Scale ')
+  f.write('\markup { ' + font + ' { Write ' + WrittenMajorStartingNotes[x] + ' Major Scale ')
+  g.write('\markup { ' + font + ' { Write ' + WrittenMajorStartingNotes[x] + ' Major Scale ')
   if random.randrange(6) < 5:
     f.write('(with a key signature). }} \\noPageBreak ')
     g.write('(with a key signature). }} \\noPageBreak ')
@@ -994,8 +1004,8 @@ def WriteAMinorScale(f,g):
   ms = random.choice(mslist)
   identclef = random.choice(clefs)
   octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write ' + WrittenMinorStartingNotes[wmsn] + ' ' + MinorScales[ms] + ' Scale ')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write ' + WrittenMinorStartingNotes[wmsn] + ' ' + MinorScales[ms] + ' Scale ')
+  f.write('\markup { ' + font + ' { Write ' + WrittenMinorStartingNotes[wmsn] + ' ' + MinorScales[ms] + ' Scale ')
+  g.write('\markup { ' + font + ' { Write ' + WrittenMinorStartingNotes[wmsn] + ' ' + MinorScales[ms] + ' Scale ')
   if random.randrange(6) < 5:
     f.write('(with a key signature). }} \\noPageBreak ')
     g.write('(with a key signature). }} \\noPageBreak ')
@@ -1017,16 +1027,16 @@ def WriteAChrOctWTScale(f,g):
   identclef = random.choice(clefs)
   octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
   if scale == 0: # chromatic scales
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write ' + ChromaticWrittenStartingNotes[sn] + ' ' + ChrOctWTScales[scale] + ' Scale. }} \\noPageBreak \n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write ' + ChromaticWrittenStartingNotes[sn] + ' ' + ChrOctWTScales[scale] + ' Scale. }} \\noPageBreak \n')
+    f.write('\markup { ' + font + ' { Write ' + ChromaticWrittenStartingNotes[sn] + ' ' + ChrOctWTScales[scale] + ' Scale. }} \\noPageBreak \n')
+    g.write('\markup { ' + font + ' { Write ' + ChromaticWrittenStartingNotes[sn] + ' ' + ChrOctWTScales[scale] + ' Scale. }} \\noPageBreak \n')
     g.write('\\relative ' + octave + '{ \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \\time 4/4 \cadenzaOn \\accidentalStyle #\'Score "forget" \clef ' + identclef + ' \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red \override Score.BarLine #\'color = #red ' + ChromaticScalesKey[sn]  + ' }\n')
   elif scale == 1: # wholetone scales
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write ' + ChromaticWrittenStartingNotes[sn] + ' ' + ChrOctWTScales[scale] + ' Scale. }} \\noPageBreak \n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write ' + ChromaticWrittenStartingNotes[sn] + ' ' + ChrOctWTScales[scale] + ' Scale. }} \\noPageBreak \n')
+    f.write('\markup { ' + font + ' { Write ' + ChromaticWrittenStartingNotes[sn] + ' ' + ChrOctWTScales[scale] + ' Scale. }} \\noPageBreak \n')
+    g.write('\markup { ' + font + ' { Write ' + ChromaticWrittenStartingNotes[sn] + ' ' + ChrOctWTScales[scale] + ' Scale. }} \\noPageBreak \n')
     g.write('\\relative ' + octave + '{ \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \\time 4/4 \cadenzaOn \clef ' + identclef + ' \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IdentifyWholetoneScales[sn]  + ' }\n')
   else: # octatonic scales
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write ' + ChromaticWrittenStartingNotes[sn] + ' ' + ChrOctWTScales[scale] + ' Scale. (' + OctatonicChoice[stwt] + ') }} \\noPageBreak \n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write ' + ChromaticWrittenStartingNotes[sn] + ' ' + ChrOctWTScales[scale] + ' Scale. (' + OctatonicChoice[stwt] + ') }} \\noPageBreak \n')
+    f.write('\markup { ' + font + ' { Write ' + ChromaticWrittenStartingNotes[sn] + ' ' + ChrOctWTScales[scale] + ' Scale. (' + OctatonicChoice[stwt] + ') }} \\noPageBreak \n')
+    g.write('\markup { ' + font + ' { Write ' + ChromaticWrittenStartingNotes[sn] + ' ' + ChrOctWTScales[scale] + ' Scale. (' + OctatonicChoice[stwt] + ') }} \\noPageBreak \n')
     g.write('\\relative ' + octave + '{ \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \\time 4/4 \cadenzaOn \clef ' + identclef + ' \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IdentifyOctatonicScales[(sn*2)+stwt]  + ' }\n')
   f.write('{ \\nobarline \clef ' + identclef + ' \\notimesig s1 }\n')
 
@@ -1034,8 +1044,8 @@ def WriteAMajorPentScale(f,g):
   wmsn = random.choice(list(range(len(WrittenMajorStartingNotes))))
   identclef = random.choice(clefs)
   octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write ' + WrittenMajorStartingNotes[wmsn] + ' Major Pentatonic Scale. }} \\noPageBreak \n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write ' + WrittenMajorStartingNotes[wmsn] + ' Major Pentatonic Scale. }} \\noPageBreak \n')
+  f.write('\markup { ' + font + ' { Write ' + WrittenMajorStartingNotes[wmsn] + ' Major Pentatonic Scale. }} \\noPageBreak \n')
+  g.write('\markup { ' + font + ' { Write ' + WrittenMajorStartingNotes[wmsn] + ' Major Pentatonic Scale. }} \\noPageBreak \n')
   f.write('{ \\nobarline \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\relative ' + octave + '{ \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \\time 4/4 \cadenzaOn \clef ' + identclef + ' \override Staff.KeySignature #\'color = #red \key ' + MajKeySigListKey[wmsn] + ' \major \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IdentifyMajorPentScales[wmsn] + ' }\n')
 
@@ -1043,8 +1053,8 @@ def WriteAMinorPentScale(f,g):
   wmsn = random.choice(list(range(len(WrittenMinorStartingNotes))))
   identclef = random.choice(clefs)
   octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write ' + WrittenMinorStartingNotes[wmsn] + ' Minor Pentatonic Scale. }} \\noPageBreak \n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write ' + WrittenMinorStartingNotes[wmsn] + ' Minor Pentatonic Scale. }} \\noPageBreak \n')
+  f.write('\markup { ' + font + ' { Write ' + WrittenMinorStartingNotes[wmsn] + ' Minor Pentatonic Scale. }} \\noPageBreak \n')
+  g.write('\markup { ' + font + ' { Write ' + WrittenMinorStartingNotes[wmsn] + ' Minor Pentatonic Scale. }} \\noPageBreak \n')
   f.write('{ \\nobarline \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\relative ' + octave + '{ \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \\time 4/4 \cadenzaOn \clef ' + identclef + ' \override Staff.KeySignature #\'color = #red \key ' + MinKeySigListKey[wmsn] + ' \minor \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IdentifyMinorPentScales[wmsn*3] + ' }\n')
 
@@ -1052,8 +1062,8 @@ def WriteABluesScale(f,g):
   wmsn = random.choice(list(range(len(WrittenMinorStartingNotes))))
   identclef = random.choice(clefs)
   octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write ' + WrittenMinorStartingNotes[wmsn] + ' Blues Scale. }} \\noPageBreak \n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write ' + WrittenMinorStartingNotes[wmsn] + ' Blues Scale. }} \\noPageBreak \n')
+  f.write('\markup { ' + font + ' { Write ' + WrittenMinorStartingNotes[wmsn] + ' Blues Scale. }} \\noPageBreak \n')
+  g.write('\markup { ' + font + ' { Write ' + WrittenMinorStartingNotes[wmsn] + ' Blues Scale. }} \\noPageBreak \n')
   f.write('{ \\nobarline \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\relative ' + octave + '{ \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \\time 4/4 \cadenzaOn \clef ' + identclef + ' \override Staff.KeySignature #\'color = #red \key ' + MinKeySigListKey[wmsn] + ' \minor \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IdentifyBluesScales[wmsn*3] + ' }\n')
 
@@ -1061,8 +1071,8 @@ def WriteAModeScale(f,g):
   ms = random.choice(list(range(len(ModesScales))))
   identclef = random.choice(clefs)
   octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write ' + ModesScales[ms] + '. }} \\noPageBreak \n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write ' + ModesScales[ms] + '. }} \\noPageBreak \n')
+  f.write('\markup { ' + font + ' { Write ' + ModesScales[ms] + '. }} \\noPageBreak \n')
+  g.write('\markup { ' + font + ' { Write ' + ModesScales[ms] + '. }} \\noPageBreak \n')
   f.write('{ \\nobarline \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\relative ' + octave + '{ \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \\time 4/4 \cadenzaOn \clef ' + identclef + ' \override Staff.KeySignature #\'color = #red \key ' + FindModeKeySig(ms) + ' \major \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IdentifyModeScales[ms]  + ' }\n')
 
@@ -1136,8 +1146,8 @@ def IdentifyAMajorScale(f,g):
   x = random.choice(temp)
   identclef = random.choice(clefs)
   octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Identify the following scale:______________________ }} \\noPageBreak \n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Identify the following scale: \with-color #red { ' + WrittenMajorStartingNotes[x]  + ' Major Scale } }} \\noPageBreak \n')
+  f.write('\markup { ' + font + ' { Identify the following scale:______________________ }} \\noPageBreak \n')
+  g.write('\markup { ' + font + ' { Identify the following scale: \with-color #red { ' + WrittenMajorStartingNotes[x]  + ' Major Scale } }} \\noPageBreak \n')
   if random.randrange(6) < 5:
       f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindMajorKeySig(x) + ' \major \\notimesig ' + IdentifyMajorScales[x]  + ' }\n')
       g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindMajorKeySig(x) + ' \major \\notimesig ' + IdentifyMajorScales[x]  + ' }\n')
@@ -1152,8 +1162,8 @@ def IdentifyAMinorScale(f,g):
   ms = random.choice(mslist)
   identclef = random.choice(clefs)
   octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Identify the following scale:______________________ }} \\noPageBreak \n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Identify the following scale: \with-color #red { ' + WrittenMinorStartingNotes[wmsn] + ' ' + MinorScales[ms] + ' Scale } }} \\noPageBreak \n')
+  f.write('\markup { ' + font + ' { Identify the following scale:______________________ }} \\noPageBreak \n')
+  g.write('\markup { ' + font + ' { Identify the following scale: \with-color #red { ' + WrittenMinorStartingNotes[wmsn] + ' ' + MinorScales[ms] + ' Scale } }} \\noPageBreak \n')
   if random.randrange(6) < 5:
     f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindMinorKeySig((wmsn*3)+ms) + ' \minor \\notimesig ' + IdentifyMinorScales[(wmsn*3)+ms]  + ' }\n')
     g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindMinorKeySig((wmsn*3)+ms) + ' \minor \\notimesig ' + IdentifyMinorScales[(wmsn*3)+ms]  + ' }\n')
@@ -1166,8 +1176,8 @@ def IdentifyAChromaticScale(f,g):
   x = random.choice(temp)
   identclef = random.choice(clefs)
   octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Identify the following scale:______________________. }} \\noPageBreak \n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Identify the following scale: \with-color #red { ' + ChromaticWrittenStartingNotes[x] + ' Chromatic } }} \\noPageBreak \n')
+  f.write('\markup { ' + font + ' { Identify the following scale:______________________. }} \\noPageBreak \n')
+  g.write('\markup { ' + font + ' { Identify the following scale: \with-color #red { ' + ChromaticWrittenStartingNotes[x] + ' Chromatic } }} \\noPageBreak \n')
   f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyChromaticScales[x] + ' }\n')
   g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyChromaticScales[x] + ' }\n')
 
@@ -1176,8 +1186,8 @@ def IdentifyAWholetoneScale(f,g):
   x = random.choice(temp)
   identclef = random.choice(clefs)
   octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Identify the following scale:______________________. }} \\noPageBreak \n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Identify the following scale: \with-color #red { ' + ChromaticWrittenStartingNotes[x] + ' Wholetone } }} \\noPageBreak \n')
+  f.write('\markup { ' + font + ' { Identify the following scale:______________________. }} \\noPageBreak \n')
+  g.write('\markup { ' + font + ' { Identify the following scale: \with-color #red { ' + ChromaticWrittenStartingNotes[x] + ' Wholetone } }} \\noPageBreak \n')
   f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyWholetoneScales[x] + ' }\n')
   g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyWholetoneScales[x] + ' }\n')
 
@@ -1186,8 +1196,8 @@ def IdentifyAOctatonicScale(f,g):
   x = random.choice(temp)
   identclef = random.choice(clefs)
   octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Identify the following scale:______________________. }} \\noPageBreak \n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Identify the following scale: \with-color #red { ' + IdentifyOctatonicScalesKey[x] + ' } }} \\noPageBreak \n')
+  f.write('\markup { ' + font + ' { Identify the following scale:______________________. }} \\noPageBreak \n')
+  g.write('\markup { ' + font + ' { Identify the following scale: \with-color #red { ' + IdentifyOctatonicScalesKey[x] + ' } }} \\noPageBreak \n')
   f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyOctatonicScales[x] + ' }\n')
   g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyOctatonicScales[x] + ' }\n')
 
@@ -1196,8 +1206,8 @@ def IdentifyAMajorPentScale(f,g):
   x = random.choice(temp)
   identclef = random.choice(clefs)
   octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Identify the following scale:______________________. }} \\noPageBreak \n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Identify the following scale:  \with-color #red { ' + MajorPentScaleWrittenStartingNotes[x] + ' Major Pentatonic } }} \\noPageBreak \n')
+  f.write('\markup { ' + font + ' { Identify the following scale:______________________. }} \\noPageBreak \n')
+  g.write('\markup { ' + font + ' { Identify the following scale:  \with-color #red { ' + MajorPentScaleWrittenStartingNotes[x] + ' Major Pentatonic } }} \\noPageBreak \n')
   if random.randrange(6) < 5:
       f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindMajorKeySig(x) + ' \major \\notimesig ' + IdentifyMajorPentScales[x]  + ' }\n')
       g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindMajorKeySig(x) + ' \major \\notimesig ' + IdentifyMajorPentScales[x]  + ' }\n')
@@ -1210,8 +1220,8 @@ def IdentifyAMinorPentScale(f,g):
   x = random.choice(temp)
   identclef = random.choice(clefs)
   octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Identify the following scale:______________________. }} \\noPageBreak \n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Identify the following scale:  \with-color #red { ' + MinorPentScaleWrittenStartingNotes[x] + ' Minor Pentatonic } }} \\noPageBreak \n')
+  f.write('\markup { ' + font + ' { Identify the following scale:______________________. }} \\noPageBreak \n')
+  g.write('\markup { ' + font + ' { Identify the following scale:  \with-color #red { ' + MinorPentScaleWrittenStartingNotes[x] + ' Minor Pentatonic } }} \\noPageBreak \n')
   if random.randrange(6) < 5:
     f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindMinorKeySig(x*3) + ' \minor \\notimesig ' + IdentifyMinorPentScales[x*3]  + ' }\n')
     g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindMinorKeySig(x*3) + ' \minor \\notimesig ' + IdentifyMinorPentScales[x*3]  + ' }\n')
@@ -1224,8 +1234,8 @@ def IdentifyABluesScale(f,g):
   x = random.choice(temp)
   identclef = random.choice(clefs)
   octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Identify the following scale:______________________. }} \\noPageBreak \n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Identify the following scale: \with-color #red { ' + BluesScaleWrittenStartingNotes[x] + ' Blues } }} \\noPageBreak \n')
+  f.write('\markup { ' + font + ' { Identify the following scale:______________________. }} \\noPageBreak \n')
+  g.write('\markup { ' + font + ' { Identify the following scale: \with-color #red { ' + BluesScaleWrittenStartingNotes[x] + ' Blues } }} \\noPageBreak \n')
   if random.randrange(6) < 5:
     f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindMinorKeySig(x*3) + ' \minor \\notimesig ' + IdentifyBluesScales[x*3]  + ' }\n')
     g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindMinorKeySig(x*3) + ' \minor \\notimesig ' + IdentifyBluesScales[x*3]  + ' }\n')
@@ -1270,8 +1280,8 @@ def IdentifyAModeScale(f,g):
   x = random.choice(temp)
   identclef = random.choice(clefs)
   octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Identify the following scale:______________________. }} \\noPageBreak \n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Identify the following scale: \with-color #red { ' + ModesScales[x] + ' } }} \\noPageBreak \n')
+  f.write('\markup { ' + font + ' { Identify the following scale:______________________. }} \\noPageBreak \n')
+  g.write('\markup { ' + font + ' { Identify the following scale: \with-color #red { ' + ModesScales[x] + ' } }} \\noPageBreak \n')
   if random.randrange(6) < 5:
       f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindModeKeySig(x) + ' \major \\notimesig ' + IdentifyModeScales[x]  + ' }\n')
       g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindModeKeySig(x) + ' \major \\notimesig ' + IdentifyModeScales[x]  + ' }\n')
@@ -1300,30 +1310,30 @@ def IdentifyEasySimpleIntervals(f,g,howmanytimes):
     intlist.append(x)
   identclef = random.choice(clefs)
   octave = ' ' if identclef == 'treble' else ',' if identclef == 'alto' else ',' if identclef == 'tenor' else ',,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following intervals, invert them and name the inversions: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following intervals, invert them and name the inversions: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Name the following intervals, invert them and name the inversions: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Name the following intervals, invert them and name the inversions: }} \\noPageBreak\n')
   f.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
   for i in range(howmanytimes):
     if IntervalsNameList[intlist[i]] == 'AP':
       f.write('\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { c\'1 \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
-      g.write('\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { c\'1_\markup{ \with-color #red \override #\'(font-name . "Linux Libertine Capitals") { { ' + IntervalsNameList[intlist[i]] + ' } }} \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
+      g.write('\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { c\'1_\markup{ \with-color #red ' + font + ' { { ' + IntervalsNameList[intlist[i]] + ' } }} \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
     else:
       f.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <c\' ' + IntervalsTopNotesList[intlist[i]] + '>1 } ')
-      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <c\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsNameList[intlist[i]] + ' } } }} ')
+      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <c\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsNameList[intlist[i]] + ' } } }} ')
   f.write(' } \n' )
   g.write(' } \n' )
   f.write('{  \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
   for i in range(howmanytimes):
     if IntervalsNameList[intlist[i]] == 'AP':
-      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' } } }} ')
+      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' } } }} ')
     elif IntervalsNameList[intlist[i]] == 'A8':
-      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ', { <c\'\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' } } }} ')
+      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ', { <c\'\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' } } }} ')
     elif IntervalsNameList[intlist[i]] == 'd8':
-      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { c\'\'1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
+      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { c\'\'1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
     else:
-      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' } } }} ')
+      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' } } }} ')
   g.write(' } \n' )
 
 def WriteEasySimpleIntervalsAbove(f,g,howmanytimes):
@@ -1347,30 +1357,30 @@ def WriteEasySimpleIntervalsAbove(f,g,howmanytimes):
     intlist.append(x)
   identclef = random.choice(clefs)
   octave = ' ' if identclef == 'treble' else ',' if identclef == 'alto' else ',' if identclef == 'tenor' else ',,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write the following intervals above the given notes, invert them and name the inversions: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write the following intervals above the given notes, invert them and name the inversions: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write the following intervals above the given notes, invert them and name the inversions: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write the following intervals above the given notes, invert them and name the inversions: }} \\noPageBreak\n')
   f.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
   for i in range(howmanytimes):
     if IntervalsNameList[intlist[i]] == 'AP':
-      f.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { c\'1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} } ')
-      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { \override TextScript #\'padding = #3 c\'1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} \\bar \"\" \\noBreak \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IntervalsTopNotesList[intlist[i]] + '! } ')
+      f.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { c\'1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} } ')
+      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { \override TextScript #\'padding = #3 c\'1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} \\bar \"\" \\noBreak \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IntervalsTopNotesList[intlist[i]] + '! } ')
     else:
-      f.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { c\'1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' } }} ')
-      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <<{ \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IntervalsTopNotesList[intlist[i]] + '1 } \\\\{ \override TextScript #\'padding = #3 c\'_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} }>> } ')
+      f.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { c\'1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' } }} ')
+      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <<{ \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IntervalsTopNotesList[intlist[i]] + '1 } \\\\{ \override TextScript #\'padding = #3 c\'_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} }>> } ')
   f.write(' } \n' )
   g.write(' } \n' )
   f.write('{  \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
   for i in range(howmanytimes):
     if IntervalsNameList[intlist[i]] == 'AP':
-      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
     elif IntervalsNameList[intlist[i]] == 'A8':
-      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ', { <c\'\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ', { <c\'\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
     elif IntervalsNameList[intlist[i]] == 'd8':
-      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { c\'\'1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
+      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { c\'\'1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
     else:
-      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
   g.write(' } \n' )
 
 def WriteEasySimpleIntervalsBelow(f,g,howmanytimes):
@@ -1394,30 +1404,30 @@ def WriteEasySimpleIntervalsBelow(f,g,howmanytimes):
     intlist.append(x)
   identclef = random.choice(clefs)
   octave = ' ' if identclef == 'treble' else ',' if identclef == 'alto' else ',' if identclef == 'tenor' else ',,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write the following intervals below the given notes, invert them and name the inversions: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write the following intervals below the given notes, invert them and name the inversions: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write the following intervals below the given notes, invert them and name the inversions: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write the following intervals below the given notes, invert them and name the inversions: }} \\noPageBreak\n')
   f.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
   for i in range(howmanytimes):
     if IntervalsNameList[intlist[i]] == 'AP':
-      f.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { ' + IntervalsTopNotesList[intlist[i]] + '1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} } ')
-      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { ' + IntervalsTopNotesList[intlist[i]] + '1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} \\bar \"\" \\noBreak \override NoteHead #\'color = #red \override Accidental #\'color = #red \override TextScript #\'padding = #3 c\'!1 } ')
+      f.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { ' + IntervalsTopNotesList[intlist[i]] + '1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} } ')
+      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { ' + IntervalsTopNotesList[intlist[i]] + '1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} \\bar \"\" \\noBreak \override NoteHead #\'color = #red \override Accidental #\'color = #red \override TextScript #\'padding = #3 c\'!1 } ')
     else:
-      f.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { ' + IntervalsTopNotesList[intlist[i]] + '1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} } ')
-      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <<{ ' + IntervalsTopNotesList[intlist[i]] + '1 } \\\\{ \override NoteHead #\'color = #red \override Accidental #\'color = #red \override TextScript #\'padding = #3 c\'_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} }>> } ')
+      f.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { ' + IntervalsTopNotesList[intlist[i]] + '1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} } ')
+      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <<{ ' + IntervalsTopNotesList[intlist[i]] + '1 } \\\\{ \override NoteHead #\'color = #red \override Accidental #\'color = #red \override TextScript #\'padding = #3 c\'_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} }>> } ')
   f.write(' } \n' )
   g.write(' } \n' )
   f.write('{  \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
   for i in range(howmanytimes):
     if IntervalsNameList[intlist[i]] == 'AP':
-      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
     elif IntervalsNameList[intlist[i]] == 'A8':
-      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ', { <c\'\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ', { <c\'\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
     elif IntervalsNameList[intlist[i]] == 'd8':
-      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { c\'\'1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
+      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { c\'\'1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
     else:
-      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
   g.write(' } \n' )
 
 def IdentifyHardSimpleIntervals(f,g,howmanytimes):
@@ -1443,30 +1453,30 @@ def IdentifyHardSimpleIntervals(f,g,howmanytimes):
     intlist.append(x)
   identclef = random.choice(clefs)
   octave = ' ' if identclef == 'treble' else ',' if identclef == 'alto' else ',' if identclef == 'tenor' else ',,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following intervals, invert them and name the inversions: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following intervals, invert them and name the inversions: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Name the following intervals, invert them and name the inversions: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Name the following intervals, invert them and name the inversions: }} \\noPageBreak\n')
   f.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
   for i in range(howmanytimes):
     if IntervalsNameList[intlist[i]] == 'AP':
       f.write('\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { c\'1 \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
-      g.write('\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { c\'1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
+      g.write('\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { c\'1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
     else:
       f.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <c\' ' + IntervalsTopNotesList[intlist[i]] + '>1 } ')
-      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <c\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <c\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsNameList[intlist[i]] + ' }} } } ')
   f.write(' } \n' )
   g.write(' } \n' )
   f.write('{  \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
   for i in range(howmanytimes):
     if IntervalsNameList[intlist[i]] == 'AP':
-      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
     elif IntervalsNameList[intlist[i]] == 'A8':
-      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ', { <c\'\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ', { <c\'\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
     elif IntervalsNameList[intlist[i]] == 'd8':
-      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { c\'\'1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
+      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { c\'\'1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
     else:
-      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
   g.write(' } \n' )
 
 def WriteHardSimpleIntervalsAbove(f,g,howmanytimes):
@@ -1494,30 +1504,30 @@ def WriteHardSimpleIntervalsAbove(f,g,howmanytimes):
     intlist.append(x)
   identclef = random.choice(clefs)
   octave = ' ' if identclef == 'treble' else ',' if identclef == 'alto' else ',' if identclef == 'tenor' else ',,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write the following intervals above the given notes, invert them and name the inversions: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write the following intervals above the given notes, invert them and name the inversions: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write the following intervals above the given notes, invert them and name the inversions: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write the following intervals above the given notes, invert them and name the inversions: }} \\noPageBreak\n')
   f.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
   for i in range(howmanytimes):
     if IntervalsNameList[intlist[i]] == 'AP':
-      f.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { c\'1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} } ')
-      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { \override TextScript #\'padding = #3 c\'1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} \\bar \"\" \\noBreak \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IntervalsTopNotesList[intlist[i]] + '! } ')
+      f.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { c\'1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} } ')
+      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { \override TextScript #\'padding = #3 c\'1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} \\bar \"\" \\noBreak \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IntervalsTopNotesList[intlist[i]] + '! } ')
     else:
-      f.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { c\'1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} } ')
-      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <<{ \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IntervalsTopNotesList[intlist[i]] + '1 } \\\\{ \override TextScript #\'padding = #3 c\'_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} }>> } ')
+      f.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { c\'1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} } ')
+      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <<{ \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IntervalsTopNotesList[intlist[i]] + '1 } \\\\{ \override TextScript #\'padding = #3 c\'_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} }>> } ')
   f.write(' } \n' )
   g.write(' } \n' )
   f.write('{  \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
   for i in range(howmanytimes):
     if IntervalsNameList[intlist[i]] == 'AP':
-      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
     elif IntervalsNameList[intlist[i]] == 'A8':
-      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ', { <c\'\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ', { <c\'\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
     elif IntervalsNameList[intlist[i]] == 'd8':
-      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { c\'\'1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
+      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { c\'\'1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
     else:
-      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
   g.write(' } \n' )
 
 def WriteHardSimpleIntervalsBelow(f,g,howmanytimes):
@@ -1545,30 +1555,30 @@ def WriteHardSimpleIntervalsBelow(f,g,howmanytimes):
     intlist.append(x)
   identclef = random.choice(clefs)
   octave = ' ' if identclef == 'treble' else ',' if identclef == 'alto' else ',' if identclef == 'tenor' else ',,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write the following intervals below the given notes, invert them and name the inversions: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write the following intervals below the given notes, invert them and name the inversions: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write the following intervals below the given notes, invert them and name the inversions: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write the following intervals below the given notes, invert them and name the inversions: }} \\noPageBreak\n')
   f.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
   for i in range(howmanytimes):
     if IntervalsNameList[intlist[i]] == 'AP':
-      f.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { ' + IntervalsTopNotesList[intlist[i]] + '1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} } ')
-      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { ' + IntervalsTopNotesList[intlist[i]] + '1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} \\bar \"\" \\noBreak \override NoteHead #\'color = #red \override Accidental #\'color = #red \override TextScript #\'padding = #3 c\'!1 } ')
+      f.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { ' + IntervalsTopNotesList[intlist[i]] + '1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} } ')
+      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { ' + IntervalsTopNotesList[intlist[i]] + '1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} \\bar \"\" \\noBreak \override NoteHead #\'color = #red \override Accidental #\'color = #red \override TextScript #\'padding = #3 c\'!1 } ')
     else:
-      f.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { ' + IntervalsTopNotesList[intlist[i]] + '1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} } ')
-      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <<{ ' + IntervalsTopNotesList[intlist[i]] + '1 } \\\\{ \override NoteHead #\'color = #red \override Accidental #\'color = #red \override TextScript #\'padding = #3 c\'_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} }>> } ')
+      f.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { ' + IntervalsTopNotesList[intlist[i]] + '1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} } ')
+      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <<{ ' + IntervalsTopNotesList[intlist[i]] + '1 } \\\\{ \override NoteHead #\'color = #red \override Accidental #\'color = #red \override TextScript #\'padding = #3 c\'_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} }>> } ')
   f.write(' } \n' )
   g.write(' } \n' )
   f.write('{  \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
   for i in range(howmanytimes):
     if IntervalsNameList[intlist[i]] == 'AP':
-      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
     elif IntervalsNameList[intlist[i]] == 'A8':
-      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ', { <c\'\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ', { <c\'\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
     elif IntervalsNameList[intlist[i]] == 'd8':
-      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { c\'\'1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
+      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { c\'\'1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
     else:
-      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
   g.write(' } \n' )
 
 def IdentifyAllSimpleIntervals(f,g,howmanytimes):
@@ -1595,30 +1605,30 @@ def IdentifyAllSimpleIntervals(f,g,howmanytimes):
     intlist.append(x)
   identclef = random.choice(clefs)
   octave = ' ' if identclef == 'treble' else ',' if identclef == 'alto' else ',' if identclef == 'tenor' else ',,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following intervals, invert them and name the inversions: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following intervals, invert them and name the inversions: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Name the following intervals, invert them and name the inversions: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Name the following intervals, invert them and name the inversions: }} \\noPageBreak\n')
   f.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
   for i in range(howmanytimes):
     if IntervalsNameList[intlist[i]] == 'AP':
       f.write('\\transpose ' + temp[keyslist[i]] + ' { c\'1 \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
-      g.write('\\transpose ' + temp[keyslist[i]] + ' { c\'1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
+      g.write('\\transpose ' + temp[keyslist[i]] + ' { c\'1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
     else:
       f.write( '\\transpose ' + temp[keyslist[i]] + ' { <c\' ' + IntervalsTopNotesList[intlist[i]] + '>1 } ')
-      g.write( '\\transpose ' + temp[keyslist[i]] + ' { <c\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + temp[keyslist[i]] + ' { <c\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsNameList[intlist[i]] + ' }} } } ')
   f.write(' } \n' )
   g.write(' } \n' )
   f.write('{  \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
   for i in range(howmanytimes):
     if IntervalsNameList[intlist[i]] == 'AP':
-      g.write( '\\transpose ' + temp[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + temp[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
     elif IntervalsNameList[intlist[i]] == 'A8':
-      g.write( '\\transpose ' + temp[keyslist[i]] + ', { <c\'\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + temp[keyslist[i]] + ', { <c\'\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
     elif IntervalsNameList[intlist[i]] == 'd8':
-      g.write( '\\transpose ' + temp[keyslist[i]] + ' { c\'\'1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
+      g.write( '\\transpose ' + temp[keyslist[i]] + ' { c\'\'1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
     else:
-      g.write( '\\transpose ' + temp[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + temp[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
   g.write(' } \n' )
 
 def WriteAllSimpleIntervalsAbove(f,g,howmanytimes):
@@ -1647,30 +1657,30 @@ def WriteAllSimpleIntervalsAbove(f,g,howmanytimes):
     intlist.append(x)
   identclef = random.choice(clefs)
   octave = ' ' if identclef == 'treble' else ',' if identclef == 'alto' else ',' if identclef == 'tenor' else ',,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write the following intervals above the given notes, invert them and name the inversions: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write the following intervals above the given notes, invert them and name the inversions: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write the following intervals above the given notes, invert them and name the inversions: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write the following intervals above the given notes, invert them and name the inversions: }} \\noPageBreak\n')
   f.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
   for i in range(howmanytimes):
     if IntervalsNameList[intlist[i]] == 'AP':
-      f.write( '\\transpose ' + temp[keyslist[i]] + ' { c\'1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} } ')
-      g.write( '\\transpose ' + temp[keyslist[i]] + ' { \override TextScript #\'padding = #3 c\'1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} \\bar \"\" \\noBreak \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IntervalsTopNotesList[intlist[i]] + '! } ')
+      f.write( '\\transpose ' + temp[keyslist[i]] + ' { c\'1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} } ')
+      g.write( '\\transpose ' + temp[keyslist[i]] + ' { \override TextScript #\'padding = #3 c\'1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} \\bar \"\" \\noBreak \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IntervalsTopNotesList[intlist[i]] + '! } ')
     else:
-      f.write( '\\transpose ' + temp[keyslist[i]] + ' { c\'1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} } ')
-      g.write( '\\transpose ' + temp[keyslist[i]] + ' { <<{ \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IntervalsTopNotesList[intlist[i]] + '1 } \\\\{ \override TextScript #\'padding = #3 c\'_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} }>> } ')
+      f.write( '\\transpose ' + temp[keyslist[i]] + ' { c\'1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} } ')
+      g.write( '\\transpose ' + temp[keyslist[i]] + ' { <<{ \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IntervalsTopNotesList[intlist[i]] + '1 } \\\\{ \override TextScript #\'padding = #3 c\'_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} }>> } ')
   f.write(' } \n' )
   g.write(' } \n' )
   f.write('{  \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
   for i in range(howmanytimes):
     if IntervalsNameList[intlist[i]] == 'AP':
-      g.write( '\\transpose ' + temp[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + temp[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
     elif IntervalsNameList[intlist[i]] == 'A8':
-      g.write( '\\transpose ' + temp[keyslist[i]] + ', { <c\'\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + temp[keyslist[i]] + ', { <c\'\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
     elif IntervalsNameList[intlist[i]] == 'd8':
-      g.write( '\\transpose ' + temp[keyslist[i]] + ' { c\'\'1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
+      g.write( '\\transpose ' + temp[keyslist[i]] + ' { c\'\'1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
     else:
-      g.write( '\\transpose ' + temp[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + temp[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
   g.write(' } \n' )
 
 def WriteAllSimpleIntervalsBelow(f,g,howmanytimes):
@@ -1699,48 +1709,48 @@ def WriteAllSimpleIntervalsBelow(f,g,howmanytimes):
     intlist.append(x)
   identclef = random.choice(clefs)
   octave = ' ' if identclef == 'treble' else ',' if identclef == 'alto' else ',' if identclef == 'tenor' else ',,'
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write the following intervals below the given notes, invert them and name the inversions: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write the following intervals below the given notes, invert them and name the inversions: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write the following intervals below the given notes, invert them and name the inversions: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write the following intervals below the given notes, invert them and name the inversions: }} \\noPageBreak\n')
   f.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
   for i in range(howmanytimes):
     if IntervalsNameList[intlist[i]] == 'AP':
-      f.write( '\\transpose ' + temp[keyslist[i]] + ' { ' + IntervalsTopNotesList[intlist[i]] + '1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} } ')
-      g.write( '\\transpose ' + temp[keyslist[i]] + ' { ' + IntervalsTopNotesList[intlist[i]] + '1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} \\bar \"\" \\noBreak \override NoteHead #\'color = #red \override Accidental #\'color = #red \override TextScript #\'padding = #3 c\'!1 } ')
+      f.write( '\\transpose ' + temp[keyslist[i]] + ' { ' + IntervalsTopNotesList[intlist[i]] + '1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} } ')
+      g.write( '\\transpose ' + temp[keyslist[i]] + ' { ' + IntervalsTopNotesList[intlist[i]] + '1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} \\bar \"\" \\noBreak \override NoteHead #\'color = #red \override Accidental #\'color = #red \override TextScript #\'padding = #3 c\'!1 } ')
     else:
-      f.write( '\\transpose ' + temp[keyslist[i]] + ' { ' + IntervalsTopNotesList[intlist[i]] + '1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} } ')
-      g.write( '\\transpose ' + temp[keyslist[i]] + ' { <<{ ' + IntervalsTopNotesList[intlist[i]] + '1 } \\\\{ \override NoteHead #\'color = #red \override Accidental #\'color = #red \override TextScript #\'padding = #3 c\'_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsNameList[intlist[i]] + ' }} }>> } ')
+      f.write( '\\transpose ' + temp[keyslist[i]] + ' { ' + IntervalsTopNotesList[intlist[i]] + '1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} } ')
+      g.write( '\\transpose ' + temp[keyslist[i]] + ' { <<{ ' + IntervalsTopNotesList[intlist[i]] + '1 } \\\\{ \override NoteHead #\'color = #red \override Accidental #\'color = #red \override TextScript #\'padding = #3 c\'_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} }>> } ')
   f.write(' } \n' )
   g.write(' } \n' )
   f.write('{  \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
   for i in range(howmanytimes):
     if IntervalsNameList[intlist[i]] == 'AP':
-      g.write( '\\transpose ' + temp[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + temp[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
     elif IntervalsNameList[intlist[i]] == 'A8':
-      g.write( '\\transpose ' + temp[keyslist[i]] + ', { <c\'\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + temp[keyslist[i]] + ', { <c\'\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
     elif IntervalsNameList[intlist[i]] == 'd8':
-      g.write( '\\transpose ' + temp[keyslist[i]] + ' { c\'\'1_\markup{ \with-color #red { \override #\'(font-name . "Linux Libertine Capitals") { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
+      g.write( '\\transpose ' + temp[keyslist[i]] + ' { c\'\'1_\markup{ \with-color #red { ' + font + ' { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } \\bar \"\" \\noBreak ' + IntervalsTopNotesList[intlist[i]] + '! } ')
     else:
-      g.write( '\\transpose ' + temp[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+      g.write( '\\transpose ' + temp[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
   g.write(' } \n' )
 
 def IdentifyIntervalsInScales(f,g,howmanytimes):
   interval = random.choice(list(range(len(IntervalsInScalesList))))
   question = random.choice(IntervalsInScalesQuestions)
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name all ' + question + ' scales in which the following interval naturally occurs }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name all ' + question + ' scales in which the following interval naturally occurs }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Name all ' + question + ' scales in which the following interval naturally occurs }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Name all ' + question + ' scales in which the following interval naturally occurs }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = ' ' if identclef == 'treble' else ',' if identclef == 'alto' else ',' if identclef == 'tenor' else ',,'
   f.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 ' + IntervalsInScalesList[interval] + ' } \n')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 ' + IntervalsInScalesList[interval] + ' } \n')
-  g.write('\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + question + ': ' + IntervalsInScalesKeyDict[question][interval] + ' }} } ')
+  g.write('\markup{ ' + font + ' { \with-color #red { ' + question + ': ' + IntervalsInScalesKeyDict[question][interval] + ' }} } ')
 
 ### Chords
 ##################################################
 def IdentifyAllChords(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following chords (root, quality & if V7 give possible keys):  }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following chords (root, quality & if V7 give possible keys):  }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Name the following chords (root, quality & if V7 give possible keys):  }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Name the following chords (root, quality & if V7 give possible keys):  }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
   f.write('{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 ')
@@ -1757,13 +1767,13 @@ def IdentifyAllChords(f,g,howmanytimes):
     x.remove(z)
   for i in y:
     f.write('\\relative ' + octave + ' { ' + temp[i] + ' } ')
-    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \center-align \with-color #red { ' + key[i] + ' }} } } ')
+    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \center-align \with-color #red { ' + key[i] + ' }} } } ')
   f.write(' }')
   g.write(' }')
 
 def WriteAllChords(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write out the following chords: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write out the following chords: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write out the following chords: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write out the following chords: }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
   f.write('{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 ')
@@ -1779,14 +1789,14 @@ def WriteAllChords(f,g,howmanytimes):
     y.append(z)
     x.remove(z)
   for i in y:
-    f.write('\\relative ' + octave + ' { s1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") {  \center-align { ' + key[i] + ' } } } } ')
-    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \center-align { ' + key[i] + ' }} } } ')
+    f.write('\\relative ' + octave + ' { s1_\markup{ ' + font + ' {  \center-align { ' + key[i] + ' } } } } ')
+    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \center-align { ' + key[i] + ' }} } } ')
   f.write(' }')
   g.write(' }')
 
 def IdentifyInvAllChords(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following chords (root, quality, inversion & if V7 give possible keys):  }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following chords (root, quality, inversion & if V7 give possible keys):  }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Name the following chords (root, quality, inversion & if V7 give possible keys):  }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Name the following chords (root, quality, inversion & if V7 give possible keys):  }} \\noPageBreak\n')
   identclef = 'treble'
   #random.choice(clefs)
   octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
@@ -1804,7 +1814,7 @@ def IdentifyInvAllChords(f,g,howmanytimes):
     x.remove(z)
   for i in y:
     f.write('\\relative ' + octave + ' { ' + temp[i] + ' } ')
-    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \center-align \with-color #red { ' + key[i] + ' }} } } ')
+    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \center-align \with-color #red { ' + key[i] + ' }} } } ')
   f.write(' }')
   g.write(' }')
 
@@ -1826,14 +1836,14 @@ def WriteInvAllChords(f,g,howmanytimes):
     y.append(z)
     x.remove(z)
   for i in y:
-    f.write('\\relative ' + octave + ' { s1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \center-align { ' + key[i] + ' }} } } ')
-    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \center-align { ' + key[i] + ' }} } } ')
+    f.write('\\relative ' + octave + ' { s1_\markup{ ' + font + ' { \center-align { ' + key[i] + ' }} } } ')
+    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \center-align { ' + key[i] + ' }} } } ')
   f.write(' }')
   g.write(' }')
 
 def IdentifyRootMajMinChords(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following Major/Minor triads (root & quality): }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following Major/Minor triads (root & quality): }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Name the following Major/Minor triads (root & quality): }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Name the following Major/Minor triads (root & quality): }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
   f.write('{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 ')
@@ -1850,13 +1860,13 @@ def IdentifyRootMajMinChords(f,g,howmanytimes):
     x.remove(z)
   for i in y:
     f.write('\\relative ' + octave + ' { ' + temp[i] + ' } ')
-    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \center-align \with-color #red { ' + key[i] + ' }} } } ')
+    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \center-align \with-color #red { ' + key[i] + ' }} } } ')
   f.write(' }')
   g.write(' }')
 
 def WriteRootMajMinChords(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write out the following triads: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write out the following triads: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write out the following triads: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write out the following triads: }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
   f.write('{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \hideNotes ')
@@ -1872,14 +1882,14 @@ def WriteRootMajMinChords(f,g,howmanytimes):
     y.append(z)
     x.remove(z)
   for i in y:
-    f.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \center-align { ' + key[i] + ' }} } } ')
-    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \center-align { ' + key[i] + ' }} } } ')
+    f.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \center-align { ' + key[i] + ' }} } } ')
+    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \center-align { ' + key[i] + ' }} } } ')
   f.write(' }')
   g.write(' }')
 
 def IdentifyInvMajMinChords(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following Major/Minor triads (root, quality & inversion): }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following Major/Minor triads (root, quality & inversion): }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Name the following Major/Minor triads (root, quality & inversion): }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Name the following Major/Minor triads (root, quality & inversion): }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
   f.write('{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
@@ -1896,13 +1906,13 @@ def IdentifyInvMajMinChords(f,g,howmanytimes):
     x.remove(z)
   for i in y:
     f.write('\\relative ' + octave + ' { ' + temp[i] + ' } ')
-    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \center-align \with-color #red { ' + key[i] + ' }} } } ')
+    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \center-align \with-color #red { ' + key[i] + ' }} } } ')
   f.write(' }')
   g.write(' }')
 
 def WriteInvMajMinChords(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write out the following triads in the position/inversion specified: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write out the following triads in the position/inversion specified: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write out the following triads in the position/inversion specified: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write out the following triads in the position/inversion specified: }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
   f.write('{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \hideNotes ')
@@ -1918,14 +1928,14 @@ def WriteInvMajMinChords(f,g,howmanytimes):
     y.append(z)
     x.remove(z)
   for i in y:
-    f.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \center-align { ' + key[i] + ' }} } } ')
-    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \center-align { ' + key[i] + ' }} } } ')
+    f.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \center-align { ' + key[i] + ' }} } } ')
+    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \center-align { ' + key[i] + ' }} } } ')
   f.write(' }')
   g.write(' }')
 
 def IdentifyRootDimAugChords(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following Diminished/Augmented triads (root & quality): }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following Diminished/Augmented triads (root & quality): }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Name the following Diminished/Augmented triads (root & quality): }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Name the following Diminished/Augmented triads (root & quality): }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
   f.write('{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
@@ -1942,13 +1952,13 @@ def IdentifyRootDimAugChords(f,g,howmanytimes):
     x.remove(z)
   for i in y:
     f.write('\\relative ' + octave + ' { ' + temp[i] + ' } ')
-    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \center-align \with-color #red { ' + key[i] + ' }} } } ')
+    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \center-align \with-color #red { ' + key[i] + ' }} } } ')
   f.write(' }')
   g.write(' }')
 
 def WriteRootDimAugChords(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write out the following triads: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write out the following triads: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write out the following triads: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write out the following triads: }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
   f.write('{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \hideNotes ')
@@ -1964,14 +1974,14 @@ def WriteRootDimAugChords(f,g,howmanytimes):
     y.append(z)
     x.remove(z)
   for i in y:
-    f.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \center-align { ' + key[i] + ' }} } } ')
-    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \center-align { ' + key[i] + ' }} } } ')
+    f.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \center-align { ' + key[i] + ' }} } } ')
+    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \center-align { ' + key[i] + ' }} } } ')
   f.write(' }')
   g.write(' }')
 
 def IdentifyInvDimAugChords(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following Diminished/Augmented triads (root, quality & inversion): }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following Diminished/Augmented triads (root, quality & inversion): }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Name the following Diminished/Augmented triads (root, quality & inversion): }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Name the following Diminished/Augmented triads (root, quality & inversion): }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
   f.write('{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
@@ -1988,13 +1998,13 @@ def IdentifyInvDimAugChords(f,g,howmanytimes):
     x.remove(z)
   for i in y:
     f.write('\\relative ' + octave + ' { ' + temp[i] + ' } ')
-    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \center-align \with-color #red { ' + key[i] + ' }} } } ')
+    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \center-align \with-color #red { ' + key[i] + ' }} } } ')
   f.write(' }')
   g.write(' }')
 
 def WriteInvDimAugChords(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write out the following triads in the position/inversion specified: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write out the following triads in the position/inversion specified: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write out the following triads in the position/inversion specified: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write out the following triads in the position/inversion specified: }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
   f.write('{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \hideNotes ')
@@ -2010,14 +2020,14 @@ def WriteInvDimAugChords(f,g,howmanytimes):
     y.append(z)
     x.remove(z)
   for i in y:
-    f.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \center-align { ' + key[i] + ' }} } } ')
-    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \center-align { ' + key[i] + ' }} } } ')
+    f.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \center-align { ' + key[i] + ' }} } } ')
+    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \center-align { ' + key[i] + ' }} } } ')
   f.write(' }')
   g.write(' }')
 
 def IdentifyRootDomSevChords(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following Dominant 7 chords (root & possible keys): }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following Dominant 7 chords (root & possible keys): }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Name the following Dominant 7 chords (root & possible keys): }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Name the following Dominant 7 chords (root & possible keys): }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = 'f\'' if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
   f.write('{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
@@ -2035,13 +2045,13 @@ def IdentifyRootDomSevChords(f,g,howmanytimes):
     x.remove(z)
   for i in y:
     f.write('\\relative ' + octave + ' { ' + temp[i] + ' } ')
-    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { \column { \line { ' + key[i] +  ' } ' + ' \line { ' + key2[i] + ' }} } } } } ')
+    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \with-color #red { \column { \line { ' + key[i] +  ' } ' + ' \line { ' + key2[i] + ' }} } } } } ')
   f.write(' }')
   g.write(' }')
 
 def WriteRootDomSevChords(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write out the following chords: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write out the following chords: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write out the following chords: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write out the following chords: }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = 'f\'' if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
   f.write('{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \hideNotes ')
@@ -2057,14 +2067,14 @@ def WriteRootDomSevChords(f,g,howmanytimes):
     y.append(z)
     x.remove(z)
   for i in y:
-    f.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \center-align { ' + key[i] + ' }} } } ')
-    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \center-align { ' + key[i] + ' }} } } ')
+    f.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \center-align { ' + key[i] + ' }} } } ')
+    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \center-align { ' + key[i] + ' }} } } ')
   f.write(' }')
   g.write(' }')
 
 def IdentifyInvDomSevChords(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following Dominant 7 chords (root, inversion & possible keys): }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following Dominant 7 chords (root, inversion & possible keys): }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Name the following Dominant 7 chords (root, inversion & possible keys): }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Name the following Dominant 7 chords (root, inversion & possible keys): }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = 'f\'' if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
   f.write('{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
@@ -2082,13 +2092,13 @@ def IdentifyInvDomSevChords(f,g,howmanytimes):
     x.remove(z)
   for i in y:
     f.write('\\relative ' + octave + ' { ' + temp[i] + ' } ')
-    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { \column { \line { ' + key[i] +  ' } ' + ' \line { ' + key2[i] + ' }} } } } } ')
+    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \with-color #red { \column { \line { ' + key[i] +  ' } ' + ' \line { ' + key2[i] + ' }} } } } } ')
   f.write(' }')
   g.write(' }')
 
 def WriteInvDomSevChords(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write out the following chords in the position/inversion specified: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write out the following chords in the position/inversion specified: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write out the following chords in the position/inversion specified: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write out the following chords in the position/inversion specified: }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = 'f\'' if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
   f.write('{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \hideNotes ')
@@ -2104,14 +2114,14 @@ def WriteInvDomSevChords(f,g,howmanytimes):
     y.append(z)
     x.remove(z)
   for i in y:
-    f.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \center-align { ' + key[i] + ' }} } } ')
-    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \center-align { ' + key[i] + ' }} } } ')
+    f.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \center-align { ' + key[i] + ' }} } } ')
+    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \center-align { ' + key[i] + ' }} } } ')
   f.write(' }')
   g.write(' }')
 
 def WriteDomSevInversionsA(f,g):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write out V7 chords, in all inversions, for the given keys: }}\\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write out V7 chords, in all inversions, for the given keys: }}\\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write out V7 chords, in all inversions, for the given keys: }}\\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write out V7 chords, in all inversions, for the given keys: }}\\noPageBreak\n')
   temp = MajKeySigList + MinKeySigList
   key = IdentifyEasyRootDomSevChordsList + IdentifyHardRootDomSevChordsList + IdentifyInvDomSevChordsList
   x = list(range(len(temp)))
@@ -2125,16 +2135,16 @@ def WriteDomSevInversionsA(f,g):
     g.write('{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
     z = random.choice(x)
     x.remove(z)
-    f.write('\\relative ' + octave + ' { s1^\markup { \override #\'(font-name . "Linux Libertine Capitals") { ' + temp[z] + ' }} s s s }\n')
-    g.write(' s1^\markup { \override #\'(font-name . "Linux Libertine Capitals") { ' + temp[z] + ' }} ')
+    f.write('\\relative ' + octave + ' { s1^\markup { ' + font + ' { ' + temp[z] + ' }} s s s }\n')
+    g.write(' s1^\markup { ' + font + ' { ' + temp[z] + ' }} ')
     for a in WriteAllInvDomSevDict[z]:
       g.write('\\relative ' + octave + ' { ' + key[a] + ' } ')
     f.write(' }')
     g.write(' }')
 
 def WriteDomSevInversionsB(f,g):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write out V 7 chords, in all inversions, using the given note for the lowest of each chord: }}\\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write out V 7 chords, in all inversions, using the given note for the lowest of each chord: }}\\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write out V 7 chords, in all inversions, using the given note for the lowest of each chord: }}\\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write out V 7 chords, in all inversions, using the given note for the lowest of each chord: }}\\noPageBreak\n')
   temp = WriteDomSevAllInv
   key = IdentifyEasyRootDomSevChordsList + IdentifyHardRootDomSevChordsList + IdentifyInvDomSevChordsList
   key2 = IdentifyEasyRootDomSevChordsInvKeyList + IdentifyHardRootDomSevChordsInvKeyList + IdentifyInvDomSevChordsKeyList
@@ -2149,28 +2159,28 @@ def WriteDomSevInversionsB(f,g):
   f.write(' } } ')
   g.write('\\relative ' + octave + ' { ')
   for i in WriteDomSevAllInvDict[x]:
-    g.write(key[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + key2[i] + ' }} } ')
+    g.write(key[i] + '_\markup{ ' + font + ' { \with-color #red { ' + key2[i] + ' }} } ')
   g.write(' } } ')
 
 def IdentifyChordsInScales(f,g):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name all scales in which the following chord naturally occurs: }}\\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name all scales in which the following chord naturally occurs: }}\\noPageBreak\n')
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { (maj, min, har min, mel min) }}\\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { (maj, min, har min, mel min) }}\\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Name all scales in which the following chord naturally occurs: }}\\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Name all scales in which the following chord naturally occurs: }}\\noPageBreak\n')
+  f.write('\markup { ' + font + ' { (maj, min, har min, mel min) }}\\noPageBreak\n')
+  g.write('\markup { ' + font + ' { (maj, min, har min, mel min) }}\\noPageBreak\n')
   temp = IdentifyEasyRootMajChordsList + IdentifyHardRootMajChordsList + IdentifyEasyRootMinChordsList + IdentifyHardRootMinChordsList + IdentifyEasyRootDimChordsList + IdentifyHardRootDimChordsList + IdentifyEasyRootAugChordsList
   x = random.choice(list(range(len(temp))))
   identclef = random.choice(clefs)
   octave = 'f\'' if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
   f.write('{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 \override TextScript #\'padding = #3 \\relative ' + octave + ' { ' + temp[x] + ' } \stopStaff s s s }\n')
   g.write('{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 \override TextScript #\'padding = #3 \\relative ' + octave + ' { ' + temp[x] + ' } \stopStaff s s s }\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { Major: ' + ChordsInScalesMaj[x] + ' } } } ')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { Natural Minor: ' + ChordsInScalesMin[x] + ' } } } ')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { Harmonic Minor: ' + ChordsInScalesHar[x] + ' } } } ')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { Melodic Minor: ' + ChordsInScalesMel[x] + ' } } } ')
+  g.write('\markup { ' + font + ' { \with-color #red { Major: ' + ChordsInScalesMaj[x] + ' } } } ')
+  g.write('\markup { ' + font + ' { \with-color #red { Natural Minor: ' + ChordsInScalesMin[x] + ' } } } ')
+  g.write('\markup { ' + font + ' { \with-color #red { Harmonic Minor: ' + ChordsInScalesHar[x] + ' } } } ')
+  g.write('\markup { ' + font + ' { \with-color #red { Melodic Minor: ' + ChordsInScalesMel[x] + ' } } } ')
 
 def IdentifyOtherSevChords(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following Major7, Minor7, 1/2 Diminished & Fully Diminished Chords (root & quality): }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following Major7, Minor7, 1/2 Diminished & Fully Diminished Chords (root & quality): }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Name the following Major7, Minor7, 1/2 Diminished & Fully Diminished Chords (root & quality): }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Name the following Major7, Minor7, 1/2 Diminished & Fully Diminished Chords (root & quality): }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = 'f\'' if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
   f.write('{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
@@ -2187,13 +2197,13 @@ def IdentifyOtherSevChords(f,g,howmanytimes):
     x.remove(z)
   for i in y:
     f.write('\\relative ' + octave + ' { ' + temp[i] + ' } ')
-    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { \with-color #red { ' + key[i] +  ' }} } } ')
+    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { \with-color #red { ' + key[i] +  ' }} } } ')
   f.write(' }')
   g.write(' }')
 
 def WriteOtherSevChords(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write out the following 7th Chords: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write out the following 7th Chords: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write out the following 7th Chords: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write out the following 7th Chords: }} \\noPageBreak\n')
   identclef = random.choice(clefs)
   octave = 'f\'' if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
   f.write('{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
@@ -2209,14 +2219,14 @@ def WriteOtherSevChords(f,g,howmanytimes):
     y.append(z)
     x.remove(z)
   for i in y:
-    f.write('\\relative ' + octave + ' { s1_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + key[i] + ' } } } ')
-    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ \override #\'(font-name . "Linux Libertine Capitals") { ' + key[i] +  ' } } } ')
+    f.write('\\relative ' + octave + ' { s1_\markup{ ' + font + ' { ' + key[i] + ' } } } ')
+    g.write('\\relative ' + octave + ' { ' + temp[i] + '_\markup{ ' + font + ' { ' + key[i] +  ' } } } ')
   f.write(' }')
   g.write(' }')
 
 def IdentifyOtherChords(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following extended chords (quality): }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Name the following extended chords (quality): }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Name the following extended chords (quality): }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Name the following extended chords (quality): }} \\noPageBreak\n')
   f.write('\\new PianoStaff <<\n')
   g.write('\\new PianoStaff <<\n')
   temp = IdentifyOtherChordsTreble
@@ -2240,15 +2250,15 @@ def IdentifyOtherChords(f,g,howmanytimes):
   g.write('\t\\new Staff { \clef bass \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
   for i in y:
     f.write(IdentifyOtherChordsBass[i])
-    g.write(IdentifyOtherChordsBass[i] + '_\markup { \with-color #red { \override #\'(font-name . "Linux Libertine Capitals") { ' + IdentifyOtherChordsKey[i] + ' }}} ')
+    g.write(IdentifyOtherChordsBass[i] + '_\markup { \with-color #red { ' + font + ' { ' + IdentifyOtherChordsKey[i] + ' }}} ')
   f.write(' }\n >>')
   g.write(' }\n >>')
 
 ### Cadences
 ##################################################
 def IdentifyCadences(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Identify the following cadences, provide the key and give the roman numerals for the chords: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Identify the following cadences, provide the key and give the roman numerals for the chords: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Identify the following cadences, provide the key and give the roman numerals for the chords: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Identify the following cadences, provide the key and give the roman numerals for the chords: }} \\noPageBreak\n')
   f.write('\\new PianoStaff <<\n')
   g.write('\\new PianoStaff <<\n')
   numbers = list(range(len(IdentifyCadencesTrebleFirst)))
@@ -2272,7 +2282,7 @@ def IdentifyCadences(f,g,howmanytimes):
   q = 0
   for i in randomnumbers:
     f.write('\\transpose ' + IdentifyCadencesTranspositions[randomkeys[q]] + ' { ' + IdentifyCadencesTrebleFirst[i] + ' ' + IdentifyCadencesTrebleRest[i] + ' } \\bar "||" ')
-    g.write('\\transpose ' + IdentifyCadencesTranspositions[randomkeys[q]] + ' { ' + IdentifyCadencesTrebleFirst[i] + '^\markup { \with-color #red { \override #\'(font-name . "Linux Libertine Capitals") { \center-column { \line {Key: ' + IdentifyCadencesTranspositionsKey[randomkeys[q]])
+    g.write('\\transpose ' + IdentifyCadencesTranspositions[randomkeys[q]] + ' { ' + IdentifyCadencesTrebleFirst[i] + '^\markup { \with-color #red { ' + font + ' { \center-column { \line {Key: ' + IdentifyCadencesTranspositionsKey[randomkeys[q]])
     if i in range(0,5):
       g.write(' Major} ')
     else:
@@ -2294,8 +2304,8 @@ def IdentifyCadences(f,g,howmanytimes):
   g.write('>>\n')
 
 def WriteCadences(f,g,howmanytimes):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write the following cadences, keys and roman numerals: }} \\noPageBreak\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Write the following cadences, keys and roman numerals: }} \\noPageBreak\n')
+  f.write('\markup { ' + font + ' { Write the following cadences, keys and roman numerals: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write the following cadences, keys and roman numerals: }} \\noPageBreak\n')
   f.write('\\new PianoStaff <<\n')
   g.write('\\new PianoStaff <<\n')
   numbers = list(range(len(IdentifyCadencesTrebleFirst)))
@@ -2318,8 +2328,8 @@ def WriteCadences(f,g,howmanytimes):
   g.write('\t\\new Staff { \\nokeycancel \\nobarlinenumbers \clef treble \\notimesig \override TextScript #\'padding = #3 \override Staff.KeySignature #\'color = #red \override NoteHead #\'color = #red \override Accidental #\'color = #red \override Stem #\'color = #red ')
   q = 0
   for i in randomnumbers:
-    f.write('\\transpose ' + IdentifyCadencesTranspositions[randomkeys[q]] + ' { s1^\markup { \override #\'(font-name . "Linux Libertine Capitals") { \center-column { \line {Key: ' + IdentifyCadencesTranspositionsKey[randomkeys[q]])
-    g.write('\\transpose ' + IdentifyCadencesTranspositions[randomkeys[q]] + ' { ' + IdentifyCadencesTrebleFirst[i] + '^\markup { \override #\'(font-name . "Linux Libertine Capitals") { \center-column { \line {Key: ' + IdentifyCadencesTranspositionsKey[randomkeys[q]])
+    f.write('\\transpose ' + IdentifyCadencesTranspositions[randomkeys[q]] + ' { s1^\markup { ' + font + ' { \center-column { \line {Key: ' + IdentifyCadencesTranspositionsKey[randomkeys[q]])
+    g.write('\\transpose ' + IdentifyCadencesTranspositions[randomkeys[q]] + ' { ' + IdentifyCadencesTrebleFirst[i] + '^\markup { ' + font + ' { \center-column { \line {Key: ' + IdentifyCadencesTranspositionsKey[randomkeys[q]])
     if i in range(0,5):
       f.write(' Major} ')
       g.write(' Major} ')
@@ -2349,16 +2359,16 @@ def WrittenTransposition(f,g,examplenumber):
   identclef = random.choice(clefs)
   octave = 'b\'' if identclef == 'treble' else 'c\'' if identclef == 'alto' else 'a' if identclef == 'tenor' else 'd'
   x = random.choice(list(range(len(TranspositionIntervalsList))))
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Transpose the following example: } ' + TranspositionIntervalsList[x] + ' }\n')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Transpose the following example: } ' + TranspositionIntervalsList[x] + ' }\n')
+  f.write('\markup { ' + font + ' { Transpose the following example: } ' + TranspositionIntervalsList[x] + ' }\n')
+  g.write('\markup { ' + font + ' { Transpose the following example: } ' + TranspositionIntervalsList[x] + ' }\n')
   f.write('\\relative ' + octave + ' { \clef ' + identclef + ' \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 '  + TranspositionExamplesList[examplenumber] + '}\n' )
   g.write('\\relative ' + octave + ' { \clef ' + identclef + ' \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 '  + TranspositionExamplesList[examplenumber] + '}\n' )
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Original key : }}')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Original key : \with-color #red { ' + TranspositionExamplesKeysList[examplenumber] + ' }}} ')
+  f.write('\markup { ' + font + ' { Original key : }}')
+  g.write('\markup { ' + font + ' { Original key : \with-color #red { ' + TranspositionExamplesKeysList[examplenumber] + ' }}} ')
   f.write('{ \clef ' + identclef + ' \\notimesig s1 } ')
   g.write('{ \override Staff.KeySignature #\'color = #red \override NoteHead #\'color = #red \override Accidental #\'color = #red \override Stem #\'color = #red \override Beam #\'color = #red \override Rest #\'color = #red \override Flag #\'color = #red \override Staff.LedgerLineSpanner #\'color = #red  \\transpose ' + TranspositionIntervalsListKey[x] + ' { \\relative ' + octave + ' { \clef ' + identclef + ' \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 ' + TranspositionExamplesList[examplenumber] + '}}}\n')
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { New key : }}')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { New key : \with-color #red { ' + TranspositionExamplesNewKeysDict[examplenumber][x] + ' }}}')
+  f.write('\markup { ' + font + ' { New key : }}')
+  g.write('\markup { ' + font + ' { New key : \with-color #red { ' + TranspositionExamplesNewKeysDict[examplenumber][x] + ' }}}')
 
 ### Time Signatures
 ##################################################
@@ -2369,8 +2379,8 @@ def TimeSignatures(f,g,examplenumber):
 ### Detect Errors
 ##################################################
 def DetectErrors(f,g,examplenumber):
-  f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Circle all notation errors: }} ')
-  g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals") { Circle all notation errors: }} ')
+  f.write('\markup { ' + font + ' { Circle all notation errors: }} ')
+  g.write('\markup { ' + font + ' { Circle all notation errors: }} ')
   f.write(DetectErrorsList[examplenumber])
   g.write(DetectErrorsKeyList[examplenumber])
 
@@ -2390,10 +2400,7 @@ def lilypondFooters(f,g):
 # MAIN FUNCTION
 ##################################################
 
-def main():
-  # start looking at command line arguments
-  args = cliargs.parse_args()
-
+def main(args):
   # Lilypond file
   fillInSheet = 'theory-sheet-' + time.strftime("%Y-%m-%d")  + '.ly'
   keySheet = 'theory-sheet-key-' + time.strftime("%Y-%m-%d")  + '.ly'
@@ -2432,8 +2439,8 @@ def main():
 
   # durations
   if args.durations:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Note & Rest Durations }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Note & Rest Durations }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Note & Rest Durations }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Note & Rest Durations }} \\noPageBreak\n')
     WriteASingleNoteEqualTo(f,g,args.durations)
     moduleFooters(f,g)
 
@@ -2457,8 +2464,8 @@ def main():
 
   # cst dst wt
   if args.cst_dst_wt:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Chromatic/Diatonic Semitones & Wholetones }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Chromatic/Diatonic Semitones & Wholetones }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Chromatic/Diatonic Semitones & Wholetones }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Chromatic/Diatonic Semitones & Wholetones }} \\noPageBreak\n')
 
     IdentifyCstDstWt(f,g,args.cst_dst_wt)
     moduleFooters(f,g)
@@ -2492,22 +2499,22 @@ def main():
 
   # key sigs
   if args.key_sigs:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Key Signatures }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Key Signatures }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Key Signatures }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Key Signatures }} \\noPageBreak\n')
     WriteKeySigs(f,g)
     moduleFooters(f,g)
 
   # ident scale degrees
   if args.scale_degrees:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Scale Degrees }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Scale Degrees }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Scale Degrees }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Scale Degrees }} \\noPageBreak\n')
     IdentifyScaleDegrees(f,g,args.scale_degrees)
     moduleFooters(f,g)
 
   # relative keys
   if args.relative_keys:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Relative Keys }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Relative Keys }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Relative Keys }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Relative Keys }} \\noPageBreak\n')
     WriteRelativeMinorKeys(f,g,args.relative_keys)
     moduleFooters(f,g)
 
@@ -2516,48 +2523,48 @@ def main():
 
   # scales
   if args.all_scales:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Scales }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Scales }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Scales }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Scales }} \\noPageBreak\n')
     for i in range(args.all_scales):
       scale = random.choice([WriteAMajorScale,IdentifyAMajorScale,WriteAMinorScale,IdentifyAMinorScale,WriteAChrOctWTScale,IdentifyAChromaticScale,IdentifyAOctatonicScale,IdentifyAWholetoneScale,WriteAMajorPentScale,WriteAMinorPentScale,WriteABluesScale,IdentifyAMajorPentScale,IdentifyAMinorPentScale,IdentifyABluesScale,WriteAModeScale,IdentifyAModeScale])
       scale(f,g)
     moduleFooters(f,g)
 
   if args.s_maj:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Major Scales }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Major Scales }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Major Scales }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Major Scales }} \\noPageBreak\n')
     for i in range(args.s_maj):
       scale = random.choice([WriteAMajorScale,IdentifyAMajorScale])
       scale(f,g)
     moduleFooters(f,g)
 
   if args.s_min:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Minor Scales }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Minor Scales }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Minor Scales }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Minor Scales }} \\noPageBreak\n')
     for i in range(args.s_min):
       scale = random.choice([WriteAMinorScale,IdentifyAMinorScale])
       scale(f,g)
     moduleFooters(f,g)
 
   if args.s_chroctwt:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Chromatic, Octatonic & Wholetone Scales }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Chromatic, Octatonic & Wholetone Scales }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Chromatic, Octatonic & Wholetone Scales }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Chromatic, Octatonic & Wholetone Scales }} \\noPageBreak\n')
     for i in range(args.s_chroctwt):
       scale = random.choice([WriteAChrOctWTScale,WriteAChrOctWTScale,WriteAChrOctWTScale,IdentifyAChromaticScale,IdentifyAOctatonicScale,IdentifyAWholetoneScale])
       scale(f,g)
     moduleFooters(f,g)
 
   if args.s_pentblues:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Pentatonic & Blues Scales }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Pentatonic & Blues Scales }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Pentatonic & Blues Scales }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Pentatonic & Blues Scales }} \\noPageBreak\n')
     for i in range(args.s_pentblues):
       scale = random.choice([WriteAMajorPentScale,WriteAMinorPentScale,WriteABluesScale,IdentifyAMajorPentScale,IdentifyAMinorPentScale,IdentifyABluesScale])
       scale(f,g)
     moduleFooters(f,g)
 
   if args.s_modes:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Modes }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Modes }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Modes }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Modes }} \\noPageBreak\n')
     for i in range(args.s_modes):
       scale = random.choice([WriteAModeScale,IdentifyAModeScale])
       scale(f,g)
@@ -2565,24 +2572,24 @@ def main():
 
   # intervals
   if args.easy_simple_intervals:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Intervals }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Intervals }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Intervals }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Intervals }} \\noPageBreak\n')
     IdentifyEasySimpleIntervals(f,g,args.easy_simple_intervals)
     WriteEasySimpleIntervalsAbove(f,g,args.easy_simple_intervals)
     WriteEasySimpleIntervalsBelow(f,g,args.easy_simple_intervals)
     moduleFooters(f,g)
 
   if args.hard_simple_intervals:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Intervals }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Intervals }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Intervals }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Intervals }} \\noPageBreak\n')
     IdentifyHardSimpleIntervals(f,g,args.hard_simple_intervals)
     WriteHardSimpleIntervalsAbove(f,g,args.hard_simple_intervals)
     WriteHardSimpleIntervalsBelow(f,g,args.hard_simple_intervals)
     moduleFooters(f,g)
 
   if args.all_simple_intervals:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Intervals }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Intervals }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Intervals }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Intervals }} \\noPageBreak\n')
     IdentifyAllSimpleIntervals(f,g,args.all_simple_intervals)
     WriteAllSimpleIntervalsAbove(f,g,args.all_simple_intervals)
     WriteAllSimpleIntervalsBelow(f,g,args.all_simple_intervals)
@@ -2594,8 +2601,8 @@ def main():
 
   # chords
   if args.all_chords:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Chords }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Chords }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Chords }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Chords }} \\noPageBreak\n')
     IdentifyAllChords(f,g,args.all_chords)
     WriteAllChords(f,g,args.all_chords)
     IdentifyOtherSevChords(f,g,args.all_chords)
@@ -2605,8 +2612,8 @@ def main():
     moduleFooters(f,g)
 
   if args.all_chords_inv:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Chords }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Chords }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Chords }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Chords }} \\noPageBreak\n')
     IdentifyInvAllChords(f,g,args.all_chords_inv)
     WriteInvAllChords(f,g,args.all_chords_inv)
     WriteDomSevInversionsA(f,g)
@@ -2618,43 +2625,43 @@ def main():
     moduleFooters(f,g)
 
   if args.c_maj_min:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Chords }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Chords }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Chords }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Chords }} \\noPageBreak\n')
     IdentifyRootMajMinChords(f,g,args.c_maj_min)
     WriteRootMajMinChords(f,g,args.c_maj_min)
     moduleFooters(f,g)
 
   if args.c_maj_min_inv:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Chords }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Chords }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Chords }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Chords }} \\noPageBreak\n')
     IdentifyInvMajMinChords(f,g,args.c_maj_min_inv)
     WriteInvMajMinChords(f,g,args.c_maj_min_inv)
     moduleFooters(f,g)
 
   if args.c_dim_aug:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Chords }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Chords }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Chords }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Chords }} \\noPageBreak\n')
     IdentifyRootDimAugChords(f,g,args.c_dim_aug)
     WriteRootDimAugChords(f,g,args.c_dim_aug)
     moduleFooters(f,g)
 
   if args.c_dim_aug_inv:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Chords }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Chords }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Chords }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Chords }} \\noPageBreak\n')
     IdentifyInvDimAugChords(f,g,args.c_dim_aug_inv)
     WriteInvDimAugChords(f,g,args.c_dim_aug_inv)
     moduleFooters(f,g)
 
   if args.c_dom7:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Chords }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Chords }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Chords }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Chords }} \\noPageBreak\n')
     IdentifyRootDomSevChords(f,g,args.c_dom7)
     WriteRootDomSevChords(f,g,args.c_dom7)
     moduleFooters(f,g)
 
   if args.c_dom7_inv:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Chords }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Chords }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Chords }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Chords }} \\noPageBreak\n')
     IdentifyInvDomSevChords(f,g,args.c_dom7_inv)
     WriteInvDomSevChords(f,g,args.c_dom7_inv)
     WriteDomSevInversionsA(f,g)
@@ -2662,29 +2669,29 @@ def main():
     moduleFooters(f,g)
 
   if args.c_other_7ths:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Other 7th Chords }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Other 7th Chords }} \\noPageBreak\n')
     IdentifyOtherSevChords(f,g,args.c_other_7ths)
     WriteOtherSevChords(f,g,args.c_other_7ths)
     moduleFooters(f,g)
 
   if args.c_ext_chords:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Extended Chords }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Extended Chords }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Extended Chords }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Extended Chords }} \\noPageBreak\n')
     IdentifyOtherChords(f,g,args.c_ext_chords)
     moduleFooters(f,g)
 
   # cadences
   if args.cadences:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Cadences }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Cadences }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Cadences }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Cadences }} \\noPageBreak\n')
     IdentifyCadences(f,g,args.cadences)
     WriteCadences(f,g,args.cadences)
     moduleFooters(f,g)
 
   # transposition
   if args.transposition:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Transposition }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Transposition }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Transposition }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Transposition }} \\noPageBreak\n')
     if args.transposition == 1:
       WrittenTransposition(f,g,random.choice(range(1, len(TranspositionExamplesList))))
     else:
@@ -2693,8 +2700,8 @@ def main():
 
   # time sigs
   if args.time_sigs:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Time Signatures }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Time Signatures }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Time Signatures }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Time Signatures }} \\noPageBreak\n')
     if args.time_sigs == 1:
       TimeSignatures(f,g,random.choice(range(1, len(TimeSigList))))
     else:
@@ -2703,8 +2710,8 @@ def main():
 
   # detect errors
   if args.detect_errors:
-    f.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Detect Errors }} \\noPageBreak\n')
-    g.write('\markup { \override #\'(font-name . "Linux Libertine Capitals Bold") { Detect Errors }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Detect Errors }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Detect Errors }} \\noPageBreak\n')
     if args.detect_errors == 1:
       DetectErrors(f,g,random.choice(range(1, len(DetectErrorsList))))
     else:
@@ -2722,4 +2729,4 @@ def main():
   call(["lilypond", keySheet ])
 
 # call main function
-main()
+main(args)
