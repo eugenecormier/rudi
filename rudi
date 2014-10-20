@@ -634,7 +634,7 @@ def WriteASingleNoteEqualTo(f,g,howmanytimes):
       temp = list(range(len(DurationSingleNoteEqualTo)))
     x = random.choice(temp)
     temp.remove(x)
-    f.write(DurationSingleNoteEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 1.5) \\box \hspace #1  } \\unHideNotes s1 \\bar ""\n')
+    f.write(DurationSingleNoteEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 2) \\box "  "  } \\unHideNotes s1 \\bar ""\n')
     g.write(DurationSingleNoteEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  \\unHideNotes \once \override NoteHead #\'color = #red \once \override Stem #\'color = #red \once \override Dots #\'color = #red \once \override Flag #\'color = #red ' + DurationSingleNoteEqualToKey[x] + ' s1 \\bar ""\n')
   f.write('}\n')
   g.write('}\n')
@@ -653,7 +653,7 @@ def WriteASingleRestEqualTo(f,g,howmanytimes):
       temp = list(range(len(DurationSingleRestEqualTo)))
     x = random.choice(temp)
     temp.remove(x)
-    f.write(DurationSingleRestEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 1.5) \\box \hspace #1  } \\unHideNotes s1 \\bar ""\n')
+    f.write(DurationSingleRestEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 2) \\box "  " } \\unHideNotes s1 \\bar ""\n')
     g.write(DurationSingleRestEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  \\unHideNotes \once \override Rest #\'color = #red \once \override Dots #\'color = #red ' + DurationSingleRestEqualToKey[x] + ' s1 \\bar ""\n')
   f.write('}\n')
   g.write('}\n')
@@ -672,7 +672,7 @@ def WriteTwoNotesEqualTo(f,g,howmanytimes):
       break
     x = random.choice(temp)
     temp.remove(x)
-    f.write(DurationTwoNotesEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 1.5) \\box \hspace #1  } \\unHideNotes s1 \\bar ""\n')
+    f.write(DurationTwoNotesEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 2) \\box "  " } \\unHideNotes s1 \\bar ""\n')
     g.write(DurationTwoNotesEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  \\unHideNotes \once \override NoteHead #\'color = #red \once \override Stem #\'color = #red \once \override Dots #\'color = #red \once \override Flag #\'color = #red ' + DurationTwoNotesEqualToKey[x] + ' \once \override NoteHead #\'color = #red \once \override Stem #\'color = #red \once \override Dots #\'color = #red \once \override Flag #\'color = #red ' + DurationTwoNotesEqualToKey[x] + ' s1 \\bar ""\n')
   f.write('}\n')
   g.write('}\n')
@@ -691,7 +691,7 @@ def WriteTwoRestsEqualTo(f,g,howmanytimes):
       break
     x = random.choice(temp)
     temp.remove(x)
-    f.write(DurationTwoRestsEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 1.5) \\box \hspace #1  } \\unHideNotes s1 \\bar ""\n')
+    f.write(DurationTwoRestsEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 2) \\box "  " } \\unHideNotes s1 \\bar ""\n')
     g.write(DurationTwoRestsEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  \\unHideNotes \once \override Rest #\'color = #red \once \override Dots #\'color = #red ' + DurationTwoRestsEqualToKey[x] + ' \once \override Rest #\'color = #red \once \override Dots #\'color = #red ' + DurationTwoRestsEqualToKey[x] + ' s1 \\bar ""\n')
   f.write('}\n')
   g.write('}\n')
@@ -710,7 +710,7 @@ def WriteThreeNotesEqualTo(f,g,howmanytimes):
       break
     x = random.choice(temp)
     temp.remove(x)
-    f.write(DurationThreeNotesEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 1.5) \\box \hspace #1  } \\unHideNotes s1 \\bar ""\n')
+    f.write(DurationThreeNotesEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 2) \\box "  " } \\unHideNotes s1 \\bar ""\n')
     g.write(DurationThreeNotesEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  \\unHideNotes \once \override NoteHead #\'color = #red \once \override Stem #\'color = #red \once \override Dots #\'color = #red \once \override Flag #\'color = #red ' + DurationThreeNotesEqualToKey[x] + ' \once \override NoteHead #\'color = #red \once \override Stem #\'color = #red \once \override Dots #\'color = #red \once \override Flag #\'color = #red ' + DurationThreeNotesEqualToKey[x] + ' \once \override NoteHead #\'color = #red \once \override Stem #\'color = #red \once \override Dots #\'color = #red \once \override Flag #\'color = #red ' + DurationThreeNotesEqualToKey[x] + ' s1 \\bar ""\n')
   f.write('}\n')
   g.write('}\n')
@@ -729,7 +729,7 @@ def WriteThreeRestsEqualTo(f,g,howmanytimes):
       break
     x = random.choice(temp)
     temp.remove(x)
-    f.write(DurationThreeRestsEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 1.5) \\box \hspace #1  } \\unHideNotes s1 \\bar ""\n')
+    f.write(DurationThreeRestsEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  c\'\'1_\markup { \hspace #1 \override #\'(box-padding . 2) \\box "  " } \\unHideNotes s1 \\bar ""\n')
     g.write(DurationThreeRestsEqualTo[x] + ' \hideNotes a\'_\markup { ' + font + ' { = }}  \\unHideNotes \once \override Rest #\'color = #red \once \override Dots #\'color = #red ' + DurationThreeRestsEqualToKey[x] + ' \once \override Rest #\'color = #red \once \override Dots #\'color = #red ' + DurationThreeRestsEqualToKey[x] + ' \once \override Rest #\'color = #red \once \override Dots #\'color = #red ' + DurationThreeRestsEqualToKey[x] + ' s1 \\bar ""\n')
   f.write('}\n')
   g.write('}\n')
