@@ -476,12 +476,12 @@ def AuralIntervals(f,g,howmanytimes):
   else:
     for i in range(10):
       x = i + 1
-      g.write( str(x) +  '. ___ ')
-    g.write(' }\n')
+      g.write( str(x) + '. \with-color #red ' + random.choice(auralIntervals) + ' \hspace #2 ')
+    g.write(' } } \n')
     g.write('\markup { ' + font + ' { ')
     for i in range(10,howmanytimes):
       x = i + 1
-      g.write( str(x) +  '. ___ ')
+      g.write( str(x) + '. \with-color #red ' + random.choice(auralIntervals) + ' \hspace #2 ')
     g.write(' }} \n')
 
 ### Drawing Clefs
