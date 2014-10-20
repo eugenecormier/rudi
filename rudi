@@ -735,8 +735,8 @@ def WriteThreeRestsEqualTo(f,g,howmanytimes):
   g.write('}\n')
 
 def CompareDurations(f,g,howmanytimes):
-  f.write('\markup { ' + font + ' { Fill in the blanks: }} \\noPageBreak\n\markup{ }\n')
-  g.write('\markup { ' + font + ' { Fill in the blanks: }} \\noPageBreak\n\markup{ }\n')
+  f.write('\markup { ' + font + ' { Fill in the blanks: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Fill in the blanks: }} \\noPageBreak\n')
   temp = list(range(len(DurationComparisons)))
   for i in range(howmanytimes):
     if not temp:
@@ -928,8 +928,6 @@ def WriteKeySigs(f,g):
 def IdentifyScaleDegrees(f,g,howmanytimes):
   f.write('\markup { ' + font + ' {Fill in the blanks: }} \\noPageBreak\n')
   g.write('\markup { ' + font + ' {Fill in the blanks: }} \\noPageBreak\n')
-  f.write('\markup { }\n')
-  g.write('\markup { }\n')
   degreelist = list(range(len(ScaleDegreeList)))
   keylist = list(MajKeySigList)
   for i in range(howmanytimes):
@@ -949,8 +947,6 @@ def IdentifyScaleDegrees(f,g,howmanytimes):
 def WriteRelativeMinorKeys(f,g,howmanytimes):
   f.write('\markup { ' + font + ' { Name the relative minor keys of the following major keys: }} \\noPageBreak\n')
   g.write('\markup { ' + font + ' { Name the relative minor keys of the following major keys: }} \\noPageBreak\n')
-  f.write('\markup { }\n')
-  g.write('\markup { }\n')
   temp = list(range(len(MajKeySigList)))
   for i in range(howmanytimes):
     if not temp:
@@ -963,8 +959,6 @@ def WriteRelativeMinorKeys(f,g,howmanytimes):
 def WriteRelativeMajorKeys(f,g,howmanytimes):
   f.write('\markup { ' + font + ' { Name the relative major keys of the following minor keys: }} \\noPageBreak\n')
   g.write('\markup { ' + font + ' { Name the relative major keys of the following minor keys: }} \\noPageBreak\n')
-  f.write('\markup { }\n')
-  g.write('\markup { }\n')
   temp = list(range(len(MinKeySigList)))
   for i in range(howmanytimes):
     if not temp:
@@ -2385,8 +2379,8 @@ def DetectErrors(f,g,examplenumber):
 ### FOOTERS
 ##################################################
 def moduleFooters(f,g):
-    f.write('\markup { } \markup { }\n\n\n')
-    g.write('\markup { } \markup { }\n\n\n')
+    f.write('\n\n\n')
+    g.write('\n\n\n')
 
 def lilypondFooters(f,g):
     f.writelines(footer)
