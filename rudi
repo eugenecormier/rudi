@@ -124,7 +124,7 @@ if args.font:
 
 # Headers
 headera = [
-  '\\version "2.16.2"\n' ,
+  '\\version "2.18.2"\n' ,
   # Titles
   '\header {\n' ,
     '\ttitle = \markup { ' ,
@@ -173,9 +173,7 @@ headerc = [
   'nobarlinenumbers = { \override Score.BarNumber #\'transparent = ##t }\n' ,
   'noclef = { \override Staff.Clef #\'transparent = ##t }\n' ,
   'nokeycancel = { \set Staff.printKeyCancellation = ##f }\n' ,
-  'noclefresize = { \override Staff.Clef #\'full-size-change = ##t }' ,
-  # some room before starting the body
-  '\markup {} \markup {} \markup {} \markup {} \n\n\n'
+  'noclefresize = { \override Staff.Clef #\'full-size-change = ##t }\n\n\n' ,
   ]
 
 # Footer
