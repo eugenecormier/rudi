@@ -44,7 +44,8 @@ Dependancies:
  * Lilypond 2.16.2 (it may run on newer versions
     but this has not been tested. I'll update it
     for future versions as they become stable in
-    Gentoo.
+    Gentoo. (I have started moving this to v2.18
+    but for now it's mostly untested)
  * Copy the cof.eps into the folder /usr/share/rudi/
 
 The License is GPL V2
