@@ -41,11 +41,10 @@ rudi --all
 
 Dependancies:
  * Python 3
- * Lilypond 2.16.2 (it may run on newer versions
+ * Lilypond 2.18 (it may run on newer versions
     but this has not been tested. I'll update it
     for future versions as they become stable in
-    Gentoo. (I have started moving this to v2.18
-    but for now it's mostly untested)
+    Gentoo.
  * Copy the cof.eps into the folder /usr/share/rudi/
 
 The License is GPL V2
