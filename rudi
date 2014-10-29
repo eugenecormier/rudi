@@ -58,17 +58,17 @@ cliargs.add_argument( '--scale-degrees' , type=int , nargs='?' , const=10 , meta
 
 cliargs.add_argument( '--relative-keys' , type=int , nargs='?' , const=10 , metavar='#' , help='Write relative maj/min keys (default 10)' )
 
-cliargs.add_argument( '--all-scales' , type=int , nargs='?' , const=16 , metavar='#' , help='Identify/Write All Scales (default 16)' )
+cliargs.add_argument( '--all-scales' , type=int , nargs='?' , const=10 , metavar='#' , help='Identify/Write All Scales (default 10)' )
 
-cliargs.add_argument( '--s-maj' , type=int , nargs='?' , const=16 , metavar='#' , help='Identify/Write Major Scales (default 16)' )
+cliargs.add_argument( '--s-maj' , type=int , nargs='?' , const=10 , metavar='#' , help='Identify/Write Major Scales (default 10)' )
 
-cliargs.add_argument( '--s-min' , type=int , nargs='?' , const=16 , metavar='#' , help='Identify/Write Minor Scales (default 16)' )
+cliargs.add_argument( '--s-min' , type=int , nargs='?' , const=10 , metavar='#' , help='Identify/Write Minor Scales (default 10)' )
 
-cliargs.add_argument( '--s-chroctwt' , type=int , nargs='?' , const=16 , metavar='#' , help='Identify/Write Chromatic, Octatonic & Wholetone Scales (default 16)' )
+cliargs.add_argument( '--s-chroctwt' , type=int , nargs='?' , const=10 , metavar='#' , help='Identify/Write Chromatic, Octatonic & Wholetone Scales (default 10)' )
 
-cliargs.add_argument( '--s-pentblues' , type=int , nargs='?' , const=16 , metavar='#' , help='Identify/Write Pentatonic & Blues Scales (default 16)' )
+cliargs.add_argument( '--s-pentblues' , type=int , nargs='?' , const=10 , metavar='#' , help='Identify/Write Pentatonic & Blues Scales (default 10)' )
 
-cliargs.add_argument( '--s-modes' , type=int , nargs='?' , const=16 , metavar='#' , help='Identify/Write Modes (default 16)' )
+cliargs.add_argument( '--s-modes' , type=int , nargs='?' , const=10 , metavar='#' , help='Identify/Write Modes (default 10)' )
 
 cliargs.add_argument( '--all-simple-intervals' , type=int , nargs='?' , const=10 , metavar='#' , help='Identify/Write Hard Simple Intervals (default 10)' )
 
@@ -256,28 +256,36 @@ ScaleDegreeList = [ 'tonic (I)' , 'supertonic (ii)' , 'mediant (iii)' , 'subdomi
 ScaleDegreeDictKey = { 'C \\flat Maj.': [ 'C \\flat' , 'D \\flat' , 'E \\flat' , 'F \\flat' , 'G \\flat' , 'A \\flat' , 'B \\flat' ] , 'G \\flat Maj.': [ 'G \\flat' , 'A \\flat' , 'B \\flat' , 'C \\flat' , 'D \\flat' , 'E \\flat' , 'F' ] , 'D \\flat Maj.': [ 'D \\flat' , 'E \\flat' , 'F' , 'G \\flat' , 'A \\flat' , 'B \\flat' , 'C' ] , 'A \\flat Maj.': [ 'A \\flat' , 'B \\flat' , 'C' , 'D \\flat' , 'E \\flat' , 'F' , 'G'   ] , 'E \\flat Maj.': [ 'E \\flat' , 'F' , 'G' , 'A \\flat' , 'B \\flat' , 'C' , 'D'   ] , 'B \\flat Maj.': [ 'B \\flat' , 'C' , 'D' , 'E \\flat' , 'F' , 'G' , 'A'   ] , 'F Maj.': [ 'F' , 'G' , 'A' , 'B \\flat' , 'C' , 'D' , 'E'   ] , 'C Maj.': [  'C' , 'D' , 'E' , 'F' , 'G' , 'A' , 'B' ] , 'G Maj.': [ 'G' , 'A' , 'B' , 'C' , 'D' , 'E' , 'F \sharp' ] , 'D Maj.': [ 'D' , 'E' , 'F \sharp' , 'G' , 'A' , 'B' , 'C \sharp' ] , 'A Maj.': [ 'A' , 'B' , 'C \sharp' , 'D' , 'E' , 'F \sharp' , 'G \sharp' ] , 'E Maj.': [ 'E' , 'F \sharp' , 'G \sharp' , 'A' , 'B' , 'C \sharp' , 'D \sharp' ] , 'B Maj.': [ 'B' , 'C \sharp' , 'D \sharp' , 'E' , 'F \sharp' , 'G \sharp' , 'A \sharp' ] , 'F \sharp Maj.': [ 'F \sharp' , 'G \sharp' , 'A \sharp' , 'B' , 'C \sharp' , 'D \sharp' , 'E \sharp' ] , 'C \sharp Maj.': [ 'C \sharp' , 'D \sharp' , 'E \sharp' , 'F \sharp' , 'G \sharp' , 'A \sharp' , 'B \sharp' ]  }
 
 # Scales
-MinorScales = [ 'Natural Minor' , 'Harmonic Minor' , 'Melodic Minor' ]
-WrittenMajorStartingNotes = [ 'a C \\flat' , 'a G \\flat' , 'a D \\flat' , 'an A \\flat' , 'an E \\flat' , 'a B \\flat' , 'a F' , 'a C' , 'a G' , 'a D' , 'an A' , 'an E' , 'a B' , 'a F \\sharp' , 'a C \\sharp' ]
-WrittenMinorStartingNotes = [ 'an A \\flat' , 'an E \\flat' , 'a B \\flat' , 'a F' , 'a C' , 'a G' , 'a D' , 'an A' , 'an E' , 'a B' , 'a F \\sharp' , 'a C \\sharp' , 'a G \\sharp' , 'a D \\sharp' , 'an A \\sharp' ]
-IdentifyMajorScales = { 0 : 'ces1 des es fes ges aes bes ces', 1 : 'ges1 aes bes ces des es f ges', 2 : 'des1 es f ges aes bes c des', 3 : 'aes1 bes c des es f g aes', 4 : 'es1 f g aes bes c d es', 5 : 'bes1 c d es f g a bes', 6 : 'f1 g a bes c d e f', 7 : 'c1 d e f g a b c', 8 : 'g1 a b c d e fis g', 9 : 'd1 e fis g a b cis d', 10 : 'a1 b cis d e fis gis a', 11 : 'e1 fis gis a b cis dis e', 12 : 'b1 cis dis e fis gis ais b', 13 : 'fis1 gis ais b cis dis eis fis', 14 : 'cis1 dis eis fis gis ais bis cis' }
-IdentifyMinorScales = { 0 : 'aes1 bes ces des es fes ges aes', 1 : 'aes1 bes ces des es fes g aes', 2 : 'aes1 bes ces des es f g aes', 3 : 'es1 f ges aes bes ces des es', 4 : 'es1 f ges aes bes ces d es' , 5 : 'es1 f ges aes bes c d es' , 6 : 'bes1 c des es f ges aes bes' , 7 : 'bes1 c des es f ges a bes' , 8 : 'bes1 c des es f g a bes' , 9 : 'f1 g aes bes c des es f' , 10 : 'f1 g aes bes c des e f' , 11 : 'f1 g aes bes c d e f' , 12 : 'c1 d es f g aes bes c' , 13 : 'c1 d es f g aes b c' , 14 : 'c1 d es f g a b c' , 15 : 'g1 a bes c d es f g' , 16 : 'g1 a bes c d es fis g' , 17 : 'g1 a bes c d e fis g' , 18 : 'd1 e f g a bes c d' , 19 : 'd1 e f g a bes cis d' , 20 : 'd1 e f g a b cis d' , 21 : 'a1 b c d e f g a' , 22 : 'a1 b c d e f gis a' , 23 : 'a1 b c d e fis gis a' , 24 : 'e1 fis g a b c d e' , 25 : 'e1 fis g a b c dis e' , 26 : 'e1 fis g a b cis dis e' , 27 : 'b1 cis d e fis g a b' , 28 : 'b1 cis d e fis g ais b' , 29 : 'b1 cis d e fis gis ais b' , 30 : 'fis1 gis a b cis d e fis' , 31 : 'fis1 gis a b cis d eis fis' , 32 : 'fis1 gis a b cis dis eis fis' , 33 : 'cis1 dis e fis gis a b cis' , 34 : 'cis1 dis e fis gis a bis cis' , 35 : 'cis1 dis e fis gis ais bis cis' , 36 : 'gis1 ais b cis dis e fis gis' , 37 : 'gis1 ais b cis dis e fisis gis' , 38 : 'gis1 ais b cis dis eis fisis gis' , 39 : 'dis1 eis fis gis ais b cis dis' , 40 : 'dis1 eis fis gis ais b cisis dis' , 41 : 'dis1 eis fis gis ais bis cisis dis' , 42 : 'ais1 bis cis dis eis fis gis ais' , 43 : 'ais1 bis cis dis eis fis gisis ais' , 44 : 'ais1 bis cis dis eis fisis gisis ais' }
-MinorScalesKey = { 0 : 'aes1 bes ces des es fes ges aes', 1 : 'aes1 bes ces des es fes g aes', 2 : 'aes1 bes ces des es f g aes ges! fes! es des ces bes aes', 3 : 'es1 f ges aes bes ces des es', 4 : 'es1 f ges aes bes ces d es' , 5 : 'es1 f ges aes bes c d es des! ces! bes aes ges f es' , 6 : 'bes1 c des es f ges aes bes' , 7 : 'bes1 c des es f ges a bes' , 8 : 'bes1 c des es f g a bes aes! ges! f es des c bes' , 9 : 'f1 g aes bes c des es f' , 10 : 'f1 g aes bes c des e f' , 11 : 'f1 g aes bes c d e f es! des! c bes aes g f' , 12 : 'c1 d es f g aes bes c' , 13 : 'c1 d es f g aes b c' , 14 : 'c1 d es f g a b c bes! aes! g f es d c' , 15 : 'g1 a bes c d es f g' , 16 : 'g1 a bes c d es fis g' , 17 : 'g1 a bes c d e fis g f! es! d c bes a g' , 18 : 'd1 e f g a bes c d' , 19 : 'd1 e f g a bes cis d' , 20 : 'd1 e f g a b cis d c! bes! a g f e d' , 21 : 'a1 b c d e f g a' , 22 : 'a1 b c d e f gis a' , 23 : 'a1 b c d e fis gis a g! f! e d c b a' , 24 : 'e1 fis g a b c d e' , 25 : 'e1 fis g a b c dis e' , 26 : 'e1 fis g a b cis dis e d! c! b a g fis e' , 27 : 'b1 cis d e fis g a b' , 28 : 'b1 cis d e fis g ais b' , 29 : 'b1 cis d e fis gis ais b a! g! fis e d cis b' , 30 : 'fis1 gis a b cis d e fis' , 31 : 'fis1 gis a b cis d eis fis' , 32 : 'fis1 gis a b cis dis eis fis e! d! cis b a gis fis' , 33 : 'cis1 dis e fis gis a b cis' , 34 : 'cis1 dis e fis gis a bis cis' , 35 : 'cis1 dis e fis gis ais bis cis b! a! gis fis e dis cis' , 36 : 'gis1 ais b cis dis e fis gis' , 37 : 'gis1 ais b cis dis e fisis gis' , 38 : 'gis1 ais b cis dis eis fisis gis fis! e! dis cis b ais gis' , 39 : 'dis1 eis fis gis ais b cis dis' , 40 : 'dis1 eis fis gis ais b cisis dis' , 41 : 'dis1 eis fis gis ais bis cisis dis cis! b! ais gis fis eis dis' , 42 : 'ais1 bis cis dis eis fis gis ais' , 43 : 'ais1 bis cis dis eis fis gisis ais' , 44 : 'ais1 bis cis dis eis fisis gisis ais gis! fis! eis dis cis bis ais' }
-ChrOctWTScales = [ 'Chromatic' , 'Wholetone' , 'Octatonic' ]
-OctatonicChoice = [ 'semitone first' , 'wholetone first' ]
-ChromaticWrittenStartingNotes = [ 'a C \\flat' , 'a C' , 'a C \\sharp' , 'a D \\flat' , 'a D' , 'a D \\sharp' , 'an E \\flat' , 'an E' , 'an E \\sharp' , 'a F \\flat' , 'a F' , 'a F \\sharp' , 'a G \\flat' , 'a G' , 'a G \\sharp' , 'an A \\flat' , 'an A' , 'an A \\sharp' , 'a B \\flat' , 'a B' , 'a B \\sharp' ]
-ChromaticScalesKey = [ 'ces1 c! des d! es e! f fis g gis a bes ces \\bar "|" bes! a aes g ges f e es d des c ces \\bar "|"' , 'c1 cis d dis e f fis g gis a ais b c \\bar "|" b bes a aes g ges f e es d des c \\bar "|"' , 'cis1 d dis e f fis g gis a ais b bis cis \\bar "|" c b bes a aes g ges f e es d cis \\bar "|"' , 'des1 d! es e! f fis g gis a ais b c des \\bar "|" c b bes a aes g ges f e es d des \\bar "|"' , 'd1 dis e f fis g gis a ais b c cis d \\bar "|" des c b bes a aes g ges f e es d \\bar "|"' , 'dis1 e f fis g gis a ais b bis cis cisis dis \\bar "|" d cis c! b bes a aes g ges f e dis \\bar "|"' , 'es1 e! f fis g gis a ais b c cis d es \\bar "|" d des c b bes a aes g ges f e es \\bar "|"' , 'e1 f fis g gis a ais b c cis d dis e \\bar "|" es d des c b bes a aes g ges f e \\bar "|"', 'eis1 fis g gis a ais b bis cis cisis dis disis eis \\bar "|" e dis d! cis c! b bes a aes g fis eis \\bar "|"' , 'fes1 f! ges g! aes a! bes b! c cis d es fes \\bar "|" es d des c b bes a aes g ges f fes \\bar "|"' , 'f1 fis g gis a ais b c cis d dis e f \\bar "|" e es d des c b bes a aes g ges f \\bar "|"' , 'fis1 g gis a ais b c cis d dis e eis fis \\bar "|" f e es d des c b bes a aes g fis \\bar "|"' , 'ges1 g! aes a! bes b! c cis d dis e f ges \\bar "|" f e es d des c b bes a aes g ges \\bar "|"' , 'g1 gis a ais b c cis d dis e f fis g \\bar "|" ges f e es d des c b bes a aes g \\bar "|"' , 'gis1 a ais b c cis d dis e eis fis fisis gis \\bar "|" g fis f! e es d des c b bes a gis \\bar "|"' , 'aes1 a! bes b! c cis d dis e f fis g aes \\bar "|" g ges f e es d des c b bes a aes \\bar "|"' , 'a1 ais b c cis d dis e f fis g gis a \\bar "|" aes g ges f e es d des c b bes a \\bar "|"' , 'ais1 b c cis d dis e eis fis fisis gis gisis ais \\bar "|" a gis g! fis f! e es d des c b ais \\bar "|"' , 'bes1 b! c cis d dis e f fis g gis a bes \\bar "|" a aes g ges f e es d des c b bes \\bar "|"' , 'b1 c cis d dis e f fis g gis a ais b \\bar "|" bes a aes g ges f e es d des c b \\bar "|"' , 'bis1 cis d dis e eis fis fisis gis gisis ais aisis bis \\bar "|" b ais a! gis g! fis f! e es d cis bis \\bar "|"' ]
-IdentifyChromaticScales = [ 'ces1 c! des d! es e! f fis g gis a bes ces' , 'c1 cis d dis e f fis g gis a ais b c' , 'cis1 d dis e f fis g gis a ais b c cis' , 'des1 d! es e! f fis g gis a ais b c des' , 'd1 dis e f fis g gis a ais b c cis d' , 'dis1 e f fis g gis a ais b c cis d dis' , 'es1 e! f fis g gis a ais b c cis d es' , 'e1 f fis g gis a ais b c cis d dis e', 'eis1 fis g gis a ais b c cis d dis e eis' , 'fes1 f! ges g! aes a! bes b! c cis d dis fes' , 'f1 fis g gis a ais b c cis d dis e f' , 'fis1 g gis a ais b c cis d dis e f fis' , 'ges1 g! aes a! bes b! c cis d dis e f ges' , 'g1 gis a ais b c cis d dis e f fis g' , 'gis1 a ais b c cis d dis e f fis g gis' , 'aes1 a! bes b! c cis d dis e f fis g aes' , 'a1 ais b c cis d dis e f fis g gis a' , 'ais1 b c cis d dis e f fis g gis a ais' , 'bes1 b! c cis d dis e f fis g gis a bes' , 'b1 c cis d dis e f fis g gis a ais b' , 'bis1 cis d dis e f fis g gis a ais b bis' ]
-IdentifyWholetoneScales = [ 'ces1 des es f g a ces' , 'c1 d e fis gis ais c' , 'cis1 dis f g a b cis' , 'des1 es f g a b des' , 'd1 e fis gis ais c d' , 'dis1 f g a b cis dis' , 'es1 f g a b des es' , 'e1 fis gis ais c d e' , 'eis1 g a b cis dis eis' , 'fes1 ges aes bes c d fes' , 'f1 g a b cis dis f' , 'fis1 gis ais c d e fis' , 'ges1 aes bes c d e ges' , 'g1 a b cis dis f g' , 'gis1 ais c d e fis gis' , 'aes1 bes c d e ges aes' , 'a1 b cis dis f g a' , 'ais1 c d e fis gis ais' , 'bes1 c d e fis gis bes' , 'b1 cis dis f g a b' , 'bis1 d e fis gis ais bis' ]
-IdentifyOctatonicScales = [ 'ces1 c! d es f ges aes a ces' , 'ces1 des d! e f g aes bes ces' , 'c1 des es e! fis g a bes c' , 'c1 d es f ges aes a! b c' , 'cis1 d e f g aes bes b! cis' , 'cis1 dis e fis g a bes c cis' , 'des1 d! e f g aes bes ces des' , 'des1 es e! fis g a bes c des' , 'd1 es f ges aes a! ces c d' , 'd1 e f g aes bes ces des d!' , 'dis1 e fis g a bes c cis dis' , 'dis1 f ges aes a! ces c! d dis' , 'es1 e! fis g a bes c des es' , 'es1 f ges aes a! b c d es' , 'e1 f g aes bes ces des d! e' , 'e1 fis g a bes c des es e!' , 'eis1 fis gis a b c d dis eis' , 'eis1 g aes bes ces des d! e eis' , 'fes1 f! g aes bes ces des d! fes' , 'fes1 ges g! a bes c des es fes' , 'f1 fis gis a b c d dis f' , 'f1 g aes bes ces des d! e f' , 'fis1 g a bes c des es e! fis' , 'fis1 gis a b c d dis f fis' , 'ges1 g! a bes c des es fes ges' , 'ges1 aes a! b c d es f ges' , 'g1 aes bes ces des d! e f g' , 'g1 a bes c des es e! fis g' , 'gis1 a b c d es f fis gis' , 'gis1 ais b cis d e f g gis' , 'aes1 a! b c d es f ges aes' , 'aes1 bes ces des d! e f g aes' , 'a1 bes c des es e! fis g a' , 'a1 b c d es f ges aes a!' , 'ais1 b cis d e f g gis ais' , 'ais1 c des es e! fis g a ais' , 'bes1 b! cis d e f g aes bes' , 'bes1 c des es e! fis g a bes' , 'b1 c d es f ges aes a! b' , 'b1 cis d e f g aes bes b!' , 'bis1 cis dis e fis g a ais bis' , 'bis1 d dis f fis gis a b bis' ]
-IdentifyOctatonicScalesKey = [ 'C \\flat Octatonic Semitone First' , 'C \\flat Octatonic Wholetone First' , 'C Octatonic Semitone First' , 'C Octatonic Wholetone First' , 'C \sharp Octatonic Semitone First' , 'C \sharp Octatonic Wholetone First' , 'D \\flat Octatonic Semitone First' , 'D \\flat Octatonic Wholetone First' , 'D Octatonic Semitone First' , 'D Octatonic Wholetone First' , 'D \sharp Octatonic Semitone First' , 'D \sharp Octatonic Wholetone First' , 'E \\flat Octatonic Semitone First' , 'E \\flat Octatonic Wholetone First' , 'E Octatonic Semitone First' , 'E Octatonic Wholetone First' , 'E \sharp Octatonic Semitone First' , 'E \sharp Octatonic Wholetone First' , 'F \\flat Octatonic Semitone First' , 'F \\flat Octatonic Wholetone First' , 'F Octatonic Semitone First' , 'F Octatonic Wholetone First' , 'F \sharp Octatonic Semitone First' , 'F \sharp Octatonic Wholetone First' , 'G \\flat Octatonic Semitone First' , 'G \\flat Octatonic Wholetone First' , 'G Octatonic Semitone First' , 'G Octatonic Wholetone First' , 'G \sharp Octatonic Semitone First' , 'G \sharp Octatonic Wholetone First' , 'A \\flat Octatonic Semitone First' , 'A \\flat Octatonic Wholetone First' , 'A Octatonic Semitone First' , 'A Octatonic Wholetone First' , 'A \sharp Octatonic Semitone First' , 'A \sharp Octatonic Wholetone First' , 'B \\flat Octatonic Semitone First' , 'B \\flat Octatonic Wholetone First' , 'B Octatonic Semitone First' , 'B Octatonic Wholetone First' , 'B \sharp Octatonic Semitone First' , 'B \sharp Octatonic Wholetone First' ]
-MajorPentScaleWrittenStartingNotes = WrittenMajorStartingNotes
-MinorPentScaleWrittenStartingNotes = WrittenMinorStartingNotes
-BluesScaleWrittenStartingNotes = WrittenMinorStartingNotes
-IdentifyMajorPentScales = { 0 : 'ces1 des es ges aes ces', 1 : 'ges1 aes bes des es ges', 2 : 'des1 es f aes bes des', 3 : 'aes1 bes c es f aes', 4 : 'es1 f g bes c es', 5 : 'bes1 c d f g bes', 6 : 'f1 g a c d f', 7 : 'c1 d e g a c', 8 : 'g1 a b d e g', 9 : 'd1 e fis a b d', 10 : 'a1 b cis e fis a', 11 : 'e1 fis gis b cis e', 12 : 'b1 cis dis fis gis b', 13 : 'fis1 gis ais cis dis fis', 14 : 'cis1 dis eis gis ais cis' }
-IdentifyMinorPentScales = { 0 : 'aes1 ces des es ges aes', 3 : 'es1 ges aes bes des es', 6 : 'bes1 des es f aes bes' , 9 : 'f1 aes bes c es f' , 12 : 'c1 es f g bes c' , 15 : 'g1 bes c d f g' , 18 : 'd1 f g a c d' , 21 : 'a1 c d e g a' , 24 : 'e1 g a b d e' , 27 : 'b1 d e fis a b' , 30 : 'fis1 a b cis e fis' , 33 : 'cis1 e fis gis b cis' , 36 : 'gis1 b cis dis fis gis' , 39 : 'dis1 fis gis ais cis dis' , 42 : 'ais1 cis dis eis gis ais' }
-IdentifyBluesScales = { 0 : 'aes1 ces des d es ges aes', 3 : 'es1 ges aes a bes des es', 6 : 'bes1 des es e f aes bes' , 9 : 'f1 aes bes b c es f' , 12 : 'c1 es f fis g bes c' , 15 : 'g1 bes c cis d f g' , 18 : 'd1 f g gis a c d' , 21 : 'a1 c d dis e g a' , 24 : 'e1 g a ais b d e' , 27 : 'b1 d e eis fis a b' , 30 : 'fis1 a b bis cis e fis' , 33 : 'cis1 e fis fisis gis b cis' , 36 : 'gis1 b cis cisis dis fis gis' , 39 : 'dis1 fis gis gisis ais cis dis' , 42 : 'ais1 cis dis disis eis gis ais' }
-ModesScales = { 0 : 'a C Ionian' , 1 : 'a D Dorian' , 2 : 'an E Phrygian' , 3 : 'a F Lydian' , 4 : 'a G Mixolydian' , 5 : 'an A Aeolian' , 6 : 'a B Locrian' , 7 : 'a G Ionian' , 8 : 'an A Dorian' , 9 : 'a B Phrygian' , 10 : 'a C Lydian' , 11 : 'a D Mixolydian' , 12 : 'an E Aeolian' , 13 : 'a F \sharp Locrian' , 14 : 'a D Ionian' , 15 : 'an E Dorian' , 16 : 'a F \sharp Phrygian' , 17 : 'a G Lydian' , 18 : 'an A Mixolydian' , 19 : 'a B Aeolian' , 20 : 'a C \sharp Locrian' , 21 : 'an A Ionian' , 22 : 'a B Dorian' , 23 : 'a C \sharp Phrygian' , 24 : 'a D Lydian' , 25 : 'an E Mixolydian' , 26 : 'a F \sharp Aeolian' , 27 : 'a G \sharp Locrian' , 28 : 'an E Ionian' , 29 : 'a F \sharp Dorian' , 30 : 'a G \sharp Phrygian' , 31 : 'an A Lydian' , 32 : 'a B Mixolydian' , 33 : 'a C \sharp Aeolian' , 34 : 'a D \sharp Locrian' , 35 : 'a B Ionian' , 36 : 'a C \sharp Dorian' , 37 : 'a D \sharp Phrygian' , 38 : 'an E Lydian' , 39 : 'a F \sharp Mixolydian' , 40 : 'a G \sharp Aeolian' , 41 : 'an A \sharp Locrian' , 42 : 'a F \sharp Ionian' , 43 : 'a G \sharp Dorian' , 44 : 'an A \sharp Phrygian' , 45 : 'a B Lydian' , 46 : 'a C \sharp Mixolydian' , 47 : 'a D \sharp Aeolian' , 48 : 'an E \sharp Locrian' , 49 : 'a C \sharp Ionian' , 50 : 'a D \sharp Dorian' , 51 : 'an E \sharp Phrygian' , 52 : 'a F \sharp Lydian' , 53 : 'a G \sharp Mixolydian' , 54 : 'an A \sharp Aeolian' , 55 : 'a B \sharp Locrian' , 56 : 'a F Ionian' , 57 : 'a G Dorian' , 58 : 'an A Phrygian' , 59 : 'a B \\flat Lydian' , 60 : 'a C Mixolydian' , 61 : 'a D Aeolian' , 62 : 'an E Locrian' , 63 : 'a B \\flat Ionian' , 64 : 'a C Dorian' , 65 : 'a D Phrygian' , 66 : 'an E \\flat Lydian' , 67 : 'a F Mixolydian' , 68 : 'a G Aeolian' , 69 : 'an A Locrian' , 70 : 'an E \\flat Ionian' , 71 : 'a F Dorian' , 72 : 'a G Phrygian' , 73 : 'an A \\flat Lydian' , 74 : 'a B \\flat Mixolydian' , 75 : 'a C Aeolian' , 76 : 'a D Locrian' , 77 : 'an A \\flat Ionian' , 78 : 'a B \\flat Dorian' , 79 : 'a C Phrygian' , 80 : 'a D \\flat Lydian' , 81 : 'an E \\flat Mixolydian' , 82 : 'a F Aeolian' , 83 : 'a G Locrian' , 84 : 'a D \\flat Ionian' , 85 : 'an E \\flat Dorian' , 86 : 'a F Phrygian' , 87 : 'a G \\flat Lydian' , 88 : 'an A \\flat Mixolydian' , 89 : 'a B \\flat Aeolian' , 90 : 'a C Locrian' , 91 : 'a G \\flat Ionian' , 92 : 'an A \\flat Dorian' , 93 : 'a B \\flat Phrygian' , 94 : 'a C \\flat Lydian' , 95 : 'a D \\flat Mixolydian' , 96 : 'an E \\flat Aeolian' , 97 : 'a F Lorian' , 98 : 'a C \\flat Ionian' , 99 : 'a D \\flat Dorian' , 100 : 'an E \\flat Phrygian' , 101 : 'a F \\flat Lydian' , 102 : 'a G \\flat Mixolydian' , 103 : 'an A \\flat Aeolian' , 104 : 'a B \\flat Locrian' }
-IdentifyModeScales = { 0 : 'c1 d e f g a b c' , 1 : 'd1 e f g a b c d' , 2 : 'e1 f g a b c d e' , 3 : 'f1 g a b c d e f' , 4 : 'g1 a b c d e f g' , 5 : 'a1 b c d e f g a' , 6 : 'b1 c d e f g a b' , 7 : 'g1 a b c d e fis g' , 8 : 'a1 b c d e fis g a' , 9 : 'b1 c d e fis g a b' , 10 : 'c1 d e fis g a b c' , 11 : 'd1 e fis g a b c d' , 12 : 'e1 fis g a b c d e' , 13 : 'fis1 g a b c d e fis' , 14 : 'd1 e fis g a b cis d' , 15 : 'e1 fis g a b cis d e' , 16 : 'fis1 g a b cis d e fis' , 17 : 'g1 a b cis d e fis g' , 18 : 'a1 b cis d e fis g a' , 19 : 'b1 cis d e fis g a b' , 20 : 'cis1 d e fis g a b cis' , 21 : 'a1 b cis d e fis gis a' , 22 : 'b1 cis d e fis gis a b' , 23 : 'cis1 d e fis gis a b cis' , 24 : 'd1 e fis gis a b cis d' , 25 : 'e1 fis gis a b cis d e' , 26 : 'fis1 gis a b cis d e fis' , 27 : 'gis1 a b cis d e fis gis' , 28 : 'e1 fis gis a b cis dis e' , 29 : 'fis1 gis a b cis dis e fis' , 30 : 'gis1 a b cis dis e fis gis' , 31 : 'a1 b cis dis e fis gis a' , 32 : 'b1 cis dis e fis gis a b' , 33 : 'cis1 dis e fis gis a b cis' , 34 : 'dis1 e fis gis a b cis dis' , 35 : 'b1 cis dis e fis gis ais b' , 36 : 'cis1 dis e fis gis ais b cis' , 37 : 'dis1 e fis gis ais b cis dis' , 38 : 'e1 fis gis ais b cis dis e' , 39 : 'fis1 gis ais b cis dis e fis' , 40 : 'gis1 ais b cis dis e fis gis' , 41 : 'ais1 b cis dis e fis gis ais' , 42 : 'fis1 gis ais b cis dis eis fis' , 43 : 'gis1 ais b cis dis eis fis gis' , 44 : 'ais1 b cis dis eis fis gis ais' , 45 : 'b1 cis dis eis fis gis ais b' , 46 : 'cis1 dis eis fis gis ais b cis' , 47 : 'dis1 eis fis gis ais b cis dis' , 48 : 'eis1 fis gis ais b cis dis eis' , 49 : 'cis1 dis eis fis gis ais bis cis' , 50 : 'dis1 eis fis gis ais bis cis dis' , 51 : 'eis1 fis gis ais bis cis dis eis' , 52 : 'fis1 gis ais bis cis dis eis fis' , 53 : 'gis1 ais bis cis dis eis fis gis' , 54 : 'ais1 bis cis dis eis fis gis ais' , 55 : 'bis1 cis dis eis fis gis ais bis' , 56 : 'f1 g a bes c d e f' , 57 : 'g1 a bes c d e f g' , 58 : 'a1 bes c d e f g a' , 59 : 'bes1 c d e f g a bes' , 60 : 'c1 d e f g a bes c' , 61 : 'd1 e f g a bes c d' , 62 : 'e1 f g a bes c d e' , 63 : 'bes1 c d es f g a bes' , 64 : 'c1 d es f g a bes c' , 65 : 'd1 es f g a bes c d' , 66 : 'es1 f g a bes c d es' , 67 : 'f1 g a bes c d es f' , 68 : 'g1 a bes c d es f g' , 69 : 'a1 bes c d es f g a' , 70 : 'es1 f g aes bes c d es' , 71 : 'f1 g aes bes c d es f' , 72 : 'g1 aes bes c d es f g' , 73 : 'aes1 bes c d es f g aes' , 74 : 'bes1 c d es f g aes bes' , 75 : 'c1 d es f g aes bes c' , 76 : 'd1 es f g aes bes c d' , 77 : 'aes1 bes c des es f g aes' , 78 : 'bes1 c des es f g aes bes' , 79 : 'c1 des es f g aes bes c' , 80 : 'des1 es f g aes bes c des' , 81 : 'es1 f g aes bes c des es' , 82 : 'f1 g aes bes c des es f' , 83 : 'g1 aes bes c des es f g' , 84 : 'des1 es f ges aes bes c des' , 85 : 'es1 f ges aes bes c des es' , 86 : 'f1 ges aes bes c des es f' , 87 : 'ges1 aes bes c des es f ges' , 88 : 'aes1 bes c des es f ges aes' , 89 : 'bes1 c des es f ges aes bes' , 90 : 'c1 des es f ges aes bes c' , 91 : 'ges1 aes bes ces des es f ges' , 92 : 'aes1 bes ces des es f ges aes' , 93 : 'bes1 ces des es f ges aes bes' , 94 : 'ces1 des es f ges aes bes ces' , 95 : 'des1 es f ges aes bes ces des' , 96 : 'es1 f ges aes bes ces des es' , 97 : 'f1 ges aes bes ces des es f' , 98 : 'ces1 des es fes ges aes bes ces' , 99 : 'des1 es fes ges aes bes ces des' , 100 : 'es1 fes ges aes bes ces des es' , 101 : 'fes1 ges aes bes ces des es fes' , 102 : 'ges1 aes bes ces des es fes ges' , 103 : 'aes1 bes ces des es fes ges aes' , 104 : 'bes1 ces des es fes ges aes bes' }
+MajorScalesList = [ 'ces1 des es fes ges aes bes ces' , 'ges1 aes bes ces des es f ges' , 'des1 es f ges aes bes c des' , 'aes1 bes c des es f g aes' , 'es1 f g aes bes c d es' , 'bes1 c d es f g a bes' , 'f1 g a bes c d e f' , 'c1 d e f g a b c' , 'g1 a b c d e fis g' , 'd1 e fis g a b cis d' , 'a1 b cis d e fis gis a' , 'e1 fis gis a b cis dis e' , 'b1 cis dis e fis gis ais b' , 'fis1 gis ais b cis dis eis fis' , 'cis1 dis eis fis gis ais bis cis' ]
+MajorScalesListKeySigs = [ '\key ces \major' , '\key ges \major' , '\key des \major' , '\key aes \major' , '\key es \major' , '\key bes \major' , '\key f \major' , '\key c \major' , '\key g \major' , '\key d \major' , '\key a \major' , '\key e \major' , '\key b \major' , '\key fis \major' , '\key cis \major' ]
+MajorScalesListTitles = [ 'C \\flat Major' , 'G \\flat Major' , 'D \\flat Major' , 'A \\flat Major' , 'E \\flat Major' , 'B \\flat Major' , 'F Major' , 'C Major' , 'G Major' , 'D Major' , 'A Major' , 'E Major' , 'B Major' , 'F \sharp Major' , 'C \sharp Major' ]
+MinorNatScalesList = [ 'aes1 bes ces des es fes ges aes' , 'es1 f ges aes bes ces des es' , 'bes1 c des es f ges aes bes' , 'f g aes bes c des es f' , 'c1 d es f g aes bes c' , 'g1 a bes c d es f g' , 'd1 e f g a bes c d' , 'a1 b c d e f g a' , 'e1 fis g a b c d e' , 'b1 cis d e fis g a b' , 'fis1 gis a b cis d e fis' , 'cis1 dis e fis gis a b cis' , 'gis1 ais b cis dis e fis gis' , 'dis1 eis fis gis ais b cis dis' , 'ais1 bis cis dis eis fis gis ais' ]
+MinorNatScalesListKeySigs = [ '\key aes \minor' , '\key es \minor' , '\key bes \minor' , '\key f \minor' , '\key c \minor' , '\key g \minor' , '\key d \minor' , '\key a \minor' , '\key e \minor' , '\key b \minor' , '\key fis \minor' , '\key cis \minor' , '\key gis \minor' , '\key dis \minor' , '\key ais \minor' ]
+MinorNatScalesListTitles = [ 'A \\flat Natural Minor' , 'E \\flat Natural Minor' , 'B \\flat Natural Minor' , 'F Natural Minor' , 'C Natural Minor' , 'G Natural Minor' , 'D Natural Minor' , 'A Natural Minor' , 'E Natural Minor' , 'B Natural Minor' , 'F \sharp Natural Minor' , 'C \sharp Natural Minor' , 'G \sharp Natural Minor' , 'D \sharp Natural Minor' , 'A \sharp Natural Minor' ]
+MinorHarScalesList = [ 'aes1 bes ces des es fes g aes' , 'es1 f ges aes bes ces d es' , 'bes1 c des es f ges a bes' , 'f g aes bes c des e f' , 'c1 d es f g aes b c' , 'g1 a bes c d es fis g' , 'd1 e f g a bes cis d' , 'a1 b c d e f gis a' , 'e1 fis g a b c dis e' , 'b1 cis d e fis g ais b' , 'fis1 gis a b cis d eis fis' , 'cis1 dis e fis gis a bis cis' , 'gis1 ais b cis dis e fisis gis' , 'dis1 eis fis gis ais b cisis dis' , 'ais1 bis cis dis eis fis gisis ais' ]
+MinorHarScalesListTitles = [ 'A \\flat Harmonic Minor' , 'E \\flat Harmonic Minor' , 'B \\flat Harmonic Minor' , 'F Harmonic Minor' , 'C Harmonic Minor' , 'G Harmonic Minor' , 'D Harmonic Minor' , 'A Harmonic Minor' , 'E Harmonic Minor' , 'B Harmonic Minor' , 'F \sharp Harmonic Minor' , 'C \sharp Harmonic Minor' , 'G \sharp Harmonic Minor' , 'D \sharp Harmonic Minor' , 'A \sharp Harmonic Minor' ]
+MinorMelWrittenScalesList = [ 'aes1 bes ces des es f g aes ges! fes! es des ces bes aes' , 'es1 f ges aes bes c d es des! ces! bes aes ges f es' , 'bes1 c des es f g a bes aes! ges! f es des c bes' , 'f g aes bes c d e f es! des! c bes aes g f' , 'c1 d es f g a b c bes! aes! g f es d c' , 'g1 a bes c d e fis g f! es! d c bes a g' , 'd1 e f g a b cis d c! bes! a g f e d' , 'a1 b c d e fis gis a g! f! e d c b a' , 'e1 fis g a b cis dis e d! c! b a g fis e' , 'b1 cis d e fis gis ais b a! g! fis e d cis b' , 'fis1 gis a b cis dis eis fis e! d! cis b a gis fis' , 'cis1 dis e fis gis ais bis cis b! a! gis fis e dis cis' , 'gis1 ais b cis dis eis fisis gis fis! e! dis cis b ais gis' , 'dis1 eis fis gis ais bis cisis dis cis! b! ais gis fis eis dis' , 'ais1 bis cis dis eis fisis gisis ais gis! fis! eis dis cis bis ais' ]
+MinorMelIdentifyScalesList = [ 'aes1 bes ces des es f g aes' , 'es1 f ges aes bes c d es' , 'bes1 c des es f g a bes' , 'f g aes bes c d e f' , 'c1 d es f g a b c' , 'g1 a bes c d e fis g' , 'd1 e f g a b cis d' , 'a1 b c d e fis gis a' , 'e1 fis g a b cis dis e' , 'b1 cis d e fis gis ais b' , 'fis1 gis a b cis dis eis fis' , 'cis1 dis e fis gis ais bis cis' , 'gis1 ais b cis dis eis fisis gis' , 'dis1 eis fis gis ais bis cisis dis' , 'ais1 bis cis dis eis fisis gisis ais' ]
+MinorMelScalesListTitles = [ 'A \\flat Melodic Minor' , 'E \\flat Melodic Minor' , 'B \\flat Melodic Minor' , 'F Melodic Minor' , 'C Melodic Minor' , 'G Melodic Minor' , 'D Melodic Minor' , 'A Melodic Minor' , 'E Melodic Minor' , 'B Melodic Minor' , 'F \sharp Melodic Minor' , 'C \sharp Melodic Minor' , 'G \sharp Melodic Minor' , 'D \sharp Melodic Minor' , 'A \sharp Melodic Minor' ]
+ChromaticWrittenScalesList = [ 'ces1 c! des d! es e! f fis g gis a bes ces \\bar "|" bes! a aes g ges f e es d des c ces \\bar "|"' , 'c1 cis d dis e f fis g gis a ais b c \\bar "|" b bes a aes g ges f e es d des c \\bar "|"' , 'cis1 d dis e f fis g gis a ais b bis cis \\bar "|" c b bes a aes g ges f e es d cis \\bar "|"' , 'des1 d! es e! f fis g gis a ais b c des \\bar "|" c b bes a aes g ges f e es d des \\bar "|"' , 'd1 dis e f fis g gis a ais b c cis d \\bar "|" des c b bes a aes g ges f e es d \\bar "|"' , 'dis1 e f fis g gis a ais b bis cis cisis dis \\bar "|" d cis c! b bes a aes g ges f e dis \\bar "|"' , 'es1 e! f fis g gis a ais b c cis d es \\bar "|" d des c b bes a aes g ges f e es \\bar "|"' , 'e1 f fis g gis a ais b c cis d dis e \\bar "|" es d des c b bes a aes g ges f e \\bar "|"', 'eis1 fis g gis a ais b bis cis cisis dis disis eis \\bar "|" e dis d! cis c! b bes a aes g fis eis \\bar "|"' , 'fes1 f! ges g! aes a! bes b! c cis d es fes \\bar "|" es d des c b bes a aes g ges f fes \\bar "|"' , 'f1 fis g gis a ais b c cis d dis e f \\bar "|" e es d des c b bes a aes g ges f \\bar "|"' , 'fis1 g gis a ais b c cis d dis e eis fis \\bar "|" f e es d des c b bes a aes g fis \\bar "|"' , 'ges1 g! aes a! bes b! c cis d dis e f ges \\bar "|" f e es d des c b bes a aes g ges \\bar "|"' , 'g1 gis a ais b c cis d dis e f fis g \\bar "|" ges f e es d des c b bes a aes g \\bar "|"' , 'gis1 a ais b c cis d dis e eis fis fisis gis \\bar "|" g fis f! e es d des c b bes a gis \\bar "|"' , 'aes1 a! bes b! c cis d dis e f fis g aes \\bar "|" g ges f e es d des c b bes a aes \\bar "|"' , 'a1 ais b c cis d dis e f fis g gis a \\bar "|" aes g ges f e es d des c b bes a \\bar "|"' , 'ais1 b c cis d dis e eis fis fisis gis gisis ais \\bar "|" a gis g! fis f! e es d des c b ais \\bar "|"' , 'bes1 b! c cis d dis e f fis g gis a bes \\bar "|" a aes g ges f e es d des c b bes \\bar "|"' , 'b1 c cis d dis e f fis g gis a ais b \\bar "|" bes a aes g ges f e es d des c b \\bar "|"' , 'bis1 cis d dis e eis fis fisis gis gisis ais aisis bis \\bar "|" b ais a! gis g! fis f! e es d cis bis \\bar "|"' ]
+ChromaticIdentifyScalesList = [ 'ces1 c! des d! es e! f fis g gis a bes ces' , 'c1 cis d dis e f fis g gis a ais b c' , 'cis1 d dis e f fis g gis a ais b c cis' , 'des1 d! es e! f fis g gis a ais b c des' , 'd1 dis e f fis g gis a ais b c cis d' , 'dis1 e f fis g gis a ais b c cis d dis' , 'es1 e! f fis g gis a ais b c cis d es' , 'e1 f fis g gis a ais b c cis d dis e', 'eis1 fis g gis a ais b c cis d dis e eis' , 'fes1 f! ges g! aes a! bes b! c cis d dis fes' , 'f1 fis g gis a ais b c cis d dis e f' , 'fis1 g gis a ais b c cis d dis e f fis' , 'ges1 g! aes a! bes b! c cis d dis e f ges' , 'g1 gis a ais b c cis d dis e f fis g' , 'gis1 a ais b c cis d dis e f fis g gis' , 'aes1 a! bes b! c cis d dis e f fis g aes' , 'a1 ais b c cis d dis e f fis g gis a' , 'ais1 b c cis d dis e f fis g gis a ais' , 'bes1 b! c cis d dis e f fis g gis a bes' , 'b1 c cis d dis e f fis g gis a ais b' , 'bis1 cis d dis e f fis g gis a ais b bis' ]
+ChromaticScalesListTitles = [ 'C \\flat Chromatic' , 'C Chromatic' , 'C \\sharp Chromatic' , 'D \\flat Chromatic' , 'D Chromatic' , 'D \\sharp Chromatic' , 'E \\flat Chromatic' , 'E Chromatic' , 'E \\sharp Chromatic' , 'F \\flat Chromatic' , 'F Chromatic' , 'F \\sharp Chromatic' , 'G \\flat Chromatic' , 'G Chromatic' , 'G \\sharp Chromatic' , 'A \\flat Chromatic' , 'A Chromatic' , 'A \\sharp Chromatic' , 'B \\flat Chromatic' , 'B Chromatic' , 'B \\sharp Chromatic' ]
+WholetoneScalesList = [ 'ces1 des es f g a ces' , 'c1 d e fis gis ais c' , 'cis1 dis f g a b cis' , 'des1 es f g a b des' , 'd1 e fis gis ais c d' , 'dis1 f g a b cis dis' , 'es1 f g a b des es' , 'e1 fis gis ais c d e' , 'eis1 g a b cis dis eis' , 'fes1 ges aes bes c d fes' , 'f1 g a b cis dis f' , 'fis1 gis ais c d e fis' , 'ges1 aes bes c d e ges' , 'g1 a b cis dis f g' , 'gis1 ais c d e fis gis' , 'aes1 bes c d e ges aes' , 'a1 b cis dis f g a' , 'ais1 c d e fis gis ais' , 'bes1 c d e fis gis bes' , 'b1 cis dis f g a b' , 'bis1 d e fis gis ais bis' ]
+WholetoneScalesListTitles = [ 'C \\flat Wholetone' , 'C Wholetone' , 'C \sharp Wholetone' , 'D \\flat Wholetone' , 'D Wholetone' , 'D \sharp Wholetone' , 'E \\flat Wholetone' , 'E Wholetone' , 'E \sharp Wholetone' , 'F \\flat Wholetone' , 'F Wholetone' , 'F \sharp Wholetone' , 'G \\flat Wholetone' , 'G Wholetone' , 'G \sharp Wholetone' , 'A \\flat Wholetone' , 'A Wholetone' , 'A \sharp Wholetone' , 'B \\flat Wholetone' , 'B Wholetone' , 'B \sharp Wholetone' ]
+OctatonicScalesList = [ 'ces1 c! d es f ges aes a ces' , 'ces1 des d! e f g aes bes ces' , 'c1 des es e! fis g a bes c' , 'c1 d es f ges aes a! b c' , 'cis1 d e f g aes bes b! cis' , 'cis1 dis e fis g a bes c cis' , 'des1 d! e f g aes bes ces des' , 'des1 es e! fis g a bes c des' , 'd1 es f ges aes a! ces c d' , 'd1 e f g aes bes ces des d!' , 'dis1 e fis g a bes c cis dis' , 'dis1 f ges aes a! ces c! d dis' , 'es1 e! fis g a bes c des es' , 'es1 f ges aes a! b c d es' , 'e1 f g aes bes ces des d! e' , 'e1 fis g a bes c des es e!' , 'eis1 fis gis a b c d dis eis' , 'eis1 g aes bes ces des d! e eis' , 'fes1 f! g aes bes ces des d! fes' , 'fes1 ges g! a bes c des es fes' , 'f1 fis gis a b c d dis f' , 'f1 g aes bes ces des d! e f' , 'fis1 g a bes c des es e! fis' , 'fis1 gis a b c d dis f fis' , 'ges1 g! a bes c des es fes ges' , 'ges1 aes a! b c d es f ges' , 'g1 aes bes ces des d! e f g' , 'g1 a bes c des es e! fis g' , 'gis1 a b c d es f fis gis' , 'gis1 ais b cis d e f g gis' , 'aes1 a! b c d es f ges aes' , 'aes1 bes ces des d! e f g aes' , 'a1 bes c des es e! fis g a' , 'a1 b c d es f ges aes a!' , 'ais1 b cis d e f g gis ais' , 'ais1 c des es e! fis g a ais' , 'bes1 b! cis d e f g aes bes' , 'bes1 c des es e! fis g a bes' , 'b1 c d es f ges aes a! b' , 'b1 cis d e f g aes bes b!' , 'bis1 cis dis e fis g a ais bis' , 'bis1 d dis f fis gis a b bis' ]
+OctatonicScalesListTitles = [ 'C \\flat Octatonic Semitone First' , 'C \\flat Octatonic Wholetone First' , 'C Octatonic Semitone First' , 'C Octatonic Wholetone First' , 'C \sharp Octatonic Semitone First' , 'C \sharp Octatonic Wholetone First' , 'D \\flat Octatonic Semitone First' , 'D \\flat Octatonic Wholetone First' , 'D Octatonic Semitone First' , 'D Octatonic Wholetone First' , 'D \sharp Octatonic Semitone First' , 'D \sharp Octatonic Wholetone First' , 'E \\flat Octatonic Semitone First' , 'E \\flat Octatonic Wholetone First' , 'E Octatonic Semitone First' , 'E Octatonic Wholetone First' , 'E \sharp Octatonic Semitone First' , 'E \sharp Octatonic Wholetone First' , 'F \\flat Octatonic Semitone First' , 'F \\flat Octatonic Wholetone First' , 'F Octatonic Semitone First' , 'F Octatonic Wholetone First' , 'F \sharp Octatonic Semitone First' , 'F \sharp Octatonic Wholetone First' , 'G \\flat Octatonic Semitone First' , 'G \\flat Octatonic Wholetone First' , 'G Octatonic Semitone First' , 'G Octatonic Wholetone First' , 'G \sharp Octatonic Semitone First' , 'G \sharp Octatonic Wholetone First' , 'A \\flat Octatonic Semitone First' , 'A \\flat Octatonic Wholetone First' , 'A Octatonic Semitone First' , 'A Octatonic Wholetone First' , 'A \sharp Octatonic Semitone First' , 'A \sharp Octatonic Wholetone First' , 'B \\flat Octatonic Semitone First' , 'B \\flat Octatonic Wholetone First' , 'B Octatonic Semitone First' , 'B Octatonic Wholetone First' , 'B \sharp Octatonic Semitone First' , 'B \sharp Octatonic Wholetone First' ]
+MajorPentScalesList = [ 'ces1 des es ges aes ces' , 'ges1 aes bes des es ges' , 'des1 es f aes bes des' , 'aes1 bes c es f aes' , 'es1 f g bes c es' , 'bes1 c d f g bes' , 'f1 g a c d f' , 'c1 d e g a c' , 'g1 a b d e g' , 'd1 e fis a b d' , 'a1 b cis e fis a' , 'e1 fis gis b cis e' , 'b1 cis dis fis gis b' , 'fis1 gis ais cis dis fis' , 'cis1 dis eis gis ais cis' ]
+MajorPentScalesListKeySigs = MajorScalesListKeySigs
+MajorPentScalesListTitles = [ 'C \\flat Major Pentatonic' , 'G \\flat Major Pentatonic' , 'D \\flat Major Pentatonic' , 'A \\flat Major Pentatonic' , 'E \\flat Major Pentatonic' , 'B \\flat Major Pentatonic' , 'F Major Pentatonic' , 'C Major Pentatonic' , 'G Major Pentatonic' , 'D Major Pentatonic' , 'A Major Pentatonic' , 'E Major Pentatonic' , 'B Major Pentatonic' , 'F \sharp Major Pentatonic' , 'C \sharp Major Pentatonic' ]
+MinorPentScalesList = [ 'aes1 ces des es ges aes' , 'es1 ges aes bes des es' , 'bes1 des es f aes bes' , 'f1 aes bes c es f' , 'c1 es f g bes c' , 'g1 bes c d f g' , 'd1 f g a c d' , 'a1 c d e g a' , 'e1 g a b d e' , 'b1 d e fis a b' , 'fis1 a b cis e fis' , 'cis1 e fis gis b cis' , 'gis1 b cis dis fis gis' , 'dis1 fis gis ais cis dis' , 'ais1 cis dis eis gis ais' ]
+MinorPentScalesListKeySigs = MinorNatScalesListKeySigs
+MinorPentScalesListTitles = [ 'A \\flat Minor Pentatonic' , 'E \\flat Minor Pentatonic' , 'B \\flat Minor Pentatonic' , 'F Minor Pentatonic' , 'C Minor Pentatonic' , 'G Minor Pentatonic' , 'D Minor Pentatonic' , 'A Minor Pentatonic' , 'E Minor Pentatonic' , 'B Minor Pentatonic' , 'F \sharp Minor Pentatonic' , 'C \sharp Minor Pentatonic' , 'G \sharp Minor Pentatonic' , 'D \sharp Minor Pentatonic' , 'A \sharp Minor Pentatonic' ]
+BluesScalesList = [ 'aes1 ces des d es ges aes' , 'es1 ges aes a bes des es' , 'bes1 des es e f aes bes' , 'f1 aes bes b c es f' , 'c1 es f fis g bes c' , 'g1 bes c cis d f g' , 'd1 f g gis a c d' , 'a1 c d dis e g a' , 'e1 g a ais b d e' , 'b1 d e eis fis a b' , 'fis1 a b bis cis e fis' , 'cis1 e fis fisis gis b cis' , 'gis1 b cis cisis dis fis gis' , 'dis1 fis gis gisis ais cis dis' , 'ais1 cis dis disis eis gis ais' ]
+BluesScalesListKeySigs = MinorNatScalesListKeySigs
+BluesScalesListTitles = [ 'A \\flat Blues' , 'E \\flat Blues' , 'B \\flat Blues' , 'F Blues' , 'C Blues' , 'G Blues' , 'D Blues' , 'A Blues' , 'E Blues' , 'B Blues' , 'F \sharp Blues' , 'C \sharp Blues' , 'G \sharp Blues' , 'D \sharp Blues' , 'A \sharp Blues' ]
+ModesScalesList = [ 'c1 d e f g a b c' , 'd1 e f g a b c d' , 'e1 f g a b c d e' , 'f1 g a b c d e f' , 'g1 a b c d e f g' , 'a1 b c d e f g a' , 'b1 c d e f g a b' , 'g1 a b c d e fis g' , 'a1 b c d e fis g a' , 'b1 c d e fis g a b' , 'c1 d e fis g a b c' , 'd1 e fis g a b c d' , 'e1 fis g a b c d e' , 'fis1 g a b c d e fis' , 'd1 e fis g a b cis d' , 'e1 fis g a b cis d e' , 'fis1 g a b cis d e fis' , 'g1 a b cis d e fis g' , 'a1 b cis d e fis g a' , 'b1 cis d e fis g a b' , 'cis1 d e fis g a b cis' , 'a1 b cis d e fis gis a' , 'b1 cis d e fis gis a b' , 'cis1 d e fis gis a b cis' , 'd1 e fis gis a b cis d' , 'e1 fis gis a b cis d e' , 'fis1 gis a b cis d e fis' , 'gis1 a b cis d e fis gis' , 'e1 fis gis a b cis dis e' , 'fis1 gis a b cis dis e fis' , 'gis1 a b cis dis e fis gis' , 'a1 b cis dis e fis gis a' , 'b1 cis dis e fis gis a b' , 'cis1 dis e fis gis a b cis' , 'dis1 e fis gis a b cis dis' , 'b1 cis dis e fis gis ais b' , 'cis1 dis e fis gis ais b cis' , 'dis1 e fis gis ais b cis dis' , 'e1 fis gis ais b cis dis e' , 'fis1 gis ais b cis dis e fis' , 'gis1 ais b cis dis e fis gis' , 'ais1 b cis dis e fis gis ais' , 'fis1 gis ais b cis dis eis fis' , 'gis1 ais b cis dis eis fis gis' , 'ais1 b cis dis eis fis gis ais' , 'b1 cis dis eis fis gis ais b' , 'cis1 dis eis fis gis ais b cis' , 'dis1 eis fis gis ais b cis dis' , 'eis1 fis gis ais b cis dis eis' , 'cis1 dis eis fis gis ais bis cis' , 'dis1 eis fis gis ais bis cis dis' , 'eis1 fis gis ais bis cis dis eis' , 'fis1 gis ais bis cis dis eis fis' , 'gis1 ais bis cis dis eis fis gis' , 'ais1 bis cis dis eis fis gis ais' , 'bis1 cis dis eis fis gis ais bis' , 'f1 g a bes c d e f' , 'g1 a bes c d e f g' , 'a1 bes c d e f g a' , 'bes1 c d e f g a bes' , 'c1 d e f g a bes c' , 'd1 e f g a bes c d' , 'e1 f g a bes c d e' , 'bes1 c d es f g a bes' , 'c1 d es f g a bes c' , 'd1 es f g a bes c d' , 'es1 f g a bes c d es' , 'f1 g a bes c d es f' , 'g1 a bes c d es f g' , 'a1 bes c d es f g a' , 'es1 f g aes bes c d es' , 'f1 g aes bes c d es f' , 'g1 aes bes c d es f g' , 'aes1 bes c d es f g aes' , 'bes1 c d es f g aes bes' , 'c1 d es f g aes bes c' , 'd1 es f g aes bes c d' , 'aes1 bes c des es f g aes' , 'bes1 c des es f g aes bes' , 'c1 des es f g aes bes c' , 'des1 es f g aes bes c des' , 'es1 f g aes bes c des es' , 'f1 g aes bes c des es f' , 'g1 aes bes c des es f g' , 'des1 es f ges aes bes c des' , 'es1 f ges aes bes c des es' , 'f1 ges aes bes c des es f' , 'ges1 aes bes c des es f ges' , 'aes1 bes c des es f ges aes' , 'bes1 c des es f ges aes bes' , 'c1 des es f ges aes bes c' , 'ges1 aes bes ces des es f ges' , 'aes1 bes ces des es f ges aes' , 'bes1 ces des es f ges aes bes' , 'ces1 des es f ges aes bes ces' , 'des1 es f ges aes bes ces des' , 'es1 f ges aes bes ces des es' , 'f1 ges aes bes ces des es f' , 'ces1 des es fes ges aes bes ces' , 'des1 es fes ges aes bes ces des' , 'es1 fes ges aes bes ces des es' , 'fes1 ges aes bes ces des es fes' , 'ges1 aes bes ces des es fes ges' , 'aes1 bes ces des es fes ges aes' , 'bes1 ces des es fes ges aes bes' ]
+ModesScalesListKeySigs = [ '\key c \major' , '\key c \major' , '\key c \major' , '\key c \major' , '\key c \major' , '\key c \major' , '\key c \major' , '\key g \major' , '\key g \major' , '\key g \major' , '\key g \major' , '\key g \major' , '\key g \major' , '\key g \major' , '\key d \major' , '\key d \major' , '\key d \major' , '\key d \major' , '\key d \major' , '\key d \major' , '\key d \major' , '\key a \major' , '\key a \major' , '\key a \major' , '\key a \major' , '\key a \major' , '\key a \major' , '\key a \major' , '\key e \major' , '\key e \major' , '\key e \major' , '\key e \major' , '\key e \major' , '\key e \major' , '\key e \major' , '\key b \major' , '\key b \major' , '\key b \major' , '\key b \major' , '\key b \major' , '\key b \major' , '\key b \major' , '\key fis \major' , '\key fis \major' , '\key fis \major' , '\key fis \major' , '\key fis \major' , '\key fis \major' , '\key fis \major' , '\key cis \major' , '\key cis \major' , '\key cis \major' , '\key cis \major' , '\key cis \major' , '\key cis \major' , '\key cis \major' , '\key f \major' , '\key f \major' , '\key f \major' , '\key f \major' , '\key f \major' , '\key f \major' , '\key f \major' , '\key bes \major' , '\key bes \major' , '\key bes \major' , '\key bes \major' , '\key bes \major' , '\key bes \major' , '\key bes \major' , '\key es \major' , '\key es \major' , '\key es \major' , '\key es \major' , '\key es \major' , '\key es \major' , '\key es \major' , '\key aes \major' , '\key aes \major' , '\key aes \major' , '\key aes \major' , '\key aes \major' , '\key aes \major' , '\key aes \major' , '\key des \major' , '\key des \major' , '\key des \major' , '\key des \major' , '\key des \major' , '\key des \major' , '\key des \major' , '\key ges \major' , '\key ges \major' , '\key ges \major' , '\key ges \major' , '\key ges \major' , '\key ges \major' , '\key ges \major' , '\key ces \major' , '\key ces \major' , '\key ces \major' , '\key ces \major' , '\key ces \major' , '\key ces \major' , '\key ces \major' ]
+ModesScalesListTitles = [ 'C Ionian' , 'D Dorian' , 'E Phrygian' , 'F Lydian' , 'G Mixolydian' , 'A Aeolian' , 'B Locrian' , 'G Ionian' , 'A Dorian' , 'B Phrygian' , 'C Lydian' , 'D Mixolydian' , 'E Aeolian' , 'F \sharp Locrian' , 'D Ionian' , 'E Dorian' , 'F \sharp Phrygian' , 'G Lydian' , 'A Mixolydian' , 'B Aeolian' , 'C \sharp Locrian' , 'A Ionian' , 'B Dorian' , 'C \sharp Phrygian' , 'D Lydian' , 'E Mixolydian' , 'F \sharp Aeolian' , 'G \sharp Locrian' , 'E Ionian' , 'F \sharp Dorian' , 'G \sharp Phrygian' , 'A Lydian' , 'B Mixolydian' , 'C \sharp Aeolian' , 'D \sharp Locrian' , 'B Ionian' , 'C \sharp Dorian' , 'D \sharp Phrygian' , 'E Lydian' , 'F \sharp Mixolydian' , 'G \sharp Aeolian' , 'A \sharp Locrian' , 'F \sharp Ionian' , 'G \sharp Dorian' , 'A \sharp Phrygian' , 'B Lydian' , 'C \sharp Mixolydian' , 'D \sharp Aeolian' , 'E \sharp Locrian' , 'C \sharp Ionian' , 'D \sharp Dorian' , 'E \sharp Phrygian' , 'F \sharp Lydian' , 'G \sharp Mixolydian' , 'A \sharp Aeolian' , 'B \sharp Locrian' , 'F Ionian' , 'G Dorian' , 'A Phrygian' , 'B \\flat Lydian' , 'C Mixolydian' , 'D Aeolian' , 'E Locrian' , 'B \\flat Ionian' , 'C Dorian' , 'D Phrygian' , 'E \\flat Lydian' , 'F Mixolydian' , 'G Aeolian' , 'A Locrian' , 'E \\flat Ionian' , 'F Dorian' , 'G Phrygian' , 'A \\flat Lydian' , 'B \\flat Mixolydian' , 'C Aeolian' , 'D Locrian' , 'A \\flat Ionian' , 'B \\flat Dorian' , 'C Phrygian' , 'D \\flat Lydian' , 'E \\flat Mixolydian' , 'F Aeolian' , 'G Locrian' , 'D \\flat Ionian' , 'E \\flat Dorian' , 'F Phrygian' , 'G \\flat Lydian' , 'A \\flat Mixolydian' , 'B \\flat Aeolian' , 'C Locrian' , 'G \\flat Ionian' , 'A \\flat Dorian' , 'B \\flat Phrygian' , 'C \\flat Lydian' , 'D \\flat Mixolydian' , 'E \\flat Aeolian' , 'F Lorian' , 'C \\flat Ionian' , 'D \\flat Dorian' , 'E \\flat Phrygian' , 'F \\flat Lydian' , 'G \\flat Mixolydian' , 'A \\flat Aeolian' , 'B \\flat Locrian' ]
 
 # intervals
 IntervalsEasySimpleTransposeList = [ 'c ces' , 'c ges' , 'c des' , 'c aes' , 'c es' , 'c bes' , 'c f' , 'c c' , 'c g' , 'c d' , 'c a' , 'c e' , 'c b' , 'c fis' , 'c cis' ]
@@ -434,7 +442,6 @@ DetectErrorsKeyList = [
 
 
 
-
 ##################################################
 # FUNCTIONS
 ##################################################
@@ -580,8 +587,8 @@ def IdentifyNotes(f,g,howmanytimes):
     temp.remove(x)
     f.write( IdentifyNoteNamesTreble[x] + '_\markup { ' + font + ' { ___ }} ')
     g.write( IdentifyNoteNamesTreble[x] + '_\markup { \with-color #red ' + font + ' { ' + IdentifyNoteNamesTrebleKey[x] + ' }} ')
-  f.write(' }\n')
-  g.write(' }\n')
+  f.write(' } \\noPageBreak \n')
+  g.write(' } \\noPageBreak \n')
   f.write('{ \clef bass \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
   g.write('{ \clef bass \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
   temp = list(range(len(IdentifyNoteNamesBass)))
@@ -592,8 +599,8 @@ def IdentifyNotes(f,g,howmanytimes):
     temp.remove(x)
     f.write( IdentifyNoteNamesBass[x] + '_\markup { ' + font + ' { ___ }} ')
     g.write( IdentifyNoteNamesBass[x] + '_\markup { ' + font + ' { \with-color #red ' + IdentifyNoteNamesBassKey[x] + ' }} ')
-  f.write(' }\n')
-  g.write(' }\n')
+  f.write(' } \\noPageBreak \n')
+  g.write(' } \\noPageBreak \n')
   f.write('{ \clef alto \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
   g.write('{ \clef alto \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
   temp = list(range(len(IdentifyNoteNamesAlto)))
@@ -604,8 +611,8 @@ def IdentifyNotes(f,g,howmanytimes):
     temp.remove(x)
     f.write( IdentifyNoteNamesAlto[x] + '_\markup { ' + font + ' { ___ }} ')
     g.write( IdentifyNoteNamesAlto[x] + '_\markup { ' + font + ' { \with-color #red ' + IdentifyNoteNamesAltoKey[x] + ' }} ')
-  f.write(' }\n')
-  g.write(' }\n')
+  f.write(' } \\noPageBreak \n')
+  g.write(' } \\noPageBreak \n')
   f.write('{ \clef tenor \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
   g.write('{ \clef tenor \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
   temp = list(range(len(IdentifyNoteNamesTenor)))
@@ -922,7 +929,7 @@ def WriteKeySigs(f,g):
   g.write('{ \clef bass \\notimesig \\nobarline \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 \override TextScript #\'padding = #3 \\nokeycancel s1 ')
   for i in randomlist:
     g.write(' s1 \\noBreak \override Staff.KeySignature #\'color = #red \override Staff.KeyCancellation #\'break-visibility = #\'#(#f #f #f) \key ' + MajKeySigListKey[i] + ' \major ')
-  g.write(' }\\noPageBreak\n')
+  g.write(' }\n')
 
 ### Identify scale degrees
 ##################################################
@@ -940,8 +947,8 @@ def IdentifyScaleDegrees(f,g,howmanytimes):
     key = random.choice(keylist)
     degreelist.remove(degree)
     keylist.remove(key)
-    f.write('\markup { ' + font + ' { The ' + ScaleDegreeList[degree] + ' of ' + key + ' Major is: ___ }}\n')
-    g.write('\markup { ' + font + ' { The ' + ScaleDegreeList[degree] + ' of ' + key + ' Major is: \with-color #red { ' + ScaleDegreeDictKey[key][degree]  + ' } }} ')
+    f.write('\markup { ' + font + ' { The ' + ScaleDegreeList[degree] + ' of ' + key + ' Major is: ___ }} \\noPageBreak \n')
+    g.write('\markup { ' + font + ' { The ' + ScaleDegreeList[degree] + ' of ' + key + ' Major is: \with-color #red { ' + ScaleDegreeDictKey[key][degree]  + ' } }} \\noPageBreak \n ')
 
 ### Relative keys
 ##################################################
@@ -954,8 +961,8 @@ def WriteRelativeMinorKeys(f,g,howmanytimes):
       break
     x = random.choice(temp)
     temp.remove(x)
-    f.write('\markup { ' + font + ' { ' + MajKeySigList[x] + ' = ___ }}\n')
-    g.write('\markup { ' + font + ' { ' + MajKeySigList[x] + ' = \with-color #red { ' + MinKeySigList[x] + ' } }}\n')
+    f.write('\markup { ' + font + ' { ' + MajKeySigList[x] + ' = ___ }} \\noPageBreak \n')
+    g.write('\markup { ' + font + ' { ' + MajKeySigList[x] + ' = \with-color #red { ' + MinKeySigList[x] + ' } }} \\noPageBreak \n')
 
 def WriteRelativeMajorKeys(f,g,howmanytimes):
   f.write('\markup { ' + font + ' { Name the relative major keys of the following minor keys: }} \\noPageBreak\n')
@@ -966,321 +973,211 @@ def WriteRelativeMajorKeys(f,g,howmanytimes):
       break
     x = random.choice(temp)
     temp.remove(x)
-    f.write('\markup { ' + font + ' { ' + MinKeySigList[x] + ' = ___ }}\n')
-    g.write('\markup { ' + font + ' { ' + MinKeySigList[x] + ' = \with-color #red { ' + MajKeySigList[x] + ' } }}\n')
+    f.write('\markup { ' + font + ' { ' + MinKeySigList[x] + ' = ___ }} \\noPageBreak \n')
+    g.write('\markup { ' + font + ' { ' + MinKeySigList[x] + ' = \with-color #red { ' + MajKeySigList[x] + ' } }} \\noPageBreak \n')
 
-### Writing scales
+### Scales
 ##################################################
-def WriteAMajorScale(f,g):
-  temp = list(range(len(WrittenMajorStartingNotes)))
-  x = random.choice(temp)
-  identclef = random.choice(clefs)
-  octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
-  f.write('\markup { ' + font + ' { Write ' + WrittenMajorStartingNotes[x] + ' Major Scale ')
-  g.write('\markup { ' + font + ' { Write ' + WrittenMajorStartingNotes[x] + ' Major Scale ')
-  if random.randrange(6) < 5:
-    f.write('(with a key signature). }} \\noPageBreak ')
-    g.write('(with a key signature). }} \\noPageBreak ')
-    g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig \override Staff.KeySignature #\'color = #red \key ' + MajKeySigListKey[x] + ' \major \override NoteHead #\'color = #red ' + IdentifyMajorScales[x] + ' }\n')
-  else:
-    f.write('(without a key signature). }} \\noPageBreak ')
-    g.write('(without a key signature). }} \\noPageBreak ')
-    g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IdentifyMajorScales[x] + ' }\n')
-  f.write(' \\noPageBreak \n')
-  g.write(' \\noPageBreak \n')
-  f.write('{ \\nobarline \clef ' + identclef + ' \\notimesig s1 }\n')
+def MajorScales(f,g,howmanytimes):
+  temp = list(range(len(MajorScalesList)))
+  for i in range(howmanytimes):
+    if not temp:
+      break
+    x = random.choice(temp)
+    temp.remove(x)
+    identclef = random.choice(clefs)
+    octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
+    if random.randrange(10) < 8:
+      f.write('\markup { ' + font + ' { Write a ' + MajorScalesListTitles[x] + ' Scale ')
+      g.write('\markup { ' + font + ' { Write a ' + MajorScalesListTitles[x] + ' Scale ')
+      if random.randrange(6) < 5:
+        f.write('(with a key signature). }} \\noPageBreak ')
+        g.write('(with a key signature). }} \\noPageBreak ')
+        g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig \override Staff.KeySignature #\'color = #red \override NoteHead #\'color = #red ' + MajorScalesListKeySigs[x] + ' ' + MajorScalesList[x] + ' }\n')
+      else:
+        f.write('(without a key signature). }} \\noPageBreak ')
+        g.write('(without a key signature). }} \\noPageBreak ')
+        g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + MajorScalesList[x] + ' }\n')
+      f.write('{ \\nobarline \clef ' + identclef + ' \\notimesig s1 }\n')
+    else:
+      f.write('\markup { ' + font + ' { Identify the following scale:______________________ }} \\noPageBreak \n')
+      g.write('\markup { ' + font + ' { Identify the following scale: \with-color #red { ' + MajorScalesListTitles[x]  + ' Scale } }} \\noPageBreak \n')
+      if random.randrange(6) < 5:
+        f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' ' + MajorScalesListKeySigs[x] + ' \\notimesig ' + MajorScalesList[x]  + ' }\n')
+        g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' ' + MajorScalesListKeySigs[x] + ' \\notimesig ' + MajorScalesList[x]  + ' }\n')
+      else:
+        f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + MajorScalesList[x]  + ' }\n')
+        g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + MajorScalesList[x]  + ' }\n')
 
-def WriteAMinorScale(f,g):
-  wmsnlist = list(range(len(WrittenMinorStartingNotes)))
-  wmsn = random.choice(wmsnlist)
-  mslist = list(range(len(MinorScales)))
-  ms = random.choice(mslist)
-  identclef = random.choice(clefs)
-  octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
-  f.write('\markup { ' + font + ' { Write ' + WrittenMinorStartingNotes[wmsn] + ' ' + MinorScales[ms] + ' Scale ')
-  g.write('\markup { ' + font + ' { Write ' + WrittenMinorStartingNotes[wmsn] + ' ' + MinorScales[ms] + ' Scale ')
-  if random.randrange(6) < 5:
-    f.write('(with a key signature). }} \\noPageBreak ')
-    g.write('(with a key signature). }} \\noPageBreak ')
-    g.write('\\relative ' + octave + '{ \\nobarline \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \\time 4/4 \clef ' + identclef + ' \\notimesig \override Staff.KeySignature #\'color = #red \key ' + MinKeySigListKey[wmsn] + ' \minor \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + MinorScalesKey[(wmsn*3)+ms] + ' }\n')
-  else:
-    f.write('(without a key signature). }} \\noPageBreak ')
-    g.write('(without a key signature). }} \\noPageBreak ')
-    g.write('\\relative ' + octave + '{ \\nobarline \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \\time 4/4 \clef ' + identclef + ' \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + MinorScalesKey[(wmsn*3)+ms] + ' }\n')
-  f.write(' \\noPageBreak \n')
-  g.write(' \\noPageBreak \n')
-  f.write('{ \\nobarline \clef ' + identclef + ' \\notimesig s1 }\n')
+def MinorScales(f,g,howmanytimes):
+  MinorWrittenScalesList = MinorNatScalesList + MinorHarScalesList + MinorMelWrittenScalesList
+  MinorIdentifyScalesList = MinorNatScalesList + MinorHarScalesList + MinorMelIdentifyScalesList
+  MinorScalesListKeySigs = MinorNatScalesListKeySigs + MinorNatScalesListKeySigs + MinorNatScalesListKeySigs
+  MinorScalesListTitles = MinorNatScalesListTitles + MinorHarScalesListTitles + MinorMelScalesListTitles
+  temp = list(range(len(MinorWrittenScalesList)))
+  for i in range(howmanytimes):
+    if not temp:
+      break
+    x = random.choice(temp)
+    temp.remove(x)
+    identclef = random.choice(clefs)
+    octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
+    if random.randrange(10) < 8:
+      f.write('\markup { ' + font + ' { Write a ' + MinorScalesListTitles[x] + ' Scale ')
+      g.write('\markup { ' + font + ' { Write a ' + MinorScalesListTitles[x] + ' Scale ')
+      if random.randrange(6) < 5:
+        f.write('(with a key signature). }} \\noPageBreak ')
+        g.write('(with a key signature). }} \\noPageBreak ')
+        g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig \override Staff.KeySignature #\'color = #red \override NoteHead #\'color = #red \override Accidental #\'color = #red \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 ' + MinorScalesListKeySigs[x] + ' ' + MinorWrittenScalesList[x] + ' }\n')
+      else:
+        f.write('(without a key signature). }} \\noPageBreak ')
+        g.write('(without a key signature). }} \\noPageBreak ')
+        g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 ' + MinorWrittenScalesList[x] + ' }\n')
+      f.write('{ \\nobarline \clef ' + identclef + ' \\notimesig s1 }\n')
+    else:
+      f.write('\markup { ' + font + ' { Identify the following scale:______________________ }} \\noPageBreak \n')
+      g.write('\markup { ' + font + ' { Identify the following scale: \with-color #red { ' + MinorScalesListTitles[x]  + ' Scale } }} \\noPageBreak \n')
+      if random.randrange(6) < 5:
+        f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' ' + MinorScalesListKeySigs[x] + ' \\notimesig ' + MinorIdentifyScalesList[x]  + ' }\n')
+        g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' ' + MinorScalesListKeySigs[x] + ' \\notimesig ' + MinorIdentifyScalesList[x]  + ' }\n')
+      else:
+        f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + MinorIdentifyScalesList[x]  + ' }\n')
+        g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + MinorIdentifyScalesList[x]  + ' }\n')
 
-def WriteAChrOctWTScale(f,g):
-  scalelist = list(range(len(ChrOctWTScales)))
-  scale = random.choice(scalelist)
-  chromaticStartList = list(range(len(ChromaticWrittenStartingNotes)))
-  sn = random.choice(chromaticStartList)
-  stwt = random.choice(list(range(len(OctatonicChoice))))
-  identclef = random.choice(clefs)
-  octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
-  if scale == 0: # chromatic scales
-    f.write('\markup { ' + font + ' { Write ' + ChromaticWrittenStartingNotes[sn] + ' ' + ChrOctWTScales[scale] + ' Scale. }} \\noPageBreak \n')
-    g.write('\markup { ' + font + ' { Write ' + ChromaticWrittenStartingNotes[sn] + ' ' + ChrOctWTScales[scale] + ' Scale. }} \\noPageBreak \n')
-    g.write('\\relative ' + octave + '{ \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \\time 4/4 \cadenzaOn \\accidentalStyle Score.forget \clef ' + identclef + ' \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red \override Score.BarLine #\'color = #red ' + ChromaticScalesKey[sn]  + ' }\n')
-  elif scale == 1: # wholetone scales
-    f.write('\markup { ' + font + ' { Write ' + ChromaticWrittenStartingNotes[sn] + ' ' + ChrOctWTScales[scale] + ' Scale. }} \\noPageBreak \n')
-    g.write('\markup { ' + font + ' { Write ' + ChromaticWrittenStartingNotes[sn] + ' ' + ChrOctWTScales[scale] + ' Scale. }} \\noPageBreak \n')
-    g.write('\\relative ' + octave + '{ \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \\time 4/4 \cadenzaOn \clef ' + identclef + ' \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IdentifyWholetoneScales[sn]  + ' }\n')
-  else: # octatonic scales
-    f.write('\markup { ' + font + ' { Write ' + ChromaticWrittenStartingNotes[sn] + ' ' + ChrOctWTScales[scale] + ' Scale. (' + OctatonicChoice[stwt] + ') }} \\noPageBreak \n')
-    g.write('\markup { ' + font + ' { Write ' + ChromaticWrittenStartingNotes[sn] + ' ' + ChrOctWTScales[scale] + ' Scale. (' + OctatonicChoice[stwt] + ') }} \\noPageBreak \n')
-    g.write('\\relative ' + octave + '{ \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \\time 4/4 \cadenzaOn \clef ' + identclef + ' \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IdentifyOctatonicScales[(sn*2)+stwt]  + ' }\n')
-  f.write('{ \\nobarline \clef ' + identclef + ' \\notimesig s1 }\n')
+def ChrOctWtScales(f,g,howmanytimes):
+  ChrOctWtWrittenScalesList = ChromaticWrittenScalesList + WholetoneScalesList + OctatonicScalesList
+  ChrOctWtIdentifyScalesList = ChromaticIdentifyScalesList + WholetoneScalesList + OctatonicScalesList
+  ChrOctWtScalesListTitles = ChromaticScalesListTitles + WholetoneScalesListTitles + OctatonicScalesListTitles
+  temp = list(range(len(ChrOctWtWrittenScalesList)))
+  for i in range(howmanytimes):
+    if not temp:
+      break
+    x = random.choice(temp)
+    temp.remove(x)
+    identclef = random.choice(clefs)
+    octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
+    if random.randrange(10) < 8:
+      f.write('\markup { ' + font + ' { Write a ' + ChrOctWtScalesListTitles[x] + ' Scale. }} \\noPageBreak ')
+      g.write('\markup { ' + font + ' { Write a ' + ChrOctWtScalesListTitles[x] + ' Scale. }} \\noPageBreak ')
+      f.write('{ \\nobarline \clef ' + identclef + ' \\notimesig s1 }\n')
+      g.write('\\relative ' + octave + '{ \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \\time 4/4 \cadenzaOn \\accidentalStyle Score.forget \clef ' + identclef + ' \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red \override Score.BarLine #\'color = #red ' + ChrOctWtWrittenScalesList[x]  + ' }\n')
+    else:
+      f.write('\markup { ' + font + ' { Identify the following scale:______________________ }} \\noPageBreak \n')
+      g.write('\markup { ' + font + ' { Identify the following scale: \with-color #red { ' + ChrOctWtScalesListTitles[x]  + ' Scale } }} \\noPageBreak \n')
+      f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + ChrOctWtIdentifyScalesList[x]  + ' }\n')
+      g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + ChrOctWtIdentifyScalesList[x]  + ' }\n')
 
-def WriteAMajorPentScale(f,g):
-  wmsn = random.choice(list(range(len(WrittenMajorStartingNotes))))
-  identclef = random.choice(clefs)
-  octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
-  f.write('\markup { ' + font + ' { Write ' + WrittenMajorStartingNotes[wmsn] + ' Major Pentatonic Scale. }} \\noPageBreak \n')
-  g.write('\markup { ' + font + ' { Write ' + WrittenMajorStartingNotes[wmsn] + ' Major Pentatonic Scale. }} \\noPageBreak \n')
-  f.write('{ \\nobarline \clef ' + identclef + ' \\notimesig s1 }\n')
-  g.write('\\relative ' + octave + '{ \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \\time 4/4 \cadenzaOn \clef ' + identclef + ' \override Staff.KeySignature #\'color = #red \key ' + MajKeySigListKey[wmsn] + ' \major \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IdentifyMajorPentScales[wmsn] + ' }\n')
+def PentBluesScales(f,g,howmanytimes):
+  PentBluesScalesList = MajorPentScalesList + MinorPentScalesList + BluesScalesList
+  PentBluesScalesListKeySigs = MajorPentScalesListKeySigs + MinorPentScalesListKeySigs + BluesScalesListKeySigs
+  PentBluesScalesListTitles = MajorPentScalesListTitles + MinorPentScalesListTitles + BluesScalesListTitles
+  temp = list(range(len(PentBluesScalesList)))
+  for i in range(howmanytimes):
+    if not temp:
+      break
+    x = random.choice(temp)
+    temp.remove(x)
+    identclef = random.choice(clefs)
+    octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
+    if random.randrange(10) < 8:
+      f.write('\markup { ' + font + ' { Write a ' + PentBluesScalesListTitles[x] + ' Scale ')
+      g.write('\markup { ' + font + ' { Write a ' + PentBluesScalesListTitles[x] + ' Scale ')
+      if random.randrange(6) < 5:
+        f.write('(with a key signature). }} \\noPageBreak ')
+        g.write('(with a key signature). }} \\noPageBreak ')
+        g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig \override Staff.KeySignature #\'color = #red \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + PentBluesScalesListKeySigs[x] + ' ' + PentBluesScalesList[x] + ' }\n')
+      else:
+        f.write('(without a key signature). }} \\noPageBreak ')
+        g.write('(without a key signature). }} \\noPageBreak ')
+        g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + PentBluesScalesList[x] + ' }\n')
+      f.write('{ \\nobarline \clef ' + identclef + ' \\notimesig s1 }\n')
+    else:
+      f.write('\markup { ' + font + ' { Identify the following scale:______________________ }} \\noPageBreak \n')
+      g.write('\markup { ' + font + ' { Identify the following scale: \with-color #red { ' + PentBluesScalesListTitles[x]  + ' Scale } }} \\noPageBreak \n')
+      if random.randrange(6) < 5:
+        f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' ' + PentBluesScalesListKeySigs[x] + ' \\notimesig ' + PentBluesScalesList[x]  + ' }\n')
+        g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' ' + PentBluesScalesListKeySigs[x] + ' \\notimesig ' + PentBluesScalesList[x]  + ' }\n')
+      else:
+        f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + PentBluesScalesList[x]  + ' }\n')
+        g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + PentBluesScalesList[x]  + ' }\n')
 
-def WriteAMinorPentScale(f,g):
-  wmsn = random.choice(list(range(len(WrittenMinorStartingNotes))))
-  identclef = random.choice(clefs)
-  octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
-  f.write('\markup { ' + font + ' { Write ' + WrittenMinorStartingNotes[wmsn] + ' Minor Pentatonic Scale. }} \\noPageBreak \n')
-  g.write('\markup { ' + font + ' { Write ' + WrittenMinorStartingNotes[wmsn] + ' Minor Pentatonic Scale. }} \\noPageBreak \n')
-  f.write('{ \\nobarline \clef ' + identclef + ' \\notimesig s1 }\n')
-  g.write('\\relative ' + octave + '{ \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \\time 4/4 \cadenzaOn \clef ' + identclef + ' \override Staff.KeySignature #\'color = #red \key ' + MinKeySigListKey[wmsn] + ' \minor \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IdentifyMinorPentScales[wmsn*3] + ' }\n')
+def Modes(f,g,howmanytimes):
+  temp = list(range(len(ModesScalesList)))
+  for i in range(howmanytimes):
+    if not temp:
+      break
+    x = random.choice(temp)
+    temp.remove(x)
+    identclef = random.choice(clefs)
+    octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
+    if random.randrange(10) < 8:
+      f.write('\markup { ' + font + ' { Write a ' + ModesScalesListTitles[x] + ' Scale ')
+      g.write('\markup { ' + font + ' { Write a ' + ModesScalesListTitles[x] + ' Scale ')
+      if random.randrange(6) < 5:
+        f.write('(with a key signature). }} \\noPageBreak ')
+        g.write('(with a key signature). }} \\noPageBreak ')
+        g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig \override Staff.KeySignature #\'color = #red \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + ModesScalesListKeySigs[x] + ' ' + ModesScalesList[x] + ' }\n')
+      else:
+        f.write('(without a key signature). }} \\noPageBreak ')
+        g.write('(without a key signature). }} \\noPageBreak ')
+        g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + ModesScalesList[x] + ' }\n')
+      f.write('{ \\nobarline \clef ' + identclef + ' \\notimesig s1 }\n')
+    else:
+      f.write('\markup { ' + font + ' { Identify the following scale:______________________ }} \\noPageBreak \n')
+      g.write('\markup { ' + font + ' { Identify the following scale: \with-color #red { ' + ModesScalesListTitles[x]  + ' Scale } }} \\noPageBreak \n')
+      if random.randrange(6) < 5:
+        f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' ' + ModesScalesListKeySigs[x] + ' \\notimesig ' + ModesScalesList[x]  + ' }\n')
+        g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' ' + ModesScalesListKeySigs[x] + ' \\notimesig ' + ModesScalesList[x]  + ' }\n')
+      else:
+        f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + ModesScalesList[x]  + ' }\n')
+        g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + ModesScalesList[x]  + ' }\n')
 
-def WriteABluesScale(f,g):
-  wmsn = random.choice(list(range(len(WrittenMinorStartingNotes))))
-  identclef = random.choice(clefs)
-  octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
-  f.write('\markup { ' + font + ' { Write ' + WrittenMinorStartingNotes[wmsn] + ' Blues Scale. }} \\noPageBreak \n')
-  g.write('\markup { ' + font + ' { Write ' + WrittenMinorStartingNotes[wmsn] + ' Blues Scale. }} \\noPageBreak \n')
-  f.write('{ \\nobarline \clef ' + identclef + ' \\notimesig s1 }\n')
-  g.write('\\relative ' + octave + '{ \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \\time 4/4 \cadenzaOn \clef ' + identclef + ' \override Staff.KeySignature #\'color = #red \key ' + MinKeySigListKey[wmsn] + ' \minor \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IdentifyBluesScales[wmsn*3] + ' }\n')
-
-def WriteAModeScale(f,g):
-  ms = random.choice(list(range(len(ModesScales))))
-  identclef = random.choice(clefs)
-  octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
-  f.write('\markup { ' + font + ' { Write ' + ModesScales[ms] + '. }} \\noPageBreak \n')
-  g.write('\markup { ' + font + ' { Write ' + ModesScales[ms] + '. }} \\noPageBreak \n')
-  f.write('{ \\nobarline \clef ' + identclef + ' \\notimesig s1 }\n')
-  g.write('\\relative ' + octave + '{ \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \\time 4/4 \cadenzaOn \clef ' + identclef + ' \override Staff.KeySignature #\'color = #red \key ' + FindModeKeySig(ms) + ' \major \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IdentifyModeScales[ms]  + ' }\n')
-
-### Indentifying scales
-def FindMajorKeySig(scalenumber):
-  if scalenumber == 0:
-    return 'ces'
-  elif scalenumber == 1:
-    return 'ges'
-  elif scalenumber == 2:
-    return 'des'
-  elif scalenumber == 3:
-    return 'aes'
-  elif scalenumber == 4:
-    return 'es'
-  elif scalenumber == 5:
-    return 'bes'
-  elif scalenumber == 6:
-    return 'f'
-  elif scalenumber == 7:
-    return 'c'
-  elif scalenumber == 8:
-    return 'g'
-  elif scalenumber == 9:
-    return 'd'
-  elif scalenumber == 10:
-    return 'a'
-  elif scalenumber == 11:
-    return 'e'
-  elif scalenumber == 12:
-    return 'b'
-  elif scalenumber == 13:
-    return 'fis'
-  elif scalenumber == 14:
-    return 'cis'
-
-def FindMinorKeySig(scalenumber):
-  if scalenumber in range(0,3):
-    return 'aes'
-  elif scalenumber in range(3,6):
-    return 'es'
-  elif scalenumber in range(6,9):
-    return 'bes'
-  elif scalenumber in range(9,12):
-    return 'f'
-  elif scalenumber in range(12,15):
-    return 'c'
-  elif scalenumber in range(15,18):
-    return 'g'
-  elif scalenumber in range(18,21):
-    return 'd'
-  elif scalenumber in range(21,24):
-    return 'a'
-  elif scalenumber in range(24,27):
-    return 'e'
-  elif scalenumber in range(27,30):
-    return 'b'
-  elif scalenumber in range(30,33):
-    return 'fis'
-  elif scalenumber in range(33,36):
-    return 'cis'
-  elif scalenumber in range(36,39):
-    return 'gis'
-  elif scalenumber in range(39,42):
-    return 'dis'
-  elif scalenumber in range(42,45):
-    return 'ais'
-
-def IdentifyAMajorScale(f,g):
-  temp = list(range(len(WrittenMajorStartingNotes)))
-  x = random.choice(temp)
-  identclef = random.choice(clefs)
-  octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
-  f.write('\markup { ' + font + ' { Identify the following scale:______________________ }} \\noPageBreak \n')
-  g.write('\markup { ' + font + ' { Identify the following scale: \with-color #red { ' + WrittenMajorStartingNotes[x]  + ' Major Scale } }} \\noPageBreak \n')
-  if random.randrange(6) < 5:
-      f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindMajorKeySig(x) + ' \major \\notimesig ' + IdentifyMajorScales[x]  + ' }\n')
-      g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindMajorKeySig(x) + ' \major \\notimesig ' + IdentifyMajorScales[x]  + ' }\n')
-  else:
-    f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyMajorScales[x]  + ' }\n')
-    g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyMajorScales[x]  + ' }\n')
-
-def IdentifyAMinorScale(f,g):
-  wmsnlist = list(range(len(WrittenMinorStartingNotes)))
-  wmsn = random.choice(wmsnlist)
-  mslist = list(range(len(MinorScales)))
-  ms = random.choice(mslist)
-  identclef = random.choice(clefs)
-  octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
-  f.write('\markup { ' + font + ' { Identify the following scale:______________________ }} \\noPageBreak \n')
-  g.write('\markup { ' + font + ' { Identify the following scale: \with-color #red { ' + WrittenMinorStartingNotes[wmsn] + ' ' + MinorScales[ms] + ' Scale } }} \\noPageBreak \n')
-  if random.randrange(6) < 5:
-    f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindMinorKeySig((wmsn*3)+ms) + ' \minor \\notimesig ' + IdentifyMinorScales[(wmsn*3)+ms]  + ' }\n')
-    g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindMinorKeySig((wmsn*3)+ms) + ' \minor \\notimesig ' + IdentifyMinorScales[(wmsn*3)+ms]  + ' }\n')
-  else:
-    f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyMinorScales[(wmsn*3)+ms]  + ' }\n')
-    g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyMinorScales[(wmsn*3)+ms]  + ' }\n')
-
-def IdentifyAChromaticScale(f,g):
-  temp = list(range(len(IdentifyChromaticScales)))
-  x = random.choice(temp)
-  identclef = random.choice(clefs)
-  octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
-  f.write('\markup { ' + font + ' { Identify the following scale:______________________. }} \\noPageBreak \n')
-  g.write('\markup { ' + font + ' { Identify the following scale: \with-color #red { ' + ChromaticWrittenStartingNotes[x] + ' Chromatic } }} \\noPageBreak \n')
-  f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyChromaticScales[x] + ' }\n')
-  g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyChromaticScales[x] + ' }\n')
-
-def IdentifyAWholetoneScale(f,g):
-  temp = list(range(len(IdentifyWholetoneScales)))
-  x = random.choice(temp)
-  identclef = random.choice(clefs)
-  octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
-  f.write('\markup { ' + font + ' { Identify the following scale:______________________. }} \\noPageBreak \n')
-  g.write('\markup { ' + font + ' { Identify the following scale: \with-color #red { ' + ChromaticWrittenStartingNotes[x] + ' Wholetone } }} \\noPageBreak \n')
-  f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyWholetoneScales[x] + ' }\n')
-  g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyWholetoneScales[x] + ' }\n')
-
-def IdentifyAOctatonicScale(f,g):
-  temp = list(range(len(IdentifyOctatonicScales)))
-  x = random.choice(temp)
-  identclef = random.choice(clefs)
-  octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
-  f.write('\markup { ' + font + ' { Identify the following scale:______________________. }} \\noPageBreak \n')
-  g.write('\markup { ' + font + ' { Identify the following scale: \with-color #red { ' + IdentifyOctatonicScalesKey[x] + ' } }} \\noPageBreak \n')
-  f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyOctatonicScales[x] + ' }\n')
-  g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyOctatonicScales[x] + ' }\n')
-
-def IdentifyAMajorPentScale(f,g):
-  temp = list(range(len(IdentifyMajorPentScales)))
-  x = random.choice(temp)
-  identclef = random.choice(clefs)
-  octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
-  f.write('\markup { ' + font + ' { Identify the following scale:______________________. }} \\noPageBreak \n')
-  g.write('\markup { ' + font + ' { Identify the following scale:  \with-color #red { ' + MajorPentScaleWrittenStartingNotes[x] + ' Major Pentatonic } }} \\noPageBreak \n')
-  if random.randrange(6) < 5:
-      f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindMajorKeySig(x) + ' \major \\notimesig ' + IdentifyMajorPentScales[x]  + ' }\n')
-      g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindMajorKeySig(x) + ' \major \\notimesig ' + IdentifyMajorPentScales[x]  + ' }\n')
-  else:
-    f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyMajorPentScales[x]  + ' }\n')
-    g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyMajorPentScales[x]  + ' }\n')
-
-def IdentifyAMinorPentScale(f,g):
-  temp = list(range(len(IdentifyMinorPentScales)))
-  x = random.choice(temp)
-  identclef = random.choice(clefs)
-  octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
-  f.write('\markup { ' + font + ' { Identify the following scale:______________________. }} \\noPageBreak \n')
-  g.write('\markup { ' + font + ' { Identify the following scale:  \with-color #red { ' + MinorPentScaleWrittenStartingNotes[x] + ' Minor Pentatonic } }} \\noPageBreak \n')
-  if random.randrange(6) < 5:
-    f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindMinorKeySig(x*3) + ' \minor \\notimesig ' + IdentifyMinorPentScales[x*3]  + ' }\n')
-    g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindMinorKeySig(x*3) + ' \minor \\notimesig ' + IdentifyMinorPentScales[x*3]  + ' }\n')
-  else:
-    f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyMinorPentScales[x*3]  + ' }\n')
-    g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyMinorPentScales[x*3]  + ' }\n')
-
-def IdentifyABluesScale(f,g):
-  temp = list(range(len(IdentifyBluesScales)))
-  x = random.choice(temp)
-  identclef = random.choice(clefs)
-  octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
-  f.write('\markup { ' + font + ' { Identify the following scale:______________________. }} \\noPageBreak \n')
-  g.write('\markup { ' + font + ' { Identify the following scale: \with-color #red { ' + BluesScaleWrittenStartingNotes[x] + ' Blues } }} \\noPageBreak \n')
-  if random.randrange(6) < 5:
-    f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindMinorKeySig(x*3) + ' \minor \\notimesig ' + IdentifyBluesScales[x*3]  + ' }\n')
-    g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindMinorKeySig(x*3) + ' \minor \\notimesig ' + IdentifyBluesScales[x*3]  + ' }\n')
-  else:
-    f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyBluesScales[x*3]  + ' }\n')
-    g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyBluesScales[x*3]  + ' }\n')
-
-def FindModeKeySig(scalenumber):
-  if scalenumber in range(0,7):
-    return 'c'
-  elif scalenumber in range(7,14):
-    return 'g'
-  elif scalenumber in range(14,21):
-    return 'd'
-  elif scalenumber in range(21,28):
-    return 'a'
-  elif scalenumber in range(28,35):
-    return 'e'
-  elif scalenumber in range(35,42):
-    return 'b'
-  elif scalenumber in range(42,49):
-    return 'fis'
-  elif scalenumber in range(49,56):
-    return 'cis'
-  elif scalenumber in range(56,63):
-    return 'f'
-  elif scalenumber in range(63,70):
-    return 'bes'
-  elif scalenumber in range(70,77):
-    return 'es'
-  elif scalenumber in range(77,84):
-    return 'aes'
-  elif scalenumber in range(84,91):
-    return 'des'
-  elif scalenumber in range(91,98):
-    return 'ges'
-  elif scalenumber in range(98,105):
-    return 'ces'
-
-def IdentifyAModeScale(f,g):
-  temp = list(range(len(IdentifyModeScales)))
-  x = random.choice(temp)
-  identclef = random.choice(clefs)
-  octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
-  f.write('\markup { ' + font + ' { Identify the following scale:______________________. }} \\noPageBreak \n')
-  g.write('\markup { ' + font + ' { Identify the following scale: \with-color #red { ' + ModesScales[x] + ' } }} \\noPageBreak \n')
-  if random.randrange(6) < 5:
-      f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindModeKeySig(x) + ' \major \\notimesig ' + IdentifyModeScales[x]  + ' }\n')
-      g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \key ' + FindModeKeySig(x) + ' \major \\notimesig ' + IdentifyModeScales[x]  + ' }\n')
-  else:
-    f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyModeScales[x]  + ' }\n')
-    g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + IdentifyModeScales[x]  + ' }\n')
+def AllScales(f,g,howmanytimes):
+  AllWrittenScalesList = MajorScalesList + MinorNatScalesList + MinorHarScalesList + MinorMelWrittenScalesList + MajorPentScalesList + MinorPentScalesList + BluesScalesList + ModesScalesList + ChromaticWrittenScalesList + WholetoneScalesList + OctatonicScalesList
+  AllIdentifyScalesList = MajorScalesList + MinorNatScalesList + MinorHarScalesList + MinorMelIdentifyScalesList + MajorPentScalesList + MinorPentScalesList + BluesScalesList + ModesScalesList + ChromaticIdentifyScalesList + WholetoneScalesList + OctatonicScalesList
+  AllScalesListKeySigs = MajorScalesListKeySigs + MinorNatScalesListKeySigs + MinorNatScalesListKeySigs + MinorNatScalesListKeySigs + MajorPentScalesListKeySigs + MinorPentScalesListKeySigs + BluesScalesListKeySigs + ModesScalesListKeySigs
+  AllScalesListTitles = MajorScalesListTitles + MinorNatScalesListTitles + MinorHarScalesListTitles + MinorMelScalesListTitles + MajorPentScalesListTitles + MinorPentScalesListTitles + BluesScalesListTitles + ModesScalesListTitles + ChromaticScalesListTitles + WholetoneScalesListTitles + OctatonicScalesListTitles
+  temp = list(range(len(AllWrittenScalesList)))
+  for i in range(howmanytimes):
+    if not temp:
+      break
+    x = random.choice(temp)
+    temp.remove(x)
+    identclef = random.choice(clefs)
+    octave = "f'" if identclef == 'treble' else 'g' if identclef == 'alto' else 'e' if identclef == 'tenor' else 'a,'
+    if x < 210:
+      if random.randrange(10) < 8:
+        f.write('\markup { ' + font + ' { Write a ' + AllScalesListTitles[x] + ' Scale ')
+        g.write('\markup { ' + font + ' { Write a ' + AllScalesListTitles[x] + ' Scale ')
+        if random.randrange(6) < 5:
+          f.write('(with a key signature). }} \\noPageBreak ')
+          g.write('(with a key signature). }} \\noPageBreak ')
+          g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig \override Staff.KeySignature #\'color = #red \override NoteHead #\'color = #red \override Accidental #\'color = #red \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 ' + AllScalesListKeySigs[x] + ' ' + AllWrittenScalesList[x] + ' }\n')
+        else:
+          f.write('(without a key signature). }} \\noPageBreak ')
+          g.write('(without a key signature). }} \\noPageBreak ')
+          g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 ' + AllWrittenScalesList[x] + ' }\n')
+        f.write('{ \\nobarline \clef ' + identclef + ' \\notimesig s1 }\n')
+      else:
+        f.write('\markup { ' + font + ' { Identify the following scale:______________________ }} \\noPageBreak \n')
+        g.write('\markup { ' + font + ' { Identify the following scale: \with-color #red { ' + AllScalesListTitles[x]  + ' Scale } }} \\noPageBreak \n')
+        if random.randrange(6) < 5:
+          f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' ' + AllScalesListKeySigs[x] + ' \\notimesig ' + AllIdentifyScalesList[x]  + ' }\n')
+          g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' ' + AllScalesListKeySigs[x] + ' \\notimesig ' + AllIdentifyScalesList[x]  + ' }\n')
+        else:
+          f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + AllIdentifyScalesList[x]  + ' }\n')
+          g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + AllIdentifyScalesList[x]  + ' }\n')
+    else:
+      if random.randrange(10) < 8:
+        f.write('\markup { ' + font + ' { Write a ' + AllScalesListTitles[x] + ' Scale. }} \\noPageBreak ')
+        g.write('\markup { ' + font + ' { Write a ' + AllScalesListTitles[x] + ' Scale. }} \\noPageBreak ')
+        f.write('{ \\nobarline \clef ' + identclef + ' \\notimesig s1 }\n')
+        g.write('\\relative ' + octave + '{ \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \\time 4/4 \cadenzaOn \\accidentalStyle Score.forget \clef ' + identclef + ' \\notimesig \override NoteHead #\'color = #red \override Accidental #\'color = #red \override Score.BarLine #\'color = #red ' + AllWrittenScalesList[x]  + ' }\n')
+      else:
+        f.write('\markup { ' + font + ' { Identify the following scale:______________________ }} \\noPageBreak \n')
+        g.write('\markup { ' + font + ' { Identify the following scale: \with-color #red { ' + AllScalesListTitles[x]  + ' Scale } }} \\noPageBreak \n')
+        f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + AllIdentifyScalesList[x]  + ' }\n')
+        g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + AllIdentifyScalesList[x]  + ' }\n')
 
 ### Intervals
 ##################################################
@@ -1314,8 +1211,8 @@ def IdentifyEasySimpleIntervals(f,g,howmanytimes):
     else:
       f.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <c\' ' + IntervalsTopNotesList[intlist[i]] + '>1 } ')
       g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <c\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsNameList[intlist[i]] + ' } } }} ')
-  f.write(' } \n' )
-  g.write(' } \n' )
+  f.write(' } \\noPageBreak \n' )
+  g.write(' } \\noPageBreak \n' )
   f.write('{  \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
   for i in range(howmanytimes):
@@ -1361,8 +1258,8 @@ def WriteEasySimpleIntervalsAbove(f,g,howmanytimes):
     else:
       f.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { c\'1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' } }} ')
       g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <<{ \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IntervalsTopNotesList[intlist[i]] + '1 } \\\\{ \override TextScript #\'padding = #3 c\'_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} }>> } ')
-  f.write(' } \n' )
-  g.write(' } \n' )
+  f.write(' } \\noPageBreak \n' )
+  g.write(' } \\noPageBreak \n' )
   f.write('{  \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
   for i in range(howmanytimes):
@@ -1408,8 +1305,8 @@ def WriteEasySimpleIntervalsBelow(f,g,howmanytimes):
     else:
       f.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { ' + IntervalsTopNotesList[intlist[i]] + '1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} } ')
       g.write( '\\transpose ' + IntervalsEasySimpleTransposeList[keyslist[i]] + ' { <<{ ' + IntervalsTopNotesList[intlist[i]] + '1 } \\\\{ \override NoteHead #\'color = #red \override Accidental #\'color = #red \override TextScript #\'padding = #3 c\'_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} }>> } ')
-  f.write(' } \n' )
-  g.write(' } \n' )
+  f.write(' } \\noPageBreak \n' )
+  g.write(' } \\noPageBreak \n' )
   f.write('{  \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
   for i in range(howmanytimes):
@@ -1457,8 +1354,8 @@ def IdentifyHardSimpleIntervals(f,g,howmanytimes):
     else:
       f.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <c\' ' + IntervalsTopNotesList[intlist[i]] + '>1 } ')
       g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <c\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsNameList[intlist[i]] + ' }} } } ')
-  f.write(' } \n' )
-  g.write(' } \n' )
+  f.write(' } \\noPageBreak \n' )
+  g.write(' } \\noPageBreak \n' )
   f.write('{  \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
   for i in range(howmanytimes):
@@ -1508,8 +1405,8 @@ def WriteHardSimpleIntervalsAbove(f,g,howmanytimes):
     else:
       f.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { c\'1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} } ')
       g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <<{ \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IntervalsTopNotesList[intlist[i]] + '1 } \\\\{ \override TextScript #\'padding = #3 c\'_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} }>> } ')
-  f.write(' } \n' )
-  g.write(' } \n' )
+  f.write(' } \\noPageBreak \n' )
+  g.write(' } \\noPageBreak \n' )
   f.write('{  \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
   for i in range(howmanytimes):
@@ -1559,8 +1456,8 @@ def WriteHardSimpleIntervalsBelow(f,g,howmanytimes):
     else:
       f.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { ' + IntervalsTopNotesList[intlist[i]] + '1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} } ')
       g.write( '\\transpose ' + IntervalsHardSimpleTransposeList[keyslist[i]] + ' { <<{ ' + IntervalsTopNotesList[intlist[i]] + '1 } \\\\{ \override NoteHead #\'color = #red \override Accidental #\'color = #red \override TextScript #\'padding = #3 c\'_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} }>> } ')
-  f.write(' } \n' )
-  g.write(' } \n' )
+  f.write(' } \\noPageBreak \n' )
+  g.write(' } \\noPageBreak \n' )
   f.write('{  \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
   for i in range(howmanytimes):
@@ -1609,8 +1506,8 @@ def IdentifyAllSimpleIntervals(f,g,howmanytimes):
     else:
       f.write( '\\transpose ' + temp[keyslist[i]] + ' { <c\' ' + IntervalsTopNotesList[intlist[i]] + '>1 } ')
       g.write( '\\transpose ' + temp[keyslist[i]] + ' { <c\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsNameList[intlist[i]] + ' }} } } ')
-  f.write(' } \n' )
-  g.write(' } \n' )
+  f.write(' } \\noPageBreak \n' )
+  g.write(' } \\noPageBreak \n' )
   f.write('{  \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
   for i in range(howmanytimes):
@@ -1661,8 +1558,8 @@ def WriteAllSimpleIntervalsAbove(f,g,howmanytimes):
     else:
       f.write( '\\transpose ' + temp[keyslist[i]] + ' { c\'1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} } ')
       g.write( '\\transpose ' + temp[keyslist[i]] + ' { <<{ \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + IntervalsTopNotesList[intlist[i]] + '1 } \\\\{ \override TextScript #\'padding = #3 c\'_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} }>> } ')
-  f.write(' } \n' )
-  g.write(' } \n' )
+  f.write(' } \\noPageBreak \n' )
+  g.write(' } \\noPageBreak \n' )
   f.write('{  \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
   for i in range(howmanytimes):
@@ -1713,8 +1610,8 @@ def WriteAllSimpleIntervalsBelow(f,g,howmanytimes):
     else:
       f.write( '\\transpose ' + temp[keyslist[i]] + ' { ' + IntervalsTopNotesList[intlist[i]] + '1_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} } ')
       g.write( '\\transpose ' + temp[keyslist[i]] + ' { <<{ ' + IntervalsTopNotesList[intlist[i]] + '1 } \\\\{ \override NoteHead #\'color = #red \override Accidental #\'color = #red \override TextScript #\'padding = #3 c\'_\markup{ ' + font + ' { ' + IntervalsNameList[intlist[i]] + ' }} }>> } ')
-  f.write(' } \n' )
-  g.write(' } \n' )
+  f.write(' } \\noPageBreak \n' )
+  g.write(' } \\noPageBreak \n' )
   f.write('{  \clef ' + identclef + ' \\notimesig s1 }\n')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
   for i in range(howmanytimes):
@@ -2132,8 +2029,8 @@ def WriteDomSevInversionsA(f,g):
     g.write(' s1^\markup { ' + font + ' { ' + temp[z] + ' }} ')
     for a in WriteAllInvDomSevDict[z]:
       g.write('\\relative ' + octave + ' { ' + key[a] + ' } ')
-    f.write(' }')
-    g.write(' }')
+    f.write(' } \\noPageBreak \n')
+    g.write(' } \\noPageBreak \n')
 
 def WriteDomSevInversionsB(f,g):
   f.write('\markup { ' + font + ' { Write out V 7 chords, in all inversions, using the given note for the lowest of each chord: }}\\noPageBreak\n')
@@ -2518,49 +2415,37 @@ def main(args):
   if args.all_scales:
     f.write('\markup { ' + boldfont + ' { Scales }} \\noPageBreak\n')
     g.write('\markup { ' + boldfont + ' { Scales }} \\noPageBreak\n')
-    for i in range(args.all_scales):
-      scale = random.choice([WriteAMajorScale,IdentifyAMajorScale,WriteAMinorScale,IdentifyAMinorScale,WriteAChrOctWTScale,IdentifyAChromaticScale,IdentifyAOctatonicScale,IdentifyAWholetoneScale,WriteAMajorPentScale,WriteAMinorPentScale,WriteABluesScale,IdentifyAMajorPentScale,IdentifyAMinorPentScale,IdentifyABluesScale,WriteAModeScale,IdentifyAModeScale])
-      scale(f,g)
+    AllScales(f,g,args.all_scales)
     moduleFooters(f,g)
 
   if args.s_maj:
     f.write('\markup { ' + boldfont + ' { Major Scales }} \\noPageBreak\n')
     g.write('\markup { ' + boldfont + ' { Major Scales }} \\noPageBreak\n')
-    for i in range(args.s_maj):
-      scale = random.choice([WriteAMajorScale,IdentifyAMajorScale])
-      scale(f,g)
+    MajorScales(f,g,args.s_maj)
     moduleFooters(f,g)
 
   if args.s_min:
     f.write('\markup { ' + boldfont + ' { Minor Scales }} \\noPageBreak\n')
     g.write('\markup { ' + boldfont + ' { Minor Scales }} \\noPageBreak\n')
-    for i in range(args.s_min):
-      scale = random.choice([WriteAMinorScale,IdentifyAMinorScale])
-      scale(f,g)
+    MinorScales(f,g,args.s_min)
     moduleFooters(f,g)
 
   if args.s_chroctwt:
     f.write('\markup { ' + boldfont + ' { Chromatic, Octatonic & Wholetone Scales }} \\noPageBreak\n')
     g.write('\markup { ' + boldfont + ' { Chromatic, Octatonic & Wholetone Scales }} \\noPageBreak\n')
-    for i in range(args.s_chroctwt):
-      scale = random.choice([WriteAChrOctWTScale,WriteAChrOctWTScale,WriteAChrOctWTScale,IdentifyAChromaticScale,IdentifyAOctatonicScale,IdentifyAWholetoneScale])
-      scale(f,g)
+    ChrOctWtScales(f,g,args.s_chroctwt)
     moduleFooters(f,g)
 
   if args.s_pentblues:
     f.write('\markup { ' + boldfont + ' { Pentatonic & Blues Scales }} \\noPageBreak\n')
     g.write('\markup { ' + boldfont + ' { Pentatonic & Blues Scales }} \\noPageBreak\n')
-    for i in range(args.s_pentblues):
-      scale = random.choice([WriteAMajorPentScale,WriteAMinorPentScale,WriteABluesScale,IdentifyAMajorPentScale,IdentifyAMinorPentScale,IdentifyABluesScale])
-      scale(f,g)
+    PentBluesScales(f,g,args.s_pentblues)
     moduleFooters(f,g)
 
   if args.s_modes:
     f.write('\markup { ' + boldfont + ' { Modes }} \\noPageBreak\n')
     g.write('\markup { ' + boldfont + ' { Modes }} \\noPageBreak\n')
-    for i in range(args.s_modes):
-      scale = random.choice([WriteAModeScale,IdentifyAModeScale])
-      scale(f,g)
+    Modes(f,g,args.s_modes)
     moduleFooters(f,g)
 
   # intervals
