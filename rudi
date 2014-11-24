@@ -154,7 +154,6 @@ headerb = [
     ]
 headerc = [
     ' ',
-    time.strftime("%A, %B %d, %Y") ,
     '" }\n' ,
     '\t}\n' ,
   # Paper layout

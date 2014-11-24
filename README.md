@@ -24,6 +24,9 @@ modules:
     * pentatonic/blues
     * modes
   * intervals
+    * easy root
+    * hard root
+    * compound
   * chords
   * cadences
   * transposing
