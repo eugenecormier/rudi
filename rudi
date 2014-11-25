@@ -2605,5 +2605,9 @@ def main(args):
   call(["lilypond", fillInSheet ])
   call(["lilypond", keySheet ])
 
+  # remove temporary lilypond files
+  call(["rm", fillInSheet ])
+  call(["rm", keySheet ])
+
 # call main function
 main(args)
