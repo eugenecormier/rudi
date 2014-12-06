@@ -1642,10 +1642,14 @@ def IdentifyCompoundIntervals(f,g,howmanytimes):
     keyslist.append(x)
   # create a random list of intervals
   intsel = list(range(len(CompoundIntervalsNameList)))
+  intsel.remove(4)
+  intsel.remove(9)
   intlist = [ ]
   for i in range(howmanytimes):
     if not intsel:
       intsel = list(range(len(CompoundIntervalsNameList)))
+      intsel.remove(4)
+      intsel.remove(9)
     x = random.choice(intsel)
     intsel.remove(x)
     intlist.append(x)
@@ -1682,10 +1686,14 @@ def WriteCompoundIntervalsAbove(f,g,howmanytimes):
     keyslist.append(x)
   # create a random list of intervals
   intsel = list(range(len(CompoundIntervalsNameList)))
+  intsel.remove(4)
+  intsel.remove(9)
   intlist = [ ]
   for i in range(howmanytimes):
     if not intsel:
-      intsel = list(range(len(IntervalsNameList)))
+      intsel = list(range(len(CompoundIntervalsNameList)))
+      intsel.remove(4)
+      intsel.remove(9)
     x = random.choice(intsel)
     intsel.remove(x)
     intlist.append(x)
@@ -1722,10 +1730,14 @@ def WriteCompoundIntervalsBelow(f,g,howmanytimes):
     keyslist.append(x)
   # create a random list of intervals
   intsel = list(range(len(CompoundIntervalsNameList)))
+  intsel.remove(4)
+  intsel.remove(9)
   intlist = [ ]
   for i in range(howmanytimes):
     if not intsel:
       intsel = list(range(len(CompoundIntervalsNameList)))
+      intsel.remove(4)
+      intsel.remove(9)
     x = random.choice(intsel)
     intsel.remove(x)
     intlist.append(x)
