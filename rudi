@@ -11,7 +11,7 @@ import argparse
 # this allows us to call lilypond
 from subprocess import call
 
-# for copyright line
+# for default filenames
 import time
 
 # brings in module to grab randomly from list
@@ -75,6 +75,8 @@ cliargs.add_argument( '--all-simple-intervals' , type=int , nargs='?' , const=10
 cliargs.add_argument( '--easy-simple-intervals' , type=int , nargs='?' , const=10 , metavar='#' , help='Identify/Write Easy Simple Intervals (default 10)' )
 
 cliargs.add_argument( '--hard-simple-intervals' , type=int , nargs='?' , const=10 , metavar='#' , help='Identify/Write Hard Simple Intervals (default 10)' )
+
+cliargs.add_argument( '--compound-intervals' , type=int , nargs='?' , const=10 , metavar='#' , help='Identify/Write Hard Simple Intervals (default 10)' )
 
 cliargs.add_argument( '--intervals-in-scales' , type=int , nargs='?' , const=3 , metavar='#' , help='Identify Scales In Which A Given Interval Occurs (default 3)' )
 
@@ -289,8 +291,11 @@ ModesScalesListTitles = [ 'C Ionian' , 'D Dorian' , 'E Phrygian' , 'F Lydian' , 
 # intervals
 IntervalsEasySimpleTransposeList = [ 'c ces' , 'c ges' , 'c des' , 'c aes' , 'c es' , 'c bes' , 'c f' , 'c c' , 'c g' , 'c d' , 'c a' , 'c e' , 'c b' , 'c fis' , 'c cis' ]
 IntervalsTopNotesList = [ "c'" , "cis'" , "des'" , "d'" , "es'" , "e'" , "fes'" , "f'" , "fis'" , "ges'" , "g'" , "gis'" , "aes'" , "a'" , "bes'" , "b'" , "ces''" , "c''" , "cis''" ]
+CompoundIntervalsTopNotesList = [ "des''" , "d''" , "es''" , "e''" , "fes''" , "f''" , "fis''" , "ges''" , "g''" , "gis''" , "aes''" , "a''" , "bes''" , "b''" ]
 IntervalsNameList = [ 'PP' , 'AP' , 'min2' , 'maj2' , 'min3' , 'maj3' , 'd4' , 'P4' , 'A4' , 'd5' , 'P5' , 'A5' , 'min6' , 'maj6' , 'min7' , 'maj7' , 'd8' , 'P8' , 'A8' ]
+CompoundIntervalsNameList = [ 'min9' , 'maj9' , 'min10' , 'maj10' , 'd11' , 'P11' , 'A11' , 'd12' , 'P12' , 'A12' , 'min13' , 'maj13' , 'min14' , 'maj14' ]
 IntervalsInvertedNameList = [ 'P8' , 'd8' , 'maj7' , 'min7' , 'maj6' , 'min6' , 'A5' , 'P5' , 'd5' , 'A4' , 'P4' , 'd4' , 'maj3' , 'min3' , 'maj2' , 'min2' , 'AP' , 'PP' , 'd8' ]
+CompoundIntervalsInvertedNameList = [ 'maj7' , 'min7' , 'maj6' , 'min6' , 'A5' , 'P5' , 'd5' , 'A4' , 'P4' , 'd4' , 'maj3' , 'min3' , 'maj2' , 'min2' ]
 IntervalsHardSimpleTransposeList = [ 'c dis' , 'c eis' , 'c fes' , 'c gis' , 'c ais' , 'c bis' ]
 IntervalsInScalesList = [ "<a' cis''>1" , "<b' g''>1" , "<fis' e''>1" , "<g' a'>1" , "<des' bes'>1" , "<b' ais''>1" , "<ais' cisis''>1" , "<bis' gis''>1" , "<gis' ais'>1" ]
 IntervalsInScalesQuestions = [ 'Major' , 'Natural Minor' , 'Harmonic Minor' , 'Melodic Minor' ]
@@ -1624,6 +1629,126 @@ def WriteAllSimpleIntervalsBelow(f,g,howmanytimes):
       g.write( '\\transpose ' + temp[keyslist[i]] + ' { <c\'\' ' + IntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + IntervalsInvertedNameList[intlist[i]] + ' }} } } ')
   g.write(' } \n' )
 
+def IdentifyCompoundIntervals(f,g,howmanytimes):
+  # create a random list of keys/starting notes
+  temp = IntervalsEasySimpleTransposeList + IntervalsHardSimpleTransposeList
+  keyssel = list(range(len(temp)))
+  keyslist = [ ]
+  for i in range(howmanytimes):
+    if not keyssel:
+      keyssel = list(range(len(temp)))
+    x = random.choice(keyssel)
+    keyssel.remove(x)
+    keyslist.append(x)
+  # create a random list of intervals
+  intsel = list(range(len(CompoundIntervalsNameList)))
+  intlist = [ ]
+  for i in range(howmanytimes):
+    if not intsel:
+      intsel = list(range(len(CompoundIntervalsNameList)))
+    x = random.choice(intsel)
+    intsel.remove(x)
+    intlist.append(x)
+  # default section headers
+  identclef = random.choice(clefs)
+  octave = ' ' if identclef == 'treble' else ',' if identclef == 'alto' else ',' if identclef == 'tenor' else ',,'
+  f.write('\markup { ' + font + ' { Name the following intervals, invert them and name the inversions: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Name the following intervals, invert them and name the inversions: }} \\noPageBreak\n')
+  f.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
+  g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
+  # write intervals
+  for i in range(howmanytimes):
+    f.write( '\\transpose ' + temp[keyslist[i]] + ' { <c\' ' + CompoundIntervalsTopNotesList[intlist[i]] + '>1 } ')
+    g.write( '\\transpose ' + temp[keyslist[i]] + ' { <c\' ' + CompoundIntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + CompoundIntervalsNameList[intlist[i]] + ' }} } } ')
+  f.write(' } \\noPageBreak \n' )
+  g.write(' } \\noPageBreak \n' )
+  f.write('{  \clef ' + identclef + ' \\notimesig s1 }\n')
+  g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
+  # write inversions
+  for i in range(howmanytimes):
+    g.write( '\\transpose ' + temp[keyslist[i]] + ', { <c\'\'\' ' + CompoundIntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + CompoundIntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+  g.write(' } \n' )
+
+def WriteCompoundIntervalsAbove(f,g,howmanytimes):
+  # create a random list of keys/starting notes
+  temp = IntervalsEasySimpleTransposeList + IntervalsHardSimpleTransposeList
+  keyssel = list(range(len(temp)))
+  keyslist = [ ]
+  for i in range(howmanytimes):
+    if not keyssel:
+      keyssel = list(range(len(temp)))
+    x = random.choice(keyssel)
+    keyssel.remove(x)
+    keyslist.append(x)
+  # create a random list of intervals
+  intsel = list(range(len(CompoundIntervalsNameList)))
+  intlist = [ ]
+  for i in range(howmanytimes):
+    if not intsel:
+      intsel = list(range(len(IntervalsNameList)))
+    x = random.choice(intsel)
+    intsel.remove(x)
+    intlist.append(x)
+  # default section headers
+  identclef = random.choice(clefs)
+  octave = ' ' if identclef == 'treble' else ',' if identclef == 'alto' else ',' if identclef == 'tenor' else ',,'
+  f.write('\markup { ' + font + ' { Write the following intervals above the given notes, invert them and name the inversions: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write the following intervals above the given notes, invert them and name the inversions: }} \\noPageBreak\n')
+  f.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
+  g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
+  # write intervals above
+  for i in range(howmanytimes):
+    f.write( '\\transpose ' + temp[keyslist[i]] + ' { c\'1_\markup{ ' + font + ' { ' + CompoundIntervalsNameList[intlist[i]] + ' }} } ')
+    g.write( '\\transpose ' + temp[keyslist[i]] + ' { <<{ \override NoteHead #\'color = #red \override Accidental #\'color = #red ' + CompoundIntervalsTopNotesList[intlist[i]] + '1 } \\\\{ \override TextScript #\'padding = #3 c\'_\markup{ ' + font + ' { ' + CompoundIntervalsNameList[intlist[i]] + ' }} }>> } ')
+  f.write(' } \\noPageBreak \n' )
+  g.write(' } \\noPageBreak \n' )
+  f.write('{  \clef ' + identclef + ' \\notimesig s1 }\n')
+  g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
+  # write inversions
+  for i in range(howmanytimes):
+    g.write( '\\transpose ' + temp[keyslist[i]] + ', { <c\'\'\' ' + CompoundIntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + CompoundIntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+  g.write(' } \n' )
+
+def WriteCompoundIntervalsBelow(f,g,howmanytimes):
+  # create a random list of keys/starting notes
+  temp = IntervalsEasySimpleTransposeList + IntervalsHardSimpleTransposeList
+  keyssel = list(range(len(temp)))
+  keyslist = [ ]
+  for i in range(howmanytimes):
+    if not keyssel:
+      keyssel = list(range(len(temp)))
+    x = random.choice(keyssel)
+    keyssel.remove(x)
+    keyslist.append(x)
+  # create a random list of intervals
+  intsel = list(range(len(CompoundIntervalsNameList)))
+  intlist = [ ]
+  for i in range(howmanytimes):
+    if not intsel:
+      intsel = list(range(len(CompoundIntervalsNameList)))
+    x = random.choice(intsel)
+    intsel.remove(x)
+    intlist.append(x)
+  # default section headers
+  identclef = random.choice(clefs)
+  octave = ' ' if identclef == 'treble' else ',' if identclef == 'alto' else ',' if identclef == 'tenor' else ',,'
+  f.write('\markup { ' + font + ' { Write the following intervals below the given notes, invert them and name the inversions: }} \\noPageBreak\n')
+  g.write('\markup { ' + font + ' { Write the following intervals below the given notes, invert them and name the inversions: }} \\noPageBreak\n')
+  f.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
+  g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
+  # write intervals below
+  for i in range(howmanytimes):
+    f.write( '\\transpose ' + temp[keyslist[i]] + ' { ' + CompoundIntervalsTopNotesList[intlist[i]] + '1_\markup{ ' + font + ' { ' + CompoundIntervalsNameList[intlist[i]] + ' }} } ')
+    g.write( '\\transpose ' + temp[keyslist[i]] + ' { <<{ ' + CompoundIntervalsTopNotesList[intlist[i]] + '1 } \\\\{ \override NoteHead #\'color = #red \override Accidental #\'color = #red \override TextScript #\'padding = #3 c\'_\markup{ ' + font + ' { ' + CompoundIntervalsNameList[intlist[i]] + ' }} }>> } ')
+  f.write(' } \\noPageBreak \n' )
+  g.write(' } \\noPageBreak \n' )
+  f.write('{  \clef ' + identclef + ' \\notimesig s1 }\n')
+  g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 \override NoteHead #\'color = #red \override Accidental #\'color = #red ')
+  # write inversions
+  for i in range(howmanytimes):
+    g.write( '\\transpose ' + temp[keyslist[i]] + ', { <c\'\'\' ' + CompoundIntervalsTopNotesList[intlist[i]] + '>1_\markup{ ' + font + ' { \with-color #red { ' + CompoundIntervalsInvertedNameList[intlist[i]] + ' }} } } ')
+  g.write(' } \n' )
+
 def IdentifyIntervalsInScales(f,g,howmanytimes):
   interval = random.choice(list(range(len(IntervalsInScalesList))))
   question = random.choice(IntervalsInScalesQuestions)
@@ -1634,6 +1759,8 @@ def IdentifyIntervalsInScales(f,g,howmanytimes):
   f.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 ' + IntervalsInScalesList[interval] + ' } \n')
   g.write('\\transpose c c' + octave + '{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 ' + IntervalsInScalesList[interval] + ' } \n')
   g.write('\markup{ ' + font + ' { \with-color #red { ' + question + ': ' + IntervalsInScalesKeyDict[question][interval] + ' }} } ')
+
+
 
 ### Chords
 ##################################################
@@ -2306,7 +2433,7 @@ def main(args):
 
   # All
   if args.all:
-    args = cliargs.parse_args([ '--aural-intervals' , '--clefs' , '--notes' , '--durations' , '--cst-dst-wt' , '--circle-of-fifths' , '--key-sigs' , '--scale-degrees' , '--relative-keys' , '--all-scales' , '--all-simple-intervals' , '--intervals-in-scales' , '--all-chords-inv' , '--cadences' , '--transposition' , '--time-sigs' , '--detect-errors' ])
+    args = cliargs.parse_args([ '--aural-intervals' , '--clefs' , '--notes' , '--durations' , '--cst-dst-wt' , '--circle-of-fifths' , '--key-sigs' , '--scale-degrees' , '--relative-keys' , '--all-scales' , '--all-simple-intervals' , '--compound-intervals' , '--intervals-in-scales' , '--all-chords-inv' , '--cadences' , '--transposition' , '--time-sigs' , '--detect-errors' ])
 
   # aural intervals
   if args.aural_intervals:
@@ -2448,28 +2575,37 @@ def main(args):
     moduleFooters(f,g)
 
   # intervals
+
+  if args.all_simple_intervals:
+    f.write('\markup { ' + boldfont + ' { Simple Intervals }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Simple Intervals }} \\noPageBreak\n')
+    IdentifyAllSimpleIntervals(f,g,args.all_simple_intervals)
+    WriteAllSimpleIntervalsAbove(f,g,args.all_simple_intervals)
+    WriteAllSimpleIntervalsBelow(f,g,args.all_simple_intervals)
+    moduleFooters(f,g)
+
   if args.easy_simple_intervals:
-    f.write('\markup { ' + boldfont + ' { Intervals }} \\noPageBreak\n')
-    g.write('\markup { ' + boldfont + ' { Intervals }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Simple Intervals }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Simple Intervals }} \\noPageBreak\n')
     IdentifyEasySimpleIntervals(f,g,args.easy_simple_intervals)
     WriteEasySimpleIntervalsAbove(f,g,args.easy_simple_intervals)
     WriteEasySimpleIntervalsBelow(f,g,args.easy_simple_intervals)
     moduleFooters(f,g)
 
   if args.hard_simple_intervals:
-    f.write('\markup { ' + boldfont + ' { Intervals }} \\noPageBreak\n')
-    g.write('\markup { ' + boldfont + ' { Intervals }} \\noPageBreak\n')
+    f.write('\markup { ' + boldfont + ' { Simple Intervals }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Simple Intervals }} \\noPageBreak\n')
     IdentifyHardSimpleIntervals(f,g,args.hard_simple_intervals)
     WriteHardSimpleIntervalsAbove(f,g,args.hard_simple_intervals)
     WriteHardSimpleIntervalsBelow(f,g,args.hard_simple_intervals)
     moduleFooters(f,g)
 
-  if args.all_simple_intervals:
-    f.write('\markup { ' + boldfont + ' { Intervals }} \\noPageBreak\n')
-    g.write('\markup { ' + boldfont + ' { Intervals }} \\noPageBreak\n')
-    IdentifyAllSimpleIntervals(f,g,args.all_simple_intervals)
-    WriteAllSimpleIntervalsAbove(f,g,args.all_simple_intervals)
-    WriteAllSimpleIntervalsBelow(f,g,args.all_simple_intervals)
+  if args.compound_intervals:
+    f.write('\markup { ' + boldfont + ' { Compound Intervals }} \\noPageBreak\n')
+    g.write('\markup { ' + boldfont + ' { Compound Intervals }} \\noPageBreak\n')
+    IdentifyCompoundIntervals(f,g,args.compound_intervals)
+    WriteCompoundIntervalsAbove(f,g,args.compound_intervals)
+    WriteCompoundIntervalsBelow(f,g,args.compound_intervals)
     moduleFooters(f,g)
 
   if args.intervals_in_scales:

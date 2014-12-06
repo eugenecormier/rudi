@@ -12,11 +12,11 @@ modules:
   * clefs
   * note names
   * durations
-  * dst, cst, wt
+  * diatonic semitones, chromatic semitones & wholetones
   * circle of fifths
   * key signatures
   * scale degrees
-  * relative major/minor
+  * relative major/minor keys
   * scales
     * major
     * minor
@@ -24,10 +24,16 @@ modules:
     * pentatonic/blues
     * modes
   * intervals
-    * easy root
-    * hard root
-    * compound
-  * chords
+    * easy root simple (bottom note has a key signature)
+    * hard root simple (bottom note does not have a key signature)
+    * compound (more than an octave)
+    * intervals in scales
+  * chords (both in root or inversions)
+    * major/minor chords
+    * diminished/augmented chords
+    * dominant 7th chords
+    * extended 7th chords
+    * clusters, quartal & polychords
   * cadences
   * transposing
   * time signatures
