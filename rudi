@@ -38,7 +38,11 @@ cliargs.add_argument( '--font' , nargs='?' , default='' , help='Change the defau
 
 cliargs.add_argument( '-o', '--output' , nargs='?' , help='Change the output file name' )
 
+cliargs.add_argument( '-d' , '--delete' , help='Delete temporary .ly files after creating pdfs' , action='store_true' )
+
 cliargs.add_argument( '--all' , help='Add All Subjects' , action='store_true' )
+
+cliargs.add_argument( '--use-clefs' , nargs='?' , default='TatB', help='Clefs to use (T-treble, a-alto, t-tenor, B-bass default=TatB)' )
 
 cliargs.add_argument( '--aural-intervals' , type=int , nargs='?' , const=10 , metavar='#' , help='Add boxes for aural interval testing (default 10)' )
 
@@ -184,11 +188,11 @@ footer = [
   '\n'
   ]
 
+# initiate clef variable globally
+clefs = [ ]
+
 # aural intervals
 auralIntervals = [ 'PP' , 'min2' , 'maj2' , 'min3' , 'maj3' , 'P4' , 'TT' , 'P5' , 'min6' , 'maj6' , 'min7' , 'maj7' , 'P8' ]
-
-# clefs
-clefs = [ 'treble' , 'treble' , 'treble' , 'treble' , 'treble' , 'treble' , 'treble' , 'treble' , 'bass' , 'bass' , 'bass' , 'bass' , 'bass' , 'bass' , 'alto' , 'tenor' ]
 
 # Note Names
 WrittenNoteNames = [ 'L-A' , 'L-B' , 'L-C' , 'L-D' , 'L-E' , 'L-F' , 'L-G' , 'S-A' , 'S-B' , 'S-C' , 'S-D' , 'S-E' , 'S-F' , 'S-G' ]
@@ -456,7 +460,7 @@ def lilypondHeaders(f,g,title,copyright):
   f.writelines(headera + headersheeta + [title] + headersheetb + headerb + [copyright] + headerc)
   g.writelines(headera + headerkeya + [title] + headerkeyb + headerb + [copyright] + headerc)
 
-### Aural Intervals
+### Aural Intervals (no need for clef selection)
 ##################################################
 def AuralIntervals(f,g,howmanytimes):
   # sheet
@@ -496,41 +500,54 @@ def AuralIntervals(f,g,howmanytimes):
       g.write( str(x) + '. \with-color #red ' + random.choice(auralIntervals) + ' \hspace #2 ')
     g.write(' }} \n')
 
-### Drawing Clefs
+### Drawing Clefs (fixed for clef selection)
 ##################################################
 def DrawClefs(f,g,howmanytimes):
-  # sheet
   f.write('\markup { ' + font + ' { Write out the following clefs ' + str(howmanytimes) + ' times.}} \\noPageBreak \n')
-  f.write('{ \\nobarline \clef treble \\notimesig s1 }\n')
-  f.write('{ \\nobarline \clef bass \\notimesig s1 }\n')
-  f.write('{ \\nobarline \clef alto \\notimesig s1 }\n')
-  f.write('{ \\nobarline \clef tenor \\notimesig s1 }\n')
-  # key
+  if args.use_clefs:
+    cleflist = list(args.use_clefs)
+    if 'T' in cleflist:
+      f.write('{ \\nobarline \clef treble \\notimesig s1 }\n')
+    if 'B' in cleflist:
+      f.write('{ \\nobarline \clef bass \\notimesig s1 }\n')
+    if 'a' in cleflist:
+      f.write('{ \\nobarline \clef alto \\notimesig s1 }\n')
+    if 't' in cleflist:
+      f.write('{ \\nobarline \clef tenor \\notimesig s1 }\n')
   g.write('\markup { ' + font + ' { Write out the following clefs ' + str(howmanytimes) + ' times.}} \\noPageBreak \n')
-  g.write('{ \\nobarline \\notimesig \\noclefresize \clef treble ')
-  for i in range(howmanytimes):
-    g.write(' s8 \set Staff.forceClef = ##t \override Staff.Clef #\'color = #(rgb-color 1.0 0.0 0.0) \clef treble ')
-  g.write(' }\n')
-  g.write('{ \\nobarline \\notimesig \\noclefresize \clef bass ')
-  for i in range(howmanytimes):
-    g.write(' s8 \set Staff.forceClef = ##t \override Staff.Clef #\'color = #(rgb-color 1.0 0.0 0.0) \clef bass ')
-  g.write(' }\n')
-  g.write('{ \\nobarline \\notimesig \\noclefresize \clef alto ')
-  for i in range(howmanytimes):
-    g.write(' s8 \set Staff.forceClef = ##t \override Staff.Clef #\'color = #(rgb-color 1.0 0.0 0.0) \clef alto ')
-  g.write(' }\n')
-  g.write('{ \\nobarline \\notimesig \\noclefresize \clef tenor ')
-  for i in range(howmanytimes):
-    g.write(' s8 \set Staff.forceClef = ##t \override Staff.Clef #\'color = #(rgb-color 1.0 0.0 0.0) \clef tenor ')
-  g.write(' }\n')
+  if args.use_clefs:
+    cleflist = list(args.use_clefs)
+    if 'T' in cleflist:
+      g.write('{ \\nobarline \\notimesig \\noclefresize \clef treble ')
+      for i in range(howmanytimes):
+        g.write(' s8 \set Staff.forceClef = ##t \override Staff.Clef #\'color = #(rgb-color 1.0 0.0 0.0) \clef treble ')
+      g.write(' }\n')
+    if 'B' in cleflist:
+      g.write('{ \\nobarline \\notimesig \\noclefresize \clef bass ')
+      for i in range(howmanytimes):
+        g.write(' s8 \set Staff.forceClef = ##t \override Staff.Clef #\'color = #(rgb-color 1.0 0.0 0.0) \clef bass ')
+      g.write(' }\n')
+    if 'a' in cleflist:
+      g.write('{ \\nobarline \\notimesig \\noclefresize \clef alto ')
+      for i in range(howmanytimes):
+        g.write(' s8 \set Staff.forceClef = ##t \override Staff.Clef #\'color = #(rgb-color 1.0 0.0 0.0) \clef alto ')
+      g.write(' }\n')
+    if 't' in cleflist:
+      g.write('{ \\nobarline \\notimesig \\noclefresize \clef tenor ')
+      for i in range(howmanytimes):
+        g.write(' s8 \set Staff.forceClef = ##t \override Staff.Clef #\'color = #(rgb-color 1.0 0.0 0.0) \clef tenor ')
+      g.write(' }\n')
 
-### Writing Notes
+
+### Writing Notes (fixed for clef selection)
 ##################################################
 def WriteNotes(f,g,howmanytimes):
   f.write('\markup { ' + font + ' { "Write out the following notes." (L = on a line, S = on a space) }} \\noPageBreak\n')
   g.write('\markup { ' + font + ' { "Write out the following notes." (L = on a line, S = on a space) }} \\noPageBreak\n')
-  f.write('{ \clef treble \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #3 ')
-  g.write('{ \clef treble \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #3 ')
+
+  firstclef = random.choice(clefs)
+  f.write('{ \clef ' + str(firstclef) + ' \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #3 ')
+  g.write('{ \clef ' + str(firstclef) + ' \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #3 ')
   temp = list(range(len(WrittenNoteNames)))
   for i in range(howmanytimes):
     if not temp:
@@ -541,8 +558,10 @@ def WriteNotes(f,g,howmanytimes):
     g.write('\override NoteHead #\'color = #red ' + WrittenNoteNamesKeyTreble[x] + '1_\markup { ' + font + ' { ' + WrittenNoteNames[x] + ' }}')
   f.write(' }')
   g.write(' }')
-  f.write('{ \clef bass \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #3 ')
-  g.write('{ \clef bass \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #3 ')
+
+  secondclef = random.choice(clefs)
+  f.write('{ \clef ' + str(secondclef) + ' \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #3 ')
+  g.write('{ \clef ' + str(secondclef) + ' \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #3 ')
   temp = list(range(len(WrittenNoteNames)))
   for i in range(howmanytimes):
     if not temp:
@@ -553,8 +572,10 @@ def WriteNotes(f,g,howmanytimes):
     g.write('\override NoteHead #\'color = #red ' + WrittenNoteNamesKeyBass[x] + '1_\markup { ' + font + ' { ' + WrittenNoteNames[x] + ' }}')
   f.write(' }')
   g.write(' }')
-  f.write('{ \clef alto \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #3 ')
-  g.write('{ \clef alto \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #3 ')
+
+  thirdclef = random.choice(clefs)
+  f.write('{ \clef ' + str(thirdclef) + ' \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #3 ')
+  g.write('{ \clef ' + str(thirdclef) + ' \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #3 ')
   temp = list(range(len(WrittenNoteNames)))
   for i in range(howmanytimes):
     if not temp:
@@ -565,8 +586,10 @@ def WriteNotes(f,g,howmanytimes):
     g.write('\override NoteHead #\'color = #red ' + WrittenNoteNamesKeyAlto[x] + '1_\markup { ' + font + ' { ' + WrittenNoteNames[x] + ' }}')
   f.write(' }')
   g.write(' }')
-  f.write('{ \clef tenor \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #3 ')
-  g.write('{ \clef tenor \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #3 ')
+
+  fourthclef = random.choice(clefs)
+  f.write('{ \clef ' + str(fourthclef) + ' \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #3 ')
+  g.write('{ \clef ' + str(fourthclef) + ' \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #3 ')
   temp = list(range(len(WrittenNoteNames)))
   for i in range(howmanytimes):
     if not temp:
@@ -581,56 +604,108 @@ def WriteNotes(f,g,howmanytimes):
 def IdentifyNotes(f,g,howmanytimes):
   f.write('\markup { ' + font + ' { "Name the following notes." }} \\noPageBreak\n')
   g.write('\markup { ' + font + ' { "Name the following notes." }} \\noPageBreak\n')
-  f.write('{ \clef treble \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
-  g.write('{ \clef treble \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
-  temp = list(range(len(IdentifyNoteNamesTreble)))
+
+  firstclef = random.choice(clefs)
+  f.write('{ \clef ' + str(firstclef) + ' \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
+  g.write('{ \clef ' + str(firstclef) + ' \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
+  if firstclef == 'treble':
+    temp = list(range(len(IdentifyNoteNamesTreble)))
+    tempnotes = IdentifyNoteNamesTreble
+  elif firstclef == 'bass':
+    temp = list(range(len(IdentifyNoteNamesBass)))
+    tempnotes = IdentifyNoteNamesBass
+  elif firstclef == 'alto':
+    temp = list(range(len(IdentifyNoteNamesAlto)))
+    tempnotes = IdentifyNoteNamesAlto
+  elif firstclef == 'tenor':
+    temp = list(range(len(IdentifyNoteNamesTenor)))
+    tempnotes = IdentifyNoteNamesTenor
   for i in range(howmanytimes):
     if not temp:
       temp = list(range(len(IdentifyNoteNamesTreble)))
     x = random.choice(temp)
     temp.remove(x)
-    f.write( IdentifyNoteNamesTreble[x] + '_\markup { ' + font + ' { ___ }} ')
-    g.write( IdentifyNoteNamesTreble[x] + '_\markup { \with-color #red ' + font + ' { ' + IdentifyNoteNamesTrebleKey[x] + ' }} ')
+    f.write( tempnotes[x] + '_\markup { ' + font + ' { ___ }} ')
+    g.write( tempnotes[x] + '_\markup { \with-color #red ' + font + ' { ' + IdentifyNoteNamesTrebleKey[x] + ' }} ')
   f.write(' } \\noPageBreak \n')
   g.write(' } \\noPageBreak \n')
-  f.write('{ \clef bass \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
-  g.write('{ \clef bass \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
-  temp = list(range(len(IdentifyNoteNamesBass)))
+
+  secondclef = random.choice(clefs)
+  f.write('{ \clef ' + str(secondclef) + ' \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
+  g.write('{ \clef ' + str(secondclef) + ' \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
+  if secondclef == 'treble':
+    temp = list(range(len(IdentifyNoteNamesTreble)))
+    tempnotes = IdentifyNoteNamesTreble
+  elif secondclef == 'bass':
+    temp = list(range(len(IdentifyNoteNamesBass)))
+    tempnotes = IdentifyNoteNamesBass
+  elif secondclef == 'alto':
+    temp = list(range(len(IdentifyNoteNamesAlto)))
+    tempnotes = IdentifyNoteNamesAlto
+  elif secondclef == 'tenor':
+    temp = list(range(len(IdentifyNoteNamesTenor)))
+    tempnotes = IdentifyNoteNamesTenor
   for i in range(howmanytimes):
     if not temp:
       temp = list(range(len(IdentifyNoteNamesBass)))
     x = random.choice(temp)
     temp.remove(x)
-    f.write( IdentifyNoteNamesBass[x] + '_\markup { ' + font + ' { ___ }} ')
-    g.write( IdentifyNoteNamesBass[x] + '_\markup { ' + font + ' { \with-color #red ' + IdentifyNoteNamesBassKey[x] + ' }} ')
+    f.write( tempnotes[x] + '_\markup { ' + font + ' { ___ }} ')
+    g.write( tempnotes[x] + '_\markup { ' + font + ' { \with-color #red ' + IdentifyNoteNamesBassKey[x] + ' }} ')
   f.write(' } \\noPageBreak \n')
   g.write(' } \\noPageBreak \n')
-  f.write('{ \clef alto \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
-  g.write('{ \clef alto \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
-  temp = list(range(len(IdentifyNoteNamesAlto)))
+
+  thirdclef = random.choice(clefs)
+  f.write('{ \clef ' + str(thirdclef) + ' \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
+  g.write('{ \clef ' + str(thirdclef) + ' \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
+  if thirdclef == 'treble':
+    temp = list(range(len(IdentifyNoteNamesTreble)))
+    tempnotes = IdentifyNoteNamesTreble
+  elif thirdclef == 'bass':
+    temp = list(range(len(IdentifyNoteNamesBass)))
+    tempnotes = IdentifyNoteNamesBass
+  elif thirdclef == 'alto':
+    temp = list(range(len(IdentifyNoteNamesAlto)))
+    tempnotes = IdentifyNoteNamesAlto
+  elif thirdclef == 'tenor':
+    temp = list(range(len(IdentifyNoteNamesTenor)))
+    tempnotes = IdentifyNoteNamesTenor
   for i in range(howmanytimes):
     if not temp:
       temp = list(range(len(IdentifyNoteNamesAlto)))
     x = random.choice(temp)
     temp.remove(x)
-    f.write( IdentifyNoteNamesAlto[x] + '_\markup { ' + font + ' { ___ }} ')
-    g.write( IdentifyNoteNamesAlto[x] + '_\markup { ' + font + ' { \with-color #red ' + IdentifyNoteNamesAltoKey[x] + ' }} ')
+    f.write( tempnotes[x] + '_\markup { ' + font + ' { ___ }} ')
+    g.write( tempnotes[x] + '_\markup { ' + font + ' { \with-color #red ' + IdentifyNoteNamesAltoKey[x] + ' }} ')
   f.write(' } \\noPageBreak \n')
   g.write(' } \\noPageBreak \n')
-  f.write('{ \clef tenor \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
-  g.write('{ \clef tenor \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
-  temp = list(range(len(IdentifyNoteNamesTenor)))
+
+  fourthclef = random.choice(clefs)
+  f.write('{ \clef ' + str(fourthclef) + ' \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
+  g.write('{ \clef ' + str(fourthclef) + ' \\notimesig \\nobarline \\nobarlinenumbers \override TextScript #\'padding = #4 ')
+  if fourthclef == 'treble':
+    temp = list(range(len(IdentifyNoteNamesTreble)))
+    tempnotes = IdentifyNoteNamesTreble
+  elif fourthclef == 'bass':
+    temp = list(range(len(IdentifyNoteNamesBass)))
+    tempnotes = IdentifyNoteNamesBass
+  elif fourthclef == 'alto':
+    temp = list(range(len(IdentifyNoteNamesAlto)))
+    tempnotes = IdentifyNoteNamesAlto
+  elif fourthclef == 'tenor':
+    temp = list(range(len(IdentifyNoteNamesTenor)))
+    tempnotes = IdentifyNoteNamesTenor
   for i in range(howmanytimes):
     if not temp:
       temp = list(range(len(IdentifyNoteNamesTenor)))
     x = random.choice(temp)
     temp.remove(x)
-    f.write( IdentifyNoteNamesTenor[x] + '_\markup { ' + font + ' { ___ }} ')
-    g.write( IdentifyNoteNamesTenor[x] + '_\markup { ' + font + ' { \with-color #red ' + IdentifyNoteNamesTenorKey[x] + ' }} ')
+    f.write( tempnotes[x] + '_\markup { ' + font + ' { ___ }} ')
+    g.write( tempnotes[x] + '_\markup { ' + font + ' { \with-color #red ' + IdentifyNoteNamesTenorKey[x] + ' }} ')
   f.write(' }\n')
   g.write(' }\n')
 
-### Durations
+### Durations (no need for clef selection)
 ##################################################
 def WriteASingleNoteEqualTo(f,g,howmanytimes):
   f.write('\markup { ' + font + ' { Write a single note equal to: }} \\noPageBreak\n')
@@ -758,7 +833,7 @@ def CompareDurations(f,g,howmanytimes):
     f.write('\markup { ' + font + ' { ' + DurationComparisons[x] + ' }}\n')
     g.write('\markup { ' + font + ' { ' + DurationComparisonsKey[x] + ' }}\n')
 
-### CST DST WT
+### CST DST WT (fixed for clef selection)
 ##################################################
 def IdentifyCstDstWt(f,g,howmanytimes):
   f.write('\markup { ' + font + ' { Label the following as CST (chromatic semitone), DST (diatonic semitone) or WT (wholetone): }} \\noPageBreak\n')
@@ -900,42 +975,80 @@ def WriteEnharmonic(f,g):
   f.write(' }}\n')
   g.write(' }}\n')
 
-### Writing key signatures
+### Writing key signatures (fixed for clef selection)
 ##################################################
 def WriteKeySigs(f,g):
   f.write('\markup { ' + font + ' { Draw the following key signatures: }}\\noPageBreak\n')
   g.write('\markup { ' + font + ' { Draw the following key signatures: }}\\noPageBreak\n')
-  f.write('{ \clef treble \\notimesig \\nobarline \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
-  g.write('{ \clef treble \\notimesig \\nobarline \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 \override TextScript #\'padding = #3 \\nokeycancel s1 ')
-  temp = list(range(len(MajKeySigList)))
-  temp.remove(7)
-  randomlist = [ ]
-  for i in range(6):
-    x = random.choice(temp)
-    temp.remove(x)
-    randomlist.append(x)
-  for i in randomlist:
-    f.write(' s1^\markup{ ' + font + ' { ' + MajKeySigList[i] + ' }} ')
-    g.write(' s1 \\noBreak \override Score.RehearsalMark #\'break-align-symbols = #\'(key-signature) \override Staff.KeySignature #\'color = #red \override Staff.KeyCancellation #\'break-visibility = #\'#(#f #f #f) \key ' + MajKeySigListKey[i] + ' \major \mark \markup { ' + font + ' { ' + MajKeySigList[i] + ' }} ')
-  f.write(' }\\noPageBreak\n')
-  g.write(' }\\noPageBreak\n')
-  f.write('{ \clef alto \\notimesig \\nobarline s1 }\\noPageBreak\n')
-  g.write('{ \clef alto \\notimesig \\nobarline \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 \override TextScript #\'padding = #3 \\nokeycancel s1 ')
-  for i in randomlist:
-     g.write(' s1 \\noBreak \override Staff.KeySignature #\'color = #red \override Staff.KeyCancellation #\'break-visibility = #\'#(#f #f #f) \key ' + MajKeySigListKey[i] + ' \major ')
-  g.write(' }\\noPageBreak\n')
-  f.write('{ \clef tenor \\notimesig \\nobarline s1 }\\noPageBreak\n')
-  g.write('{ \clef tenor \\notimesig \\nobarline \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 \override TextScript #\'padding = #3 \\nokeycancel s1 ')
-  for i in randomlist:
-    g.write(' s1 \\noBreak \override Staff.KeySignature #\'color = #red \override Staff.KeyCancellation #\'break-visibility = #\'#(#f #f #f) \key ' + MajKeySigListKey[i] + ' \major ')
-  g.write(' }\\noPageBreak\n')
-  f.write('{ \clef bass \\notimesig \\nobarline s1 }\\noPageBreak\n')
-  g.write('{ \clef bass \\notimesig \\nobarline \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 \override TextScript #\'padding = #3 \\nokeycancel s1 ')
-  for i in randomlist:
-    g.write(' s1 \\noBreak \override Staff.KeySignature #\'color = #red \override Staff.KeyCancellation #\'break-visibility = #\'#(#f #f #f) \key ' + MajKeySigListKey[i] + ' \major ')
-  g.write(' }\n')
+  if args.use_clefs:
+    cleflist = list(args.use_clefs)
 
-### Identify scale degrees
+    if 'T' in cleflist:
+      f.write('{ \clef treble \\notimesig \\nobarline \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
+      g.write('{ \clef treble \\notimesig \\nobarline \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 \override TextScript #\'padding = #3 \\nokeycancel s1 ')
+      temp = list(range(len(MajKeySigList)))
+      temp.remove(7)
+      randomlist = [ ]
+      for i in range(6):
+        x = random.choice(temp)
+        temp.remove(x)
+        randomlist.append(x)
+      for i in randomlist:
+        f.write(' s1^\markup{ ' + font + ' { ' + MajKeySigList[i] + ' }} ')
+        g.write(' s1 \\noBreak \override Score.RehearsalMark #\'break-align-symbols = #\'(key-signature) \override Staff.KeySignature #\'color = #red \override Staff.KeyCancellation #\'break-visibility = #\'#(#f #f #f) \key ' + MajKeySigListKey[i] + ' \major \mark \markup { ' + font + ' { ' + MajKeySigList[i] + ' }} ')
+      f.write(' }\\noPageBreak\n')
+      g.write(' }\\noPageBreak\n')
+
+    if 'B' in cleflist:
+      f.write('{ \clef bass \\notimesig \\nobarline \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
+      g.write('{ \clef bass \\notimesig \\nobarline \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 \override TextScript #\'padding = #3 \\nokeycancel s1 ')
+      temp = list(range(len(MajKeySigList)))
+      temp.remove(7)
+      randomlist = [ ]
+      for i in range(6):
+        x = random.choice(temp)
+        temp.remove(x)
+        randomlist.append(x)
+      for i in randomlist:
+        f.write(' s1^\markup{ ' + font + ' { ' + MajKeySigList[i] + ' }} ')
+        g.write(' s1 \\noBreak \override Score.RehearsalMark #\'break-align-symbols = #\'(key-signature) \override Staff.KeySignature #\'color = #red \override Staff.KeyCancellation #\'break-visibility = #\'#(#f #f #f) \key ' + MajKeySigListKey[i] + ' \major \mark \markup { ' + font + ' { ' + MajKeySigList[i] + ' }} ')
+      f.write(' }\\noPageBreak\n')
+      g.write(' }\\noPageBreak\n')
+
+    if 'a' in cleflist:
+      f.write('{ \clef alto \\notimesig \\nobarline \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
+      g.write('{ \clef alto \\notimesig \\nobarline \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 \override TextScript #\'padding = #3 \\nokeycancel s1 ')
+      temp = list(range(len(MajKeySigList)))
+      temp.remove(7)
+      randomlist = [ ]
+      for i in range(6):
+        x = random.choice(temp)
+        temp.remove(x)
+        randomlist.append(x)
+      for i in randomlist:
+        f.write(' s1^\markup{ ' + font + ' { ' + MajKeySigList[i] + ' }} ')
+        g.write(' s1 \\noBreak \override Score.RehearsalMark #\'break-align-symbols = #\'(key-signature) \override Staff.KeySignature #\'color = #red \override Staff.KeyCancellation #\'break-visibility = #\'#(#f #f #f) \key ' + MajKeySigListKey[i] + ' \major \mark \markup { ' + font + ' { ' + MajKeySigList[i] + ' }} ')
+      f.write(' }\\noPageBreak\n')
+      g.write(' }\\noPageBreak\n')
+
+    if 't' in cleflist:
+      f.write('{ \clef tenor \\notimesig \\nobarline \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3 ')
+      g.write('{ \clef tenor \\notimesig \\nobarline \override Score.SpacingSpanner #\'spacing-increment = 1 \override Score.SpacingSpanner #\'shortest-duration-space = 1 \override TextScript #\'padding = #3 \\nokeycancel s1 ')
+      temp = list(range(len(MajKeySigList)))
+      temp.remove(7)
+      randomlist = [ ]
+      for i in range(6):
+        x = random.choice(temp)
+        temp.remove(x)
+        randomlist.append(x)
+      for i in randomlist:
+        f.write(' s1^\markup{ ' + font + ' { ' + MajKeySigList[i] + ' }} ')
+        g.write(' s1 \\noBreak \override Score.RehearsalMark #\'break-align-symbols = #\'(key-signature) \override Staff.KeySignature #\'color = #red \override Staff.KeyCancellation #\'break-visibility = #\'#(#f #f #f) \key ' + MajKeySigListKey[i] + ' \major \mark \markup { ' + font + ' { ' + MajKeySigList[i] + ' }} ')
+      f.write(' }\\noPageBreak\n')
+      g.write(' }\\noPageBreak\n')
+
+
+### Identify scale degrees (no clef selection needed)
 ##################################################
 def IdentifyScaleDegrees(f,g,howmanytimes):
   f.write('\markup { ' + font + ' {Fill in the blanks: }} \\noPageBreak\n')
@@ -954,7 +1067,7 @@ def IdentifyScaleDegrees(f,g,howmanytimes):
     f.write('\markup { ' + font + ' { The ' + ScaleDegreeList[degree] + ' of ' + key + ' Major is: ___ }} \\noPageBreak \n')
     g.write('\markup { ' + font + ' { The ' + ScaleDegreeList[degree] + ' of ' + key + ' Major is: \with-color #red { ' + ScaleDegreeDictKey[key][degree]  + ' } }} \\noPageBreak \n ')
 
-### Relative keys
+### Relative keys (no clef selection needed)
 ##################################################
 def WriteRelativeMinorKeys(f,g,howmanytimes):
   f.write('\markup { ' + font + ' { Name the relative minor keys of the following major keys: }} \\noPageBreak\n')
@@ -980,7 +1093,7 @@ def WriteRelativeMajorKeys(f,g,howmanytimes):
     f.write('\markup { ' + font + ' { ' + MinKeySigList[x] + ' = ___ }} \\noPageBreak \n')
     g.write('\markup { ' + font + ' { ' + MinKeySigList[x] + ' = \with-color #red { ' + MajKeySigList[x] + ' } }} \\noPageBreak \n')
 
-### Scales
+### Scales (fixed for clef selection)
 ##################################################
 def MajorScales(f,g,howmanytimes):
   temp = list(range(len(MajorScalesList)))
@@ -1183,7 +1296,7 @@ def AllScales(f,g,howmanytimes):
         f.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + AllIdentifyScalesList[x]  + ' }\n')
         g.write('\\relative ' + octave + '{ \\nobarline \clef ' + identclef + ' \\notimesig ' + AllIdentifyScalesList[x]  + ' }\n')
 
-### Intervals
+### Intervals (fixed for clef selection)
 ##################################################
 def IdentifyEasySimpleIntervals(f,g,howmanytimes):
   keyssel = list(range(len(IntervalsEasySimpleTransposeList)))
@@ -1773,8 +1886,7 @@ def IdentifyIntervalsInScales(f,g,howmanytimes):
   g.write('\markup{ ' + font + ' { \with-color #red { ' + question + ': ' + IntervalsInScalesKeyDict[question][interval] + ' }} } ')
 
 
-
-### Chords
+### Chords (fixed for clef selection)
 ##################################################
 def IdentifyAllChords(f,g,howmanytimes):
   f.write('\markup { ' + font + ' { Name the following chords (root, quality & if V7 give possible keys):  }} \\noPageBreak\n')
@@ -1825,8 +1937,7 @@ def WriteAllChords(f,g,howmanytimes):
 def IdentifyInvAllChords(f,g,howmanytimes):
   f.write('\markup { ' + font + ' { Name the following chords (root, quality, inversion & if V7 give possible keys):  }} \\noPageBreak\n')
   g.write('\markup { ' + font + ' { Name the following chords (root, quality, inversion & if V7 give possible keys):  }} \\noPageBreak\n')
-  identclef = 'treble'
-  #random.choice(clefs)
+  identclef = random.choice(clefs)
   octave = 'g\'' if identclef == 'treble' else 'a' if identclef == 'alto' else 'f' if identclef == 'tenor' else 'b,'
   f.write('{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 ')
   g.write('{ \clef ' + identclef + ' \\notimesig \\nobarlinenumbers \override Score.SpacingSpanner #\'spacing-increment = 0 \override Score.SpacingSpanner #\'shortest-duration-space = 0 \override TextScript #\'padding = #3  ')
@@ -2282,7 +2393,7 @@ def IdentifyOtherChords(f,g,howmanytimes):
   f.write(' }\n >>')
   g.write(' }\n >>')
 
-### Cadences
+### Cadences (clef selection not needed)
 ##################################################
 def IdentifyCadences(f,g,howmanytimes):
   f.write('\markup { ' + font + ' { Identify the following cadences, provide the key and give the roman numerals for the chords: }} \\noPageBreak\n')
@@ -2381,7 +2492,7 @@ def WriteCadences(f,g,howmanytimes):
   f.write('>>\n')
   g.write('>>\n')
 
-### Transposition
+### Transposition (clef selection not needed)
 ##################################################
 def WrittenTransposition(f,g,examplenumber):
   identclef = random.choice(clefs)
@@ -2398,13 +2509,13 @@ def WrittenTransposition(f,g,examplenumber):
   f.write('\markup { ' + font + ' { New key : }}')
   g.write('\markup { ' + font + ' { New key : \with-color #red { ' + TranspositionExamplesNewKeysDict[examplenumber][x] + ' }}}')
 
-### Time Signatures
+### Time Signatures (clef selection not needed)
 ##################################################
 def TimeSignatures(f,g,examplenumber):
   f.write(TimeSigList[examplenumber])
   g.write(TimeSigKeyList[examplenumber])
 
-### Detect Errors
+### Detect Errors (clef selection not needed)
 ##################################################
 def DetectErrors(f,g,examplenumber):
   f.write('\markup { ' + font + ' { Circle all notation errors: }} ')
@@ -2442,6 +2553,20 @@ def main(args):
 
   # write header
   lilypondHeaders(f,g,args.title,args.copyright)
+
+  # clefs to use
+  if args.use_clefs:
+    cleflist = list(args.use_clefs)
+    if 'T' in cleflist:
+      for i in range(8):
+        clefs.append('treble')
+    if 'B' in cleflist:
+      for i in range(6):
+        clefs.append('bass')
+    if 'a' in cleflist:
+      clefs.append('alto')
+    if 't' in cleflist:
+      clefs.append('tenor')
 
   # All
   if args.all:
@@ -2754,8 +2879,9 @@ def main(args):
   call(["lilypond", keySheet ])
 
   # remove temporary lilypond files
-  call(["rm", fillInSheet ])
-  call(["rm", keySheet ])
+  if args.delete:
+    call(["rm", fillInSheet ])
+    call(["rm", keySheet ])
 
 # call main function
 main(args)
